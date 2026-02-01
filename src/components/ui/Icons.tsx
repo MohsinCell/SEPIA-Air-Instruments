@@ -322,6 +322,13 @@ export const RotateIcon: FC<IconProps> = ({ size = 24, ...props }) => (
   </svg>
 );
 
+export const SmartphoneIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <rect x="5" y="2" width="14" height="20" rx="2" />
+    <line x1="12" y1="18" x2="12" y2="18" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 export const RecordIcon: FC<IconProps> = ({ size = 24, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
     <circle cx="12" cy="12" r="8" fill="currentColor" />

@@ -108,7 +108,7 @@ body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   line-height: 1.6;
-  overflow: hidden;
+  overflow-x: hidden;
   letter-spacing: -0.01em;
 }
 

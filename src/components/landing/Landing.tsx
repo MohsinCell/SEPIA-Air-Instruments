@@ -8,7 +8,7 @@ import {
   CameraIcon,
   SparklesIcon,
   ArrowRightIcon,
-  RotateIcon,
+  SmartphoneIcon,
   SepiaLogo,
   MusicNoteIcon,
   getInstrumentIcon 
@@ -77,7 +77,7 @@ export function Landing({ onStart }: LandingProps) {
         </p>
 
         <p className="landing__hint landing__hint--mobile">
-          <RotateIcon size={16} />
+          <SmartphoneIcon size={16} />
           <span>Use desktop mode in landscape for the best experience on phones</span>
         </p>
         
