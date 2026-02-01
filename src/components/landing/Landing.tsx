@@ -78,7 +78,7 @@ export function Landing({ onStart }: LandingProps) {
 
         <p className="landing__hint landing__hint--mobile">
           <RotateIcon size={16} />
-          <span>Rotate to landscape mode for the best experience on mobile</span>
+          <span>Use desktop mode in landscape for the best experience on phones</span>
         </p>
         
         <div className="landing__features">
