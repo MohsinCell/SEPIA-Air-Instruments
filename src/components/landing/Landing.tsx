@@ -11,6 +11,7 @@ import {
   SmartphoneIcon,
   SepiaLogo,
   MusicNoteIcon,
+  CodeIcon,
   getInstrumentIcon 
 } from '../ui/Icons';
 import '../../styles/Landing.css';
@@ -81,7 +82,7 @@ export function Landing({ onStart }: LandingProps) {
           <span>Use desktop mode in landscape for the best experience on phones</span>
         </p>
         
-        <div className="landing__features">
+<div className="landing__features">
           <div className="landing__feature">
             <div className="landing__feature-icon">
               <HandIcon size={28} />
@@ -112,6 +113,16 @@ export function Landing({ onStart }: LandingProps) {
             </div>
           </div>
         </div>
+
+        <footer className="landing__footer">
+          <p className="landing__footer-quote">
+            "Music is the universal language of mankind."
+          </p>
+          <p className="landing__footer-credit">
+            <CodeIcon size={16} />
+            <span>Coded by Mohsin Belam</span>
+          </p>
+        </footer>
       </div>
     </div>
   );

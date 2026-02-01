@@ -327,6 +327,13 @@ export const SmartphoneIcon: FC<IconProps> = ({ size = 24, ...props }) => (
   </svg>
 );
 
+export const CodeIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <polyline points="16 18 22 12 16 6" />
+    <polyline points="8 6 2 12 8 18" />
+  </svg>
+);
+
 export const RecordIcon: FC<IconProps> = ({ size = 24, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
     <circle cx="12" cy="12" r="8" fill="currentColor" />
