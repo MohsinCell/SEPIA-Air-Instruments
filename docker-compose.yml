@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: sepia-air-instruments
     ports:
-      - "3000:80"
+      - "3001:80"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
