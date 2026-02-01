@@ -1,0 +1,522 @@
+/* ============================================
+   Landing Page Styles - Premium Design
+   ============================================ */
+
+.landing {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-bg-primary);
+}
+
+/* ============================================
+   Animated Background
+   ============================================ */
+
+.landing__background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.landing__gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: float 8s ease-in-out infinite, glow 4s ease-in-out infinite alternate;
+}
+
+.landing__gradient-orb--1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 107, 107, 0.3) 0%, transparent 70%);
+  top: -200px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.landing__gradient-orb--2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(78, 205, 196, 0.25) 0%, transparent 70%);
+  bottom: -150px;
+  right: -100px;
+  animation-delay: -2s;
+}
+
+.landing__gradient-orb--3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%);
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: -4s;
+}
+
+/* ============================================
+   Content Container
+   ============================================ */
+
+.landing__content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  animation: fadeIn 1s ease-out;
+}
+
+/* ============================================
+   Badge
+   ============================================ */
+
+.landing__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xl);
+  animation: slideInUp 0.6s ease-out;
+}
+
+.landing__badge svg {
+  color: var(--color-accent-primary);
+}
+
+/* ============================================
+   Logo Icon
+   ============================================ */
+
+.landing__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent-gradient);
+  border-radius: var(--radius-xl);
+  color: white;
+  box-shadow: 
+    0 20px 60px rgba(255, 107, 107, 0.3),
+    0 0 80px rgba(255, 107, 107, 0.2);
+  animation: scaleIn 0.8s ease-out;
+}
+
+.landing__icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* ============================================
+   Title
+   ============================================ */
+
+.landing__title {
+  margin-bottom: var(--space-lg);
+  animation: fadeIn 0.8s ease-out 0.2s backwards;
+}
+
+.landing__title-sepia {
+  display: block;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+.landing__title-instruments {
+  display: block;
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: var(--color-accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+/* ============================================
+   Subtitle
+   ============================================ */
+
+.landing__subtitle {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  max-width: 520px;
+  margin: 0 auto var(--space-2xl);
+  line-height: 1.7;
+  animation: fadeIn 0.8s ease-out 0.3s backwards;
+}
+
+/* ============================================
+   Instrument Icons Grid
+   ============================================ */
+
+.landing__instruments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.landing__instrument-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  transition: all var(--transition-normal);
+  animation: scaleIn 0.5s ease-out backwards;
+  cursor: default;
+}
+
+.landing__instrument-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.landing__instrument-icon:hover {
+  transform: translateY(-4px) scale(1.05);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+  box-shadow: 
+    0 12px 40px rgba(78, 205, 196, 0.2),
+    0 0 0 1px rgba(78, 205, 196, 0.1);
+}
+
+/* ============================================
+   Start Button
+   ============================================ */
+
+.landing__start-btn {
+  padding: var(--space-md) var(--space-2xl);
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--color-accent-gradient);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  box-shadow: 
+    0 8px 32px rgba(255, 107, 107, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: fadeIn 0.8s ease-out 0.5s backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing__start-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.landing__start-btn:hover {
+  box-shadow: 
+    0 16px 48px rgba(255, 107, 107, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+.landing__start-btn:hover::before {
+  opacity: 1;
+}
+
+.landing__start-btn:active {
+  opacity: 0.9;
+}
+
+.landing__start-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.landing__start-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* ============================================
+   Camera Hint
+   ============================================ */
+
+.landing__hint {
+  margin-top: var(--space-lg);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  animation: fadeIn 0.8s ease-out 0.6s backwards;
+}
+
+.landing__hint svg {
+  opacity: 0.6;
+}
+
+/* Mobile-only hint (landscape suggestion) */
+.landing__hint--mobile {
+  display: none;
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(78, 205, 196, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.landing__hint--mobile svg {
+  color: var(--color-accent-primary);
+  opacity: 1;
+}
+
+/* ============================================
+   Features Grid
+   ============================================ */
+
+.landing__features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-3xl);
+  width: 100%;
+  max-width: 720px;
+}
+
+.landing__feature {
+  padding: var(--space-lg);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: all var(--transition-normal);
+  animation: fadeIn 0.6s ease-out backwards;
+}
+
+.landing__feature:nth-child(1) { animation-delay: 0.7s; }
+.landing__feature:nth-child(2) { animation-delay: 0.8s; }
+.landing__feature:nth-child(3) { animation-delay: 0.9s; }
+
+.landing__feature:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-4px);
+}
+
+.landing__feature-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  color: var(--color-accent-primary);
+  transition: all var(--transition-normal);
+}
+
+.landing__feature:hover .landing__feature-icon {
+  background: rgba(78, 205, 196, 0.1);
+  color: var(--color-accent-primary);
+  box-shadow: 0 0 24px rgba(78, 205, 196, 0.2);
+}
+
+.landing__feature-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.landing__feature-desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ============================================
+   Responsive - Tablet
+   ============================================ */
+
+@media (max-width: 768px) {
+  .landing {
+    padding: var(--space-lg);
+  }
+  
+  .landing__icon {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .landing__icon svg {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .landing__subtitle {
+    font-size: 1rem;
+  }
+  
+  .landing__instruments {
+    gap: var(--space-xs);
+  }
+  
+  .landing__instrument-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .landing__instrument-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .landing__features {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    margin-top: var(--space-2xl);
+  }
+  
+  .landing__feature {
+    padding: var(--space-md);
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: var(--space-md);
+  }
+  
+  .landing__feature-icon {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  .landing__feature-content {
+    flex: 1;
+  }
+  
+  /* Show landscape hint on tablets/phones */
+  .landing__hint--mobile {
+    display: flex;
+  }
+}
+
+/* ============================================
+   Responsive - Phone
+   ============================================ */
+
+@media (max-width: 480px) {
+  .landing {
+    padding: var(--space-md);
+  }
+  
+  .landing__badge {
+    font-size: 0.6875rem;
+    padding: var(--space-xs) var(--space-sm);
+  }
+  
+  .landing__icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .landing__icon svg,
+  .landing__icon img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .landing__subtitle {
+    font-size: 0.9375rem;
+    margin-bottom: var(--space-xl);
+  }
+  
+  .landing__instrument-icon {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .landing__start-btn {
+    padding: var(--space-md) var(--space-xl);
+    font-size: 0.9375rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .landing__feature {
+    padding: var(--space-sm) var(--space-md);
+  }
+  
+  .landing__feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .landing__feature-title {
+    font-size: 0.875rem;
+  }
+  
+  .landing__feature-desc {
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================
+   Responsive - Phone Portrait
+   ============================================ */
+
+@media (max-width: 480px) and (orientation: portrait) {
+  .landing__icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .landing__icon svg,
+  .landing__icon img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .landing__gradient-orb,
+  .landing__icon,
+  .landing__instrument-icon,
+  .landing__feature {
+    animation: none;
+  }
+  
+  .landing__content {
+    animation: fadeIn 0.3s ease-out;
+  }
+}
