@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Sepia Air Instruments | Play Music with Hand Gestures</title>
+    <meta name="title" content="Sepia Air Instruments | Play Music with Hand Gestures" />
+    <meta name="description" content="Transform your hand movements into music using AI-powered gesture tracking. Play 60+ virtual instruments with just your webcam. No hardware required." />
+    <meta name="keywords" content="air instruments, hand tracking, gesture music, virtual piano, web audio, MediaPipe, hand gestures, music app, webcam music" />
+    <meta name="author" content="Sepia" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Theme & App Configuration -->
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Sepia" />
+    <meta name="application-name" content="Sepia Air Instruments" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sepia Air Instruments | Play Music with Hand Gestures" />
+    <meta property="og:description" content="Transform your hand movements into music using AI-powered gesture tracking. Play 60+ virtual instruments with just your webcam." />
+    <meta property="og:image" content="/sepia.svg" />
+    <meta property="og:site_name" content="Sepia Air Instruments" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sepia Air Instruments | Play Music with Hand Gestures" />
+    <meta name="twitter:description" content="Transform your hand movements into music using AI-powered gesture tracking. Play 60+ virtual instruments with just your webcam." />
+    <meta name="twitter:image" content="/sepia.svg" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/sepia.svg" />
+    <link rel="apple-touch-icon" href="/sepia.svg" />
+    
+    <!-- Preconnect to External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    
+    <title>Sepia Air Instruments | Play Music with Hand Gestures</title>
+    
+    <style>
+      /* Critical CSS for fast initial paint */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      
+      html, body, #root {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #0a0a0a;
+        color: #ffffff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      
+      /* Loading state */
+      #root:empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      #root:empty::before {
+        content: '';
+        width: 48px;
+        height: 48px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #4ECDC4;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      
+      #root:empty::after {
+        content: 'Loading Sepia...';
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        letter-spacing: 0.5px;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Prevent FOUC */
+      .no-js #root:empty::before,
+      .no-js #root:empty::after {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <div style="display: flex; align-items: center; justify-content: center; height: 100vh; padding: 20px; text-align: center; background: #0a0a0a; color: #fff;">
+        <div>
+          <h1 style="margin-bottom: 16px;">JavaScript Required</h1>
+          <p style="color: rgba(255,255,255,0.7);">Sepia Air Instruments requires JavaScript to run. Please enable JavaScript in your browser settings and reload the page.</p>
+        </div>
+      </div>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
