@@ -120,7 +120,7 @@ export function Landing({ onStart }: LandingProps) {
           </p>
           <p className="landing__footer-credit">
             <CodeIcon size={16} />
-            <span>Coded by Mohsin Belam</span>
+            <span>Developed by Mohsin Belam</span>
           </p>
         </footer>
       </div>

@@ -551,17 +551,6 @@
   gap: var(--space-xs);
   font-size: 0.8125rem;
   color: var(--color-text-muted);
-  padding: var(--space-xs) var(--space-md);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-full);
-  transition: all var(--transition-normal);
-}
-
-.landing__footer-credit:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-secondary);
 }
 
 .landing__footer-credit svg {
