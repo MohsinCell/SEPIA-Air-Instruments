@@ -12,7 +12,8 @@
   padding: var(--space-xl);
   text-align: center;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: var(--color-bg-primary);
 }
 
@@ -367,6 +368,9 @@
 @media (max-width: 768px) {
   .landing {
     padding: var(--space-lg);
+    padding-bottom: var(--space-3xl);
+    justify-content: flex-start;
+    padding-top: var(--space-2xl);
   }
   
   .landing__icon {
