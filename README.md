@@ -1,4 +1,4 @@
-# Sepia Air Instruments
+# Sepia | Air Instruments
 
 <div align="center">
 
