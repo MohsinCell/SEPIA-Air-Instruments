@@ -383,14 +383,15 @@ export default function App() {
       </div>
       <div className="accuracy-bar" aria-live="polite">
         <div className="accuracy-bar__section accuracy-bar__section--left">
-          <span className="accuracy-bar__label">Left hand accuracy</span>
+          <span className="accuracy-bar__label">Left</span>
           <span className="accuracy-bar__value">{Math.round(leftAccuracy * 100)}%</span>
         </div>
-        <div className="accuracy-bar__section accuracy-bar__section--center">
-          <span className="accuracy-bar__label">Accuracy</span>
+        <div className={`accuracy-bar__section accuracy-bar__section--center ${hands.length > 0 ? 'accuracy-bar__section--detected' : ''}`}>
+          <span className="accuracy-bar__dot" />
+          <span className="accuracy-bar__status">{hands.length > 0 ? `${hands.length} hand${hands.length > 1 ? 's' : ''} detected` : 'Show hands to play'}</span>
         </div>
         <div className="accuracy-bar__section accuracy-bar__section--right">
-          <span className="accuracy-bar__label">Right hand accuracy</span>
+          <span className="accuracy-bar__label">Right</span>
           <span className="accuracy-bar__value">{Math.round(rightAccuracy * 100)}%</span>
         </div>
       </div>

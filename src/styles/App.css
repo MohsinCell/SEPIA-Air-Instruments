@@ -555,7 +555,33 @@
 .accuracy-bar__section--center {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
   min-width: 0;
+  color: var(--color-text-muted);
+}
+
+.accuracy-bar__section--center.accuracy-bar__section--detected {
+  color: var(--color-accent-primary);
+  border-color: rgba(78, 205, 196, 0.3);
+}
+
+.accuracy-bar__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.accuracy-bar__section--detected .accuracy-bar__dot {
+  background: var(--color-accent-primary);
+  box-shadow: 0 0 8px var(--color-accent-primary);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.accuracy-bar__status {
+  white-space: nowrap;
 }
 
 .accuracy-bar__label {
