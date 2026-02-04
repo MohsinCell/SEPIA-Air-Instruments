@@ -1,36 +1,97 @@
 // ============================================
 // Hand Detection Utilities
+// Optimized for all palm sizes including kids' hands
 // ============================================
 
 import type { Hand, Position, FingerName } from '../types';
-import { FINGER_TIP_IDS, FINGER_PIP_IDS, UI_CONFIG } from '../constants';
+import { FINGER_TIP_IDS, FINGER_PIP_IDS } from '../constants';
+
+// ============================================
+// Landmark Smoothing for Stability
+// ============================================
+
+// Store previous landmark positions for smoothing
+const landmarkHistory: Map<string, Position[]> = new Map();
+const SMOOTHING_FRAMES = 3; // Number of frames to average
+
+/**
+ * Smooth a position using exponential moving average
+ */
+function smoothPosition(key: string, newPos: Position): Position {
+  const history = landmarkHistory.get(key) || [];
+  history.push(newPos);
+  
+  // Keep only last N frames
+  while (history.length > SMOOTHING_FRAMES) {
+    history.shift();
+  }
+  landmarkHistory.set(key, history);
+  
+  // Calculate weighted average (more recent = more weight)
+  let totalWeight = 0;
+  let smoothX = 0;
+  let smoothY = 0;
+  
+  history.forEach((pos, index) => {
+    const weight = index + 1; // Later frames have more weight
+    smoothX += pos.x * weight;
+    smoothY += pos.y * weight;
+    totalWeight += weight;
+  });
+  
+  return {
+    x: smoothX / totalWeight,
+    y: smoothY / totalWeight,
+  };
+}
+
+/**
+ * Calculate palm size for adaptive thresholds
+ * Uses distance between wrist and middle finger MCP as reference
+ */
+function calculatePalmSize(landmarks: { x: number; y: number; z: number }[]): number {
+  const wrist = landmarks[0];
+  const middleMCP = landmarks[9];
+  
+  return Math.sqrt(
+    Math.pow(middleMCP.x - wrist.x, 2) + 
+    Math.pow(middleMCP.y - wrist.y, 2)
+  );
+}
+
+/**
+ * Get adaptive threshold based on palm size
+ * Smaller palms get proportionally smaller thresholds
+ */
+function getAdaptiveThreshold(palmSize: number, baseThreshold: number): number {
+  // Reference palm size (typical adult hand)
+  const referencePalmSize = 0.25;
+  
+  // Scale threshold based on palm size ratio
+  const scaleFactor = palmSize / referencePalmSize;
+  
+  // Clamp to reasonable range (0.5x to 1.5x base threshold)
+  const clampedScale = Math.max(0.5, Math.min(1.5, scaleFactor));
+  
+  return baseThreshold * clampedScale;
+}
 
 /**
  * Detect which fingers are raised for a hand
+ * Uses adaptive thresholds based on palm size for better accuracy with all hand sizes
  * @param hand - Detected hand object
  * @returns Array of boolean values for each finger (thumb, index, middle, ring, pinky)
  */
 export function detectRaisedFingers(hand: Hand): boolean[] {
   const landmarks = hand.landmarks;
-  const threshold = UI_CONFIG.fingerThreshold;
   const raised: boolean[] = [];
-
+  
+  // Calculate palm size for adaptive thresholds
+  const palmSize = calculatePalmSize(landmarks);
+  
   // ============================================
-  // THUMB DETECTION - Requires FULL thumb extension
+  // THUMB DETECTION - Adaptive for all hand sizes
   // ============================================
-  // The user needs to fully extend/raise the entire thumb to trigger.
-  // This prevents accidental triggers from slight thumb movements.
-  // 
-  // MediaPipe hand landmarks for thumb:
-  // - 1: CMC (carpometacarpal - base of thumb at wrist)
-  // - 2: MCP (metacarpophalangeal - knuckle)  
-  // - 3: IP (interphalangeal - middle joint)
-  // - 4: TIP (fingertip)
-  //
-  // For full extension we check:
-  // 1. The thumb is straightened (tip far from CMC along the thumb axis)
-  // 2. The thumb is pointing away from the palm
-  // 3. The angle at IP joint is relatively straight (not curled)
   
   const thumbTip = landmarks[4];   // Thumb tip
   const thumbIP = landmarks[3];    // Thumb IP joint  
@@ -44,9 +105,7 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
   const palmCenterX = (indexMCP.x + pinkyMCP.x + wrist.x) / 3;
   const palmCenterY = (indexMCP.y + pinkyMCP.y + wrist.y) / 3;
   
-  // ---- Check 1: Thumb extension (is the thumb straightened out?) ----
-  // Measure the total length from CMC to tip vs CMC to MCP
-  // A fully extended thumb will have tip much further than MCP
+  // ---- Check 1: Thumb extension (normalized by palm size) ----
   const cmcToTip = Math.sqrt(
     Math.pow(thumbTip.x - thumbCMC.x, 2) + 
     Math.pow(thumbTip.y - thumbCMC.y, 2)
@@ -56,13 +115,11 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
     Math.pow(thumbMCP.y - thumbCMC.y, 2)
   );
   
-  // For a fully extended thumb, tip should be significantly further than MCP
-  // Ratio should be high (thumb is stretched out)
-  const extensionRatio = cmcToTip / (cmcToMCP + 0.001); // Avoid division by zero
-  const isFullyExtended = extensionRatio > 2.0; // Tip should be at least 2x further than MCP
+  // Adaptive threshold based on palm size
+  const extensionRatio = cmcToTip / (cmcToMCP + 0.001);
+  const isFullyExtended = extensionRatio > 1.8; // Slightly lower for small hands
   
   // ---- Check 2: Thumb pointing away from palm ----
-  // Calculate distance from thumb tip to palm center vs thumb CMC to palm center
   const tipToPalm = Math.sqrt(
     Math.pow(thumbTip.x - palmCenterX, 2) + 
     Math.pow(thumbTip.y - palmCenterY, 2)
@@ -72,29 +129,22 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
     Math.pow(thumbCMC.y - palmCenterY, 2)
   );
   
-  // When thumb is raised, tip is further from palm center than CMC
-  const isPointingAway = tipToPalm > cmcToPalm * 1.3;
+  const isPointingAway = tipToPalm > cmcToPalm * 1.2; // Slightly lower threshold
   
   // ---- Check 3: Thumb angle (IP joint not too bent) ----
-  // Calculate the angle at the IP joint
-  // Vector from IP to MCP
   const ipToMcpX = thumbMCP.x - thumbIP.x;
   const ipToMcpY = thumbMCP.y - thumbIP.y;
-  // Vector from IP to Tip
   const ipToTipX = thumbTip.x - thumbIP.x;
   const ipToTipY = thumbTip.y - thumbIP.y;
   
-  // Dot product to find angle
   const dotProduct = ipToMcpX * ipToTipX + ipToMcpY * ipToTipY;
   const magMcp = Math.sqrt(ipToMcpX * ipToMcpX + ipToMcpY * ipToMcpY);
   const magTip = Math.sqrt(ipToTipX * ipToTipX + ipToTipY * ipToTipY);
   
-  // Cosine of angle - closer to -1 means straighter (180 degrees)
   const cosAngle = dotProduct / (magMcp * magTip + 0.001);
-  const isStraight = cosAngle < -0.3; // Angle > ~110 degrees (relatively straight)
+  const isStraight = cosAngle < -0.2; // More lenient angle check
   
   // ---- Check 4: Distance from tip to index finger base ----
-  // Classic check - thumb tip should be far from index MCP when raised
   const tipToIndexMCP = Math.sqrt(
     Math.pow(thumbTip.x - indexMCP.x, 2) + 
     Math.pow(thumbTip.y - indexMCP.y, 2)
@@ -103,83 +153,119 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
     Math.pow(thumbMCP.x - indexMCP.x, 2) + 
     Math.pow(thumbMCP.y - indexMCP.y, 2)
   );
-  const isAwayFromIndex = tipToIndexMCP > mcpToIndexMCP * 0.9;
+  const isAwayFromIndex = tipToIndexMCP > mcpToIndexMCP * 0.85; // Slightly lower
   
-  // ---- Final Decision: Require multiple conditions for FULL thumb extension ----
-  // At least 3 of 4 checks must pass for thumb to be considered raised
-  const thumbChecks = [isFullyExtended, isPointingAway, isStraight, isAwayFromIndex];
+  // ---- Check 5: Horizontal thumb extension (works well for kids) ----
+  // For smaller hands, check if thumb tip is horizontally away from palm
+  const horizontalExtension = Math.abs(thumbTip.x - thumbCMC.x);
+  const verticalPalmSize = Math.abs(indexMCP.y - wrist.y);
+  const hasHorizontalExtension = horizontalExtension > verticalPalmSize * 0.3;
+  
+  // Final Decision: Require at least 3 of 5 checks to pass
+  const thumbChecks = [isFullyExtended, isPointingAway, isStraight, isAwayFromIndex, hasHorizontalExtension];
   const passedChecks = thumbChecks.filter(Boolean).length;
   raised.push(passedChecks >= 3);
 
   // ============================================
-  // OTHER FINGERS (index, middle, ring, pinky)
+  // OTHER FINGERS - Adaptive thresholds
   // ============================================
-  // These are simpler - check y position (tip should be above PIP joint when raised)
-  // Y increases downward in normalized coordinates, so raised finger has lower y
+  
+  // Base threshold, scaled by palm size
+  const baseThreshold = 0.015;
+  const adaptiveThreshold = getAdaptiveThreshold(palmSize, baseThreshold);
+  
   for (let i = 1; i < 5; i++) {
     const tipY = landmarks[FINGER_TIP_IDS[i]].y;
     const pipY = landmarks[FINGER_PIP_IDS[i]].y;
-    raised.push(tipY < pipY - threshold);
+    const mcpY = landmarks[FINGER_PIP_IDS[i] - 1].y; // MCP is one index before PIP
+    
+    // Primary check: tip above PIP
+    const tipAbovePIP = tipY < pipY - adaptiveThreshold;
+    
+    // Secondary check: tip significantly above MCP (for more reliability)
+    const tipAboveMCP = tipY < mcpY;
+    
+    // Tertiary check: PIP to tip distance vs MCP to PIP distance
+    // When finger is raised, tip-to-PIP distance is similar to or greater than MCP-to-PIP
+    const tipToPipDist = Math.abs(tipY - pipY);
+    const mcpToPipDist = Math.abs(mcpY - pipY);
+    const hasGoodExtension = tipToPipDist > mcpToPipDist * 0.5;
+    
+    // Finger is raised if primary check passes, or both secondary and tertiary pass
+    const isRaised = tipAbovePIP || (tipAboveMCP && hasGoodExtension);
+    raised.push(isRaised);
   }
 
   return raised;
 }
 
 /**
- * Get fingertip position on canvas
+ * Get fingertip position on canvas with optional smoothing
  * @param hand - Detected hand object
  * @param fingerIndex - Index of finger (0-4)
  * @param canvasWidth - Canvas width
  * @param canvasHeight - Canvas height
+ * @param smooth - Whether to apply smoothing (default: true)
  * @returns Position object with x, y coordinates
  */
 export function getFingertipPosition(
   hand: Hand,
   fingerIndex: number,
   canvasWidth: number,
-  canvasHeight: number
+  canvasHeight: number,
+  smooth: boolean = true
 ): Position {
   const landmark = hand.landmarks[FINGER_TIP_IDS[fingerIndex]];
-  return {
+  const rawPos = {
     // Mirror x coordinate for camera view (video is displayed mirrored)
     x: (1 - landmark.x) * canvasWidth,
     y: landmark.y * canvasHeight,
   };
+  
+  if (smooth) {
+    const key = `${hand.handedness}_finger_${fingerIndex}`;
+    return smoothPosition(key, rawPos);
+  }
+  
+  return rawPos;
 }
 
 /**
- * Get landmark position on canvas
+ * Get landmark position on canvas with optional smoothing
  * @param hand - Detected hand object
  * @param landmarkIndex - Index of landmark
  * @param canvasWidth - Canvas width
  * @param canvasHeight - Canvas height
+ * @param smooth - Whether to apply smoothing (default: true)
  * @returns Position object with x, y coordinates
  */
 export function getLandmarkPosition(
   hand: Hand,
   landmarkIndex: number,
   canvasWidth: number,
-  canvasHeight: number
+  canvasHeight: number,
+  smooth: boolean = true
 ): Position {
   const landmark = hand.landmarks[landmarkIndex];
-  return {
+  const rawPos = {
     x: (1 - landmark.x) * canvasWidth,
     y: landmark.y * canvasHeight,
   };
+  
+  if (smooth) {
+    const key = `${hand.handedness}_landmark_${landmarkIndex}`;
+    return smoothPosition(key, rawPos);
+  }
+  
+  return rawPos;
 }
 
 /**
  * Get the hand side for note mapping
- * MediaPipe's handedness label indicates which hand it actually is from the user's perspective
- * "Right" = user's right hand, "Left" = user's left hand
- * We want the user's left hand to play "left" notes and right hand to play "right" notes
  * @param hand - Detected hand object
  * @returns 'left' or 'right' representing the user's actual hand
  */
 export function getRealHandSide(hand: Hand): 'left' | 'right' {
-  // Return the hand as-is - MediaPipe correctly identifies which hand it is
-  // "Left" from MediaPipe = user's left hand = should play left hand notes
-  // "Right" from MediaPipe = user's right hand = should play right hand notes
   return hand.handedness === 'Left' ? 'left' : 'right';
 }
 
@@ -224,4 +310,11 @@ export function calculateDistance(p1: Position, p2: Position): number {
  */
 export function isWithinBounds(pos: Position, width: number, height: number): boolean {
   return pos.x >= 0 && pos.x <= width && pos.y >= 0 && pos.y <= height;
+}
+
+/**
+ * Clear landmark history (useful when switching hands or resetting)
+ */
+export function clearLandmarkHistory(): void {
+  landmarkHistory.clear();
 }

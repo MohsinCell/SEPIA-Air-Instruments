@@ -3,11 +3,12 @@
 // ============================================
 
 // Hand tracking configuration
+// Lower confidence thresholds help detect smaller hands (kids) more reliably
 export const HAND_CONFIG = {
   maxNumHands: 2,
   modelComplexity: 1,
-  minDetectionConfidence: 0.7,
-  minTrackingConfidence: 0.5,
+  minDetectionConfidence: 0.5,  // Lowered from 0.7 for better small hand detection
+  minTrackingConfidence: 0.4,   // Lowered from 0.5 for more stable tracking
 };
 
 // Video configuration
@@ -56,7 +57,7 @@ export const AUDIO_CONFIG = {
 // UI configuration
 export const UI_CONFIG = {
   noteHistoryLength: 15,
-  fingerThreshold: 0.02, // Detection threshold for finger up/down
+  fingerThreshold: 0.015, // Lowered from 0.02 for better sensitivity with small hands
   activeIndicatorRadius: 20,
   glowRadius: 40,
 };
