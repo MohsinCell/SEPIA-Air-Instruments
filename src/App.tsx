@@ -54,6 +54,11 @@ export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prevStatesRef = useRef<Map<string, boolean>>(new Map());
   const animationRef = useRef<number | undefined>(undefined);
+  
+  // Debouncing: Track consecutive frames each finger has been raised
+  // This prevents flickering from causing multiple note triggers
+  const fingerRaisedFramesRef = useRef<Map<string, number>>(new Map());
+  const DEBOUNCE_FRAMES = 3; // Finger must be raised for 3 consecutive frames to trigger
 
   // Get current instrument
   const instrument = INSTRUMENTS.find(i => i.id === selectedInstrumentId) || INSTRUMENTS[0];
@@ -88,34 +93,52 @@ export default function App() {
       FINGER_NAMES.forEach((fingerName, index) => {
         const key = createFingerKey(handSide, fingerName as FingerName);
         const isRaised = raisedFingers[index];
-        const wasRaised = prevStatesRef.current.get(key) || false;
+        const wasConfirmedRaised = prevStatesRef.current.get(key) || false;
         const noteConfig = fingerConfig[fingerName as FingerName];
 
+        // Update consecutive raised frame count for debouncing
+        const currentFrames = fingerRaisedFramesRef.current.get(key) || 0;
+        
         if (isRaised) {
-          newActiveFingers.add(key);
+          // Increment consecutive raised frames (cap at DEBOUNCE_FRAMES to prevent overflow)
+          fingerRaisedFramesRef.current.set(key, Math.min(currentFrames + 1, DEBOUNCE_FRAMES + 1));
+          
+          // Only consider finger "confirmed raised" after DEBOUNCE_FRAMES consecutive frames
+          const confirmedRaised = fingerRaisedFramesRef.current.get(key)! >= DEBOUNCE_FRAMES;
+          
+          if (confirmedRaised) {
+            newActiveFingers.add(key);
 
-          // Note just started playing
-          if (!wasRaised) {
-            playNote(key, noteConfig.notes);
+            // Note just started playing (transition from not-confirmed to confirmed)
+            if (!wasConfirmedRaised) {
+              playNote(key, noteConfig.notes);
 
-            // Add particle effect
-            const pos = getFingertipPosition(
-              hand,
-              index,
-              canvasRef.current!.width,
-              canvasRef.current!.height
-            );
-            addParticle(pos, noteConfig.color, noteConfig.name);
+              // Add particle effect
+              const pos = getFingertipPosition(
+                hand,
+                index,
+                canvasRef.current!.width,
+                canvasRef.current!.height
+              );
+              addParticle(pos, noteConfig.color, noteConfig.name);
 
-            // Add to history
-            addNote(noteConfig.name, handSide, fingerName as FingerName, noteConfig.color);
+              // Add to history
+              addNote(noteConfig.name, handSide, fingerName as FingerName, noteConfig.color);
+            }
+            
+            // Update confirmed state
+            prevStatesRef.current.set(key, true);
           }
-        } else if (wasRaised) {
-          // Note just stopped
-          stopNote(key);
+        } else {
+          // Reset consecutive raised frames when finger goes down
+          fingerRaisedFramesRef.current.set(key, 0);
+          
+          if (wasConfirmedRaised) {
+            // Note just stopped
+            stopNote(key);
+            prevStatesRef.current.set(key, false);
+          }
         }
-
-        prevStatesRef.current.set(key, isRaised);
       });
     });
 
@@ -129,6 +152,7 @@ export default function App() {
         if (!handStillVisible) {
           stopNote(key);
           prevStatesRef.current.set(key, false);
+          fingerRaisedFramesRef.current.set(key, 0); // Reset debounce counter
         }
       }
     });
@@ -205,6 +229,7 @@ export default function App() {
     setSelectedInstrumentId(id);
     stopAll();
     prevStatesRef.current.clear();
+    fingerRaisedFramesRef.current.clear(); // Clear debounce counters
     setActiveFingers(new Set());
   }, [stopAll]);
 
@@ -212,6 +237,7 @@ export default function App() {
   const handleGoHome = useCallback(() => {
     stopAll();
     prevStatesRef.current.clear();
+    fingerRaisedFramesRef.current.clear(); // Clear debounce counters
     setActiveFingers(new Set());
     setIsStarted(false);
   }, [stopAll]);
