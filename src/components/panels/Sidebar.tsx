@@ -27,6 +27,8 @@ interface SidebarProps {
   onStartCalibration?: () => void;
   isCalibrating?: boolean;
   calibrationProgress?: number;
+  leftAccuracy?: number;
+  rightAccuracy?: number;
   onHelpClick?: () => void;
   onHomeClick?: () => void;
   // Recording props
@@ -49,6 +51,8 @@ export function Sidebar({
   onStartCalibration,
   isCalibrating = false,
   calibrationProgress = 0,
+  leftAccuracy = 0,
+  rightAccuracy = 0,
   onHelpClick,
   onHomeClick,
   isRecording = false,
@@ -240,6 +244,12 @@ export function Sidebar({
                   <div className="calibration-panel__status">
                     {isCalibrating ? `Hold steady ${Math.round(calibrationProgress * 100)}%` : 'Improve accuracy for your hand'}
                   </div>
+                  {isCalibrating && (
+                    <div className="calibration-panel__accuracy">
+                      <span>Left hand accuracy: {Math.round(leftAccuracy * 100)}%</span>
+                      <span>Right hand accuracy: {Math.round(rightAccuracy * 100)}%</span>
+                    </div>
+                  )}
                   <div className="calibration-panel__bar">
                     <span style={{ width: `${Math.round(calibrationProgress * 100)}%` }} />
                   </div>
