@@ -60,23 +60,6 @@ function calculatePalmSize(landmarks: { x: number; y: number; z: number }[]): nu
 }
 
 /**
- * Get adaptive threshold based on palm size
- * Smaller palms get proportionally smaller thresholds
- */
-function getAdaptiveThreshold(palmSize: number, baseThreshold: number): number {
-  // Reference palm size (typical adult hand)
-  const referencePalmSize = 0.25;
-  
-  // Scale threshold based on palm size ratio
-  const scaleFactor = palmSize / referencePalmSize;
-  
-  // Clamp to reasonable range (0.5x to 1.5x base threshold)
-  const clampedScale = Math.max(0.5, Math.min(1.5, scaleFactor));
-  
-  return baseThreshold * clampedScale;
-}
-
-/**
  * Detect which fingers are raised for a hand
  * Uses adaptive thresholds based on palm size for better accuracy with all hand sizes
  * @param hand - Detected hand object
@@ -167,32 +150,70 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
   raised.push(passedChecks >= 3);
 
   // ============================================
-  // OTHER FINGERS - Adaptive thresholds
+  // OTHER FINGERS - Strict curl detection
   // ============================================
   
-  // Base threshold, scaled by palm size
-  const baseThreshold = 0.015;
-  const adaptiveThreshold = getAdaptiveThreshold(palmSize, baseThreshold);
+  // Finger landmark indices: MCP (knuckle), PIP (middle joint), DIP (upper joint), TIP
+  // Index: MCP=5, PIP=6, DIP=7, TIP=8
+  // Middle: MCP=9, PIP=10, DIP=11, TIP=12
+  // Ring: MCP=13, PIP=14, DIP=15, TIP=16
+  // Pinky: MCP=17, PIP=18, DIP=19, TIP=20
   
   for (let i = 1; i < 5; i++) {
-    const tipY = landmarks[FINGER_TIP_IDS[i]].y;
-    const pipY = landmarks[FINGER_PIP_IDS[i]].y;
-    const mcpY = landmarks[FINGER_PIP_IDS[i] - 1].y; // MCP is one index before PIP
+    const tipIdx = FINGER_TIP_IDS[i];
+    const dipIdx = tipIdx - 1;  // DIP is one before tip
+    const pipIdx = FINGER_PIP_IDS[i];
+    const mcpIdx = pipIdx - 1;  // MCP is one before PIP
     
-    // Primary check: tip above PIP
-    const tipAbovePIP = tipY < pipY - adaptiveThreshold;
+    const tip = landmarks[tipIdx];
+    const dip = landmarks[dipIdx];
+    const pip = landmarks[pipIdx];
+    const mcp = landmarks[mcpIdx];
     
-    // Secondary check: tip significantly above MCP (for more reliability)
-    const tipAboveMCP = tipY < mcpY;
+    // ---- Check 1: Tip must be above PIP (basic Y check) ----
+    const tipAbovePIP = tip.y < pip.y - 0.02; // Require meaningful distance
     
-    // Tertiary check: PIP to tip distance vs MCP to PIP distance
-    // When finger is raised, tip-to-PIP distance is similar to or greater than MCP-to-PIP
-    const tipToPipDist = Math.abs(tipY - pipY);
-    const mcpToPipDist = Math.abs(mcpY - pipY);
-    const hasGoodExtension = tipToPipDist > mcpToPipDist * 0.5;
+    // ---- Check 2: Finger must be STRAIGHT, not curled ----
+    // When finger is curled, DIP-to-TIP vector points back toward palm
+    // When finger is straight, DIP-to-TIP vector points away from palm (upward)
     
-    // Finger is raised if primary check passes, or both secondary and tertiary pass
-    const isRaised = tipAbovePIP || (tipAboveMCP && hasGoodExtension);
+    // Calculate vectors
+    const mcpToPipX = pip.x - mcp.x;
+    const mcpToPipY = pip.y - mcp.y;
+    const pipToDipX = dip.x - pip.x;
+    const pipToDipY = dip.y - pip.y;
+    const dipToTipX = tip.x - dip.x;
+    const dipToTipY = tip.y - dip.y;
+    
+    // Check if finger segments are roughly aligned (not curled back)
+    // Dot product > 0 means vectors point in similar direction
+    const pipDipDot = mcpToPipX * pipToDipX + mcpToPipY * pipToDipY;
+    const dipTipDot = pipToDipX * dipToTipX + pipToDipY * dipToTipY;
+    
+    // For a straight/raised finger, both dot products should be positive
+    // For a curled finger, the tip curves back, making dipTipDot negative
+    const isNotCurled = pipDipDot > 0 && dipTipDot > -0.001;
+    
+    // ---- Check 3: Tip must be far from palm (not curled into fist) ----
+    const tipToWristDist = Math.sqrt(
+      Math.pow(tip.x - wrist.x, 2) + Math.pow(tip.y - wrist.y, 2)
+    );
+    const mcpToWristDist = Math.sqrt(
+      Math.pow(mcp.x - wrist.x, 2) + Math.pow(mcp.y - wrist.y, 2)
+    );
+    // Tip should be further from wrist than MCP when finger is extended
+    const tipAwayFromPalm = tipToWristDist > mcpToWristDist * 0.9;
+    
+    // ---- Check 4: Total finger extension (tip-to-MCP distance) ----
+    const tipToMcpDist = Math.sqrt(
+      Math.pow(tip.x - mcp.x, 2) + Math.pow(tip.y - mcp.y, 2)
+    );
+    // When curled, tip is close to MCP. When extended, tip is far from MCP.
+    const minExtension = palmSize * 0.5; // At least 50% of palm size
+    const hasGoodExtension = tipToMcpDist > minExtension;
+    
+    // FINAL: Finger is raised only if ALL conditions are met
+    const isRaised = tipAbovePIP && isNotCurled && tipAwayFromPalm && hasGoodExtension;
     raised.push(isRaised);
   }
 
