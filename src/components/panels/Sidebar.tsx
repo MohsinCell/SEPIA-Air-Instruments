@@ -113,7 +113,7 @@ export function Sidebar({
         )}
       </header>
 
-      <div className="sidebar__content">
+<div className="sidebar__content">
         {/* Recording Section */}
         {(onStartRecording || onStopRecording) && (
           <section className="sidebar__section">
@@ -165,30 +165,11 @@ export function Sidebar({
           </section>
         )}
 
-        {/* Instruments List */}
-        {instrumentsByCategory.map(category => (
-          category.instruments.length > 0 && (
-            <section key={category.id} className="sidebar__section">
-              <h3 className="sidebar__section-title">{category.label}</h3>
-              <div className="instrument-list">
-                {category.instruments.map(instrument => (
-                  <InstrumentButton
-                    key={instrument.id}
-                    instrument={instrument}
-                    isActive={instrument.id === selectedInstrumentId}
-                    onClick={() => onSelectInstrument(instrument.id)}
-                  />
-                ))}
-              </div>
-            </section>
-          )
-        ))}
-
-        {/* Settings */}
+        {/* Settings - Moved before Instruments */}
         <section className="sidebar__section">
           <h3 className="sidebar__section-title">
             <SettingsIcon size={14} style={{ marginRight: '6px', opacity: 0.7 }} />
-            Settings
+            Sound Settings
           </h3>
           <div className="settings-panel">
             {/* Volume */}
@@ -234,6 +215,25 @@ export function Sidebar({
             </div>
           </div>
         </section>
+
+        {/* Instruments List */}
+        {instrumentsByCategory.map(category => (
+          category.instruments.length > 0 && (
+            <section key={category.id} className="sidebar__section">
+              <h3 className="sidebar__section-title">{category.label}</h3>
+              <div className="instrument-list">
+                {category.instruments.map(instrument => (
+                  <InstrumentButton
+                    key={instrument.id}
+                    instrument={instrument}
+                    isActive={instrument.id === selectedInstrumentId}
+                    onClick={() => onSelectInstrument(instrument.id)}
+                  />
+                ))}
+              </div>
+            </section>
+          )
+        ))}
       </div>
     </aside>
   );
