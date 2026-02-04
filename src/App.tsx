@@ -63,6 +63,8 @@ export default function App() {
   const rightLastSeenRef = useRef<number>(0);
   const leftAccuracyRef = useRef<number>(0);
   const rightAccuracyRef = useRef<number>(0);
+  const leftFacingRef = useRef<number>(0);
+  const rightFacingRef = useRef<number>(0);
   
   // Debouncing: Track consecutive frames each finger has been raised
   // This prevents flickering from causing multiple note triggers
@@ -71,7 +73,7 @@ export default function App() {
   const ACCURACY_WINDOW = 30;
   const ACCURACY_DECAY_MS = 1200;
 
-  const computeAccuracy = useCallback((samples: number[], lastSeenMs: number, now: number) => {
+  const computeAccuracy = useCallback((samples: number[], lastSeenMs: number, now: number, facingScore: number) => {
     if (samples.length < 3) return 0;
     if (now - lastSeenMs > ACCURACY_DECAY_MS) return 0;
 
@@ -83,7 +85,21 @@ export default function App() {
     const stability = Math.max(0, Math.min(1, 1 - cv / 0.08));
     const presence = Math.max(0, Math.min(1, 1 - (now - lastSeenMs) / ACCURACY_DECAY_MS));
 
-    return Math.max(0, Math.min(1, stability * presence));
+    return Math.max(0, Math.min(1, stability * presence * facingScore));
+  }, []);
+
+  const getFacingScore = useCallback((hand: Hand) => {
+    const landmarks = hand.landmarks;
+    const mcpIds = [5, 9, 13, 17];
+    const tipIds = [4, 8, 12, 16, 20];
+
+    const avgMcpZ = mcpIds.reduce((sum, id) => sum + landmarks[id].z, 0) / mcpIds.length;
+    const avgTipZ = tipIds.reduce((sum, id) => sum + landmarks[id].z, 0) / tipIds.length;
+
+    const diff = avgMcpZ - avgTipZ;
+    const score = Math.max(0, Math.min(1, diff / 0.03));
+
+    return score;
   }, []);
 
   // Get current instrument
@@ -116,6 +132,7 @@ export default function App() {
     detectedHands.forEach((hand) => {
       const side = getRealHandSide(hand);
       const palmSize = getPalmSize(hand);
+      const facingScore = getFacingScore(hand);
 
       if (side === 'left') {
         leftSamplesRef.current.push(palmSize);
@@ -123,12 +140,14 @@ export default function App() {
           leftSamplesRef.current.shift();
         }
         leftLastSeenRef.current = now;
+        leftFacingRef.current = facingScore;
       } else {
         rightSamplesRef.current.push(palmSize);
         if (rightSamplesRef.current.length > ACCURACY_WINDOW) {
           rightSamplesRef.current.shift();
         }
         rightLastSeenRef.current = now;
+        rightFacingRef.current = facingScore;
       }
     });
 
@@ -206,8 +225,18 @@ export default function App() {
 
     setActiveFingers(newActiveFingers);
 
-    const leftRaw = computeAccuracy(leftSamplesRef.current, leftLastSeenRef.current, now);
-    const rightRaw = computeAccuracy(rightSamplesRef.current, rightLastSeenRef.current, now);
+    const leftRaw = computeAccuracy(
+      leftSamplesRef.current,
+      leftLastSeenRef.current,
+      now,
+      leftFacingRef.current
+    );
+    const rightRaw = computeAccuracy(
+      rightSamplesRef.current,
+      rightLastSeenRef.current,
+      now,
+      rightFacingRef.current
+    );
 
     leftAccuracyRef.current = leftAccuracyRef.current * 0.8 + leftRaw * 0.2;
     rightAccuracyRef.current = rightAccuracyRef.current * 0.8 + rightRaw * 0.2;
