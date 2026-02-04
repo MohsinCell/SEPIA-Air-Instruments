@@ -201,6 +201,124 @@ export const KotoIcon: FC<IconProps> = ({ size = 24, ...props }) => (
   </svg>
 );
 
+export const WindIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <path d="M3 8h10a3 3 0 1 0-3-3" />
+    <path d="M3 12h14a3 3 0 1 1-3 3" />
+    <path d="M3 16h7a3 3 0 1 1-3 3" />
+  </svg>
+);
+
+export const VoiceIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" />
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+    <line x1="12" y1="19" x2="12" y2="23" />
+    <line x1="8" y1="23" x2="16" y2="23" />
+  </svg>
+);
+
+export const OrchestraIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <path d="M9 18V5l12-2v13" />
+    <circle cx="6" cy="18" r="3" />
+    <circle cx="18" cy="16" r="3" />
+    <path d="M3 6l3-3 3 3M15 6l3-3 3 3" opacity="0.5" />
+  </svg>
+);
+
+export const FxIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <path d="M4 4l4 4M20 4l-4 4M4 20l4-4M20 20l-4-4" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="12" cy="12" r="8" opacity="0.3" />
+  </svg>
+);
+
+export const EthnicIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <circle cx="12" cy="16" r="6" />
+    <line x1="12" y1="10" x2="12" y2="2" />
+    <path d="M8 4h8" />
+    <line x1="9" y1="6" x2="15" y2="6" opacity="0.5" />
+    <circle cx="12" cy="16" r="2" opacity="0.3" />
+  </svg>
+);
+
+export const PercussionIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <ellipse cx="12" cy="14" rx="8" ry="4" />
+    <path d="M4 14v3c0 2.2 3.6 4 8 4s8-1.8 8-4v-3" />
+    <line x1="7" y1="6" x2="5" y2="14" />
+    <line x1="17" y1="6" x2="19" y2="14" />
+    <circle cx="7" cy="5" r="2" fill="currentColor" opacity="0.5" />
+    <circle cx="17" cy="5" r="2" fill="currentColor" opacity="0.5" />
+  </svg>
+);
+
+export const TrumpetIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <path d="M3 12h4l2-2h8l2 4h2" />
+    <path d="M21 14c0 2-1 3-3 3H9l-2-2H3" />
+    <circle cx="7" cy="9" r="1" fill="currentColor" opacity="0.5" />
+    <circle cx="10" cy="9" r="1" fill="currentColor" opacity="0.5" />
+    <circle cx="13" cy="9" r="1" fill="currentColor" opacity="0.5" />
+  </svg>
+);
+
+export const AccordionIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <rect x="2" y="4" width="6" height="16" rx="1" />
+    <rect x="16" y="4" width="6" height="16" rx="1" />
+    <path d="M8 6l2 2-2 2 2 2-2 2 2 2-2 2" />
+    <path d="M16 6l-2 2 2 2-2 2 2 2-2 2 2 2" />
+  </svg>
+);
+
+export const BanjoIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <circle cx="12" cy="14" r="7" />
+    <line x1="12" y1="7" x2="12" y2="2" />
+    <circle cx="12" cy="14" r="3" opacity="0.3" />
+    <line x1="10" y1="2" x2="14" y2="2" />
+  </svg>
+);
+
+export const KalimbaIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <rect x="4" y="8" width="16" height="14" rx="2" />
+    <line x1="7" y1="8" x2="7" y2="14" />
+    <line x1="10" y1="8" x2="10" y2="12" />
+    <line x1="12" y1="8" x2="12" y2="10" />
+    <line x1="14" y1="8" x2="14" y2="12" />
+    <line x1="17" y1="8" x2="17" y2="14" />
+    <ellipse cx="12" cy="18" rx="3" ry="2" opacity="0.3" />
+  </svg>
+);
+
+export const BagpipeIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <ellipse cx="10" cy="10" rx="6" ry="5" />
+    <path d="M16 10c2 0 4 2 4 4v6" />
+    <path d="M4 10c-1 0-2 1-2 2v4" />
+    <path d="M10 15v7" />
+    <line x1="8" y1="5" x2="8" y2="2" />
+    <line x1="12" y1="5" x2="12" y2="2" />
+  </svg>
+);
+
+export const SteelDrumIcon: FC<IconProps> = ({ size = 24, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...defaultProps} {...props}>
+    <ellipse cx="12" cy="8" rx="9" ry="4" />
+    <path d="M3 8v8c0 2.2 4 4 9 4s9-1.8 9-4V8" />
+    <ellipse cx="8" cy="10" rx="2" ry="1" opacity="0.3" />
+    <ellipse cx="16" cy="10" rx="2" ry="1" opacity="0.3" />
+    <ellipse cx="12" cy="12" rx="2" ry="1" opacity="0.3" />
+    <ellipse cx="8" cy="14" rx="2" ry="1" opacity="0.3" />
+    <ellipse cx="16" cy="14" rx="2" ry="1" opacity="0.3" />
+  </svg>
+);
+
 // ============================================
 // UI Icons
 // ============================================
@@ -382,15 +500,28 @@ export const instrumentIcons: Record<string, FC<IconProps>> = {
   'electronic': ElectronicIcon,
   'drum': DrumIcon,
   'brass': BrassIcon,
+  'trumpet': TrumpetIcon,
   'saxophone': SaxophoneIcon,
+  'sax': SaxophoneIcon,
   'flute': FluteIcon,
+  'wind': WindIcon,
   'harp': HarpIcon,
   'organ': OrganIcon,
+  'accordion': AccordionIcon,
   'mallet': MalletIcon,
   'bell': BellIcon,
   'sitar': SitarIcon,
   'koto': KotoIcon,
+  'banjo': BanjoIcon,
+  'kalimba': KalimbaIcon,
+  'bagpipe': BagpipeIcon,
+  'steel-drum': SteelDrumIcon,
   'pad': PadIcon,
+  'voice': VoiceIcon,
+  'orchestra': OrchestraIcon,
+  'fx': FxIcon,
+  'ethnic': EthnicIcon,
+  'percussion': PercussionIcon,
 };
 
 export const getInstrumentIcon = (iconId: string): FC<IconProps> => {

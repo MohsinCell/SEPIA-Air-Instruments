@@ -43,17 +43,24 @@ export interface InstrumentPreset {
   right: FingerMapping;
 }
 
-// Instrument categories
-export type InstrumentCategory = 
-  | 'keys' 
-  | 'strings' 
-  | 'synth' 
-  | 'percussion' 
-  | 'ambient'
-  | 'brass'
-  | 'woodwinds'
-  | 'ethnic'
-  | 'electronic';
+// Instrument categories (General MIDI compatible)
+export type InstrumentCategory =
+  | 'piano'           // GM 0-7: Piano
+  | 'chromatic'       // GM 8-15: Chromatic Percussion
+  | 'organ'           // GM 16-23: Organ
+  | 'guitar'          // GM 24-31: Guitar
+  | 'bass'            // GM 32-39: Bass
+  | 'strings'         // GM 40-47: Strings
+  | 'ensemble'        // GM 48-55: Ensemble
+  | 'brass'           // GM 56-63: Brass
+  | 'reed'            // GM 64-71: Reed
+  | 'pipe'            // GM 72-79: Pipe
+  | 'synth-lead'      // GM 80-87: Synth Lead
+  | 'synth-pad'       // GM 88-95: Synth Pad
+  | 'synth-fx'        // GM 96-103: Synth Effects
+  | 'ethnic'          // GM 104-111: Ethnic
+  | 'percussive'      // GM 112-119: Percussive
+  | 'sound-fx';       // GM 120-127: Sound Effects
 
 // Visual particle effect
 export interface Particle {

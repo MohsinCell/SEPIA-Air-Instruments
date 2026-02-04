@@ -69,17 +69,24 @@ export function Sidebar({
     document.body.removeChild(a);
   };
 
-  // Group instruments by category
+  // Group instruments by GM category
   const categories = [
-    { id: 'keys', label: 'Keys' },
+    { id: 'piano', label: 'Piano' },
+    { id: 'chromatic', label: 'Chromatic Percussion' },
+    { id: 'organ', label: 'Organ' },
+    { id: 'guitar', label: 'Guitar' },
+    { id: 'bass', label: 'Bass' },
     { id: 'strings', label: 'Strings' },
+    { id: 'ensemble', label: 'Ensemble' },
     { id: 'brass', label: 'Brass' },
-    { id: 'woodwinds', label: 'Woodwinds' },
-    { id: 'synth', label: 'Synth' },
-    { id: 'electronic', label: 'Electronic' },
-    { id: 'ethnic', label: 'World' },
-    { id: 'percussion', label: 'Percussion' },
-    { id: 'ambient', label: 'Ambient' },
+    { id: 'reed', label: 'Reed' },
+    { id: 'pipe', label: 'Pipe' },
+    { id: 'synth-lead', label: 'Synth Lead' },
+    { id: 'synth-pad', label: 'Synth Pad' },
+    { id: 'synth-fx', label: 'Synth FX' },
+    { id: 'ethnic', label: 'Ethnic' },
+    { id: 'percussive', label: 'Percussive' },
+    { id: 'sound-fx', label: 'Sound FX' },
   ];
 
   const instrumentsByCategory = categories.map(cat => ({

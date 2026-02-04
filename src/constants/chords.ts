@@ -119,14 +119,74 @@ export const CHORD_LIBRARY: Record<string, number[]> = {
   'Cowbell': [56],
   'Tambourine': [54],
 
-  // Bass Notes
+  // Bass Notes (Octave 2)
   'BassC': [36],
+  'BassC#': [37],
   'BassD': [38],
+  'BassD#': [39],
   'BassE': [40],
   'BassF': [41],
+  'BassF#': [42],
   'BassG': [43],
+  'BassG#': [44],
   'BassA': [45],
+  'BassA#': [46],
   'BassB': [47],
+
+  // Single Notes (Octave 3)
+  'C3': [48],
+  'C#3': [49],
+  'D3': [50],
+  'D#3': [51],
+  'E3': [52],
+  'F3': [53],
+  'F#3': [54],
+  'G3': [55],
+  'G#3': [56],
+  'A3': [57],
+  'A#3': [58],
+  'B3': [59],
+
+  // Single Notes (Octave 6)
+  'C6': [84],
+  'D6': [86],
+  'E6': [88],
+  'F6': [89],
+  'G6': [91],
+  'A6': [93],
+  'B6': [95],
+
+  // Power Chords
+  'C5pow': [36, 43],
+  'D5pow': [38, 45],
+  'E5pow': [40, 47],
+  'F5pow': [41, 48],
+  'G5pow': [43, 50],
+  'A5pow': [45, 52],
+
+  // Octave Bass
+  'BassC8': [36, 48],
+  'BassD8': [38, 50],
+  'BassE8': [40, 52],
+  'BassF8': [41, 53],
+  'BassG8': [43, 55],
+  'BassA8': [45, 57],
+
+  // Minor 9th chords
+  'Cm9': [60, 63, 67, 70, 74],
+  'Dm9': [62, 65, 69, 72, 76],
+  'Em9': [64, 67, 71, 74, 78],
+  'Am9': [69, 72, 76, 79, 83],
+
+  // Add9 chords
+  'Cadd9': [60, 64, 67, 74],
+  'Gadd9': [67, 71, 74, 81],
+  'Dadd9': [62, 66, 69, 76],
+
+  // 6th chords
+  'C6': [60, 64, 67, 69],
+  'G6': [67, 71, 74, 76],
+  'Am6': [69, 72, 76, 78],
 };
 
 // Color palette for notes

@@ -1,1635 +1,453 @@
 // ============================================
-// Instrument Presets
+// General MIDI Instrument Presets (0-127)
 // ============================================
 
 import type { InstrumentPreset } from '../types';
 import { CHORD_LIBRARY, NOTE_COLORS } from './chords';
 
+// Helper finger mappings by instrument type
+const PIANO_LEFT = {
+  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.red },
+  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.green },
+  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.blue },
+  ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.amber },
+  pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.purple },
+};
+const PIANO_RIGHT = {
+  thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.pink },
+  index: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: NOTE_COLORS.teal },
+  middle: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: NOTE_COLORS.gold },
+  ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
+  pinky: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.cyan },
+};
+
+const CHROMATIC_LEFT = {
+  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.cyan },
+  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.sky },
+  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.blue },
+  ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: NOTE_COLORS.indigo },
+  pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.violet },
+};
+const CHROMATIC_RIGHT = {
+  thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.purple },
+  index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: NOTE_COLORS.magenta },
+  middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.pink },
+  ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.rose },
+  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.coral },
+};
+
+const ORGAN_LEFT = {
+  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.amber },
+  index: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
+  middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.gold },
+  ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.brown },
+  pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.coral },
+};
+const ORGAN_RIGHT = {
+  thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.red },
+  index: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: NOTE_COLORS.amber },
+  middle: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: NOTE_COLORS.orange },
+  ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.gold },
+  pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.brown },
+};
+
+const GUITAR_LEFT = {
+  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.amber },
+  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.green },
+  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.blue },
+  ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
+  pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.teal },
+};
+const GUITAR_RIGHT = {
+  thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.purple },
+  index: { name: 'A', notes: CHORD_LIBRARY['A'], color: NOTE_COLORS.red },
+  middle: { name: 'E', notes: CHORD_LIBRARY['E'], color: NOTE_COLORS.cyan },
+  ring: { name: 'D', notes: CHORD_LIBRARY['D'], color: NOTE_COLORS.gold },
+  pinky: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: NOTE_COLORS.violet },
+};
+
+const BASS_LEFT = {
+  thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: NOTE_COLORS.indigo },
+  index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: NOTE_COLORS.blue },
+  middle: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: NOTE_COLORS.teal },
+  ring: { name: 'BassF', notes: CHORD_LIBRARY['BassF'], color: NOTE_COLORS.green },
+  pinky: { name: 'BassG', notes: CHORD_LIBRARY['BassG'], color: NOTE_COLORS.cyan },
+};
+const BASS_RIGHT = {
+  thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: NOTE_COLORS.purple },
+  index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: NOTE_COLORS.violet },
+  middle: { name: 'C3', notes: CHORD_LIBRARY['C3'], color: NOTE_COLORS.magenta },
+  ring: { name: 'D3', notes: CHORD_LIBRARY['D3'], color: NOTE_COLORS.pink },
+  pinky: { name: 'E3', notes: CHORD_LIBRARY['E3'], color: NOTE_COLORS.rose },
+};
+
+const STRINGS_LEFT = {
+  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.brown },
+  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.amber },
+  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.orange },
+  ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.gold },
+  pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.coral },
+};
+const STRINGS_RIGHT = {
+  thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.red },
+  index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.rose },
+  middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.pink },
+  ring: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: NOTE_COLORS.magenta },
+  pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.purple },
+};
+
+const ENSEMBLE_LEFT = {
+  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.gold },
+  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.amber },
+  middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
+  ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.coral },
+  pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.red },
+};
+const ENSEMBLE_RIGHT = {
+  thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.rose },
+  index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.pink },
+  middle: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.magenta },
+  ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.purple },
+  pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
+};
+
+const BRASS_LEFT = {
+  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.gold },
+  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.amber },
+  middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
+  ring: { name: 'D', notes: CHORD_LIBRARY['D'], color: NOTE_COLORS.coral },
+  pinky: { name: 'A', notes: CHORD_LIBRARY['A'], color: NOTE_COLORS.red },
+};
+const BRASS_RIGHT = {
+  thumb: { name: 'E', notes: CHORD_LIBRARY['E'], color: NOTE_COLORS.brown },
+  index: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.rose },
+  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.pink },
+  ring: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.magenta },
+  pinky: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: NOTE_COLORS.purple },
+};
+
+const REED_LEFT = {
+  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.amber },
+  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.gold },
+  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.orange },
+  ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.coral },
+  pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
+};
+const REED_RIGHT = {
+  thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
+  index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.rose },
+  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
+  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.magenta },
+  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
+};
+
+const PIPE_LEFT = {
+  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.sky },
+  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.cyan },
+  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.teal },
+  ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: NOTE_COLORS.green },
+  pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.lime },
+};
+const PIPE_RIGHT = {
+  thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.blue },
+  index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: NOTE_COLORS.indigo },
+  middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.violet },
+  ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.purple },
+  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.magenta },
+};
+
+const SYNTH_LEAD_LEFT = {
+  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.neonCyan },
+  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.neonGreen },
+  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.neonYellow },
+  ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.neonPink },
+  pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.neonPurple },
+};
+const SYNTH_LEAD_RIGHT = {
+  thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.cyan },
+  index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.magenta },
+  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
+  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.violet },
+  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
+};
+
+const SYNTH_PAD_LEFT = {
+  thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.cyan },
+  index: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: NOTE_COLORS.teal },
+  middle: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: NOTE_COLORS.green },
+  ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.blue },
+  pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.indigo },
+};
+const SYNTH_PAD_RIGHT = {
+  thumb: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
+  index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: NOTE_COLORS.purple },
+  middle: { name: 'Csus2', notes: CHORD_LIBRARY['Csus2'], color: NOTE_COLORS.magenta },
+  ring: { name: 'Gsus2', notes: CHORD_LIBRARY['Gsus2'], color: NOTE_COLORS.pink },
+  pinky: { name: 'Dsus2', notes: CHORD_LIBRARY['Dsus2'], color: NOTE_COLORS.rose },
+};
+
+const ETHNIC_LEFT = {
+  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.amber },
+  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.orange },
+  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.coral },
+  ring: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
+  pinky: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
+};
+const ETHNIC_RIGHT = {
+  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.gold },
+  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.amber },
+  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.orange },
+  ring: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.coral },
+  pinky: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.red },
+};
+
+const PERCUSSIVE_LEFT = {
+  thumb: { name: 'Kick', notes: CHORD_LIBRARY['Kick'], color: NOTE_COLORS.red },
+  index: { name: 'Snare', notes: CHORD_LIBRARY['Snare'], color: NOTE_COLORS.orange },
+  middle: { name: 'HiHat', notes: CHORD_LIBRARY['HiHat'], color: NOTE_COLORS.amber },
+  ring: { name: 'Tom1', notes: CHORD_LIBRARY['Tom1'], color: NOTE_COLORS.gold },
+  pinky: { name: 'Tom2', notes: CHORD_LIBRARY['Tom2'], color: NOTE_COLORS.brown },
+};
+const PERCUSSIVE_RIGHT = {
+  thumb: { name: 'Crash', notes: CHORD_LIBRARY['Crash'], color: NOTE_COLORS.cyan },
+  index: { name: 'Ride', notes: CHORD_LIBRARY['Ride'], color: NOTE_COLORS.teal },
+  middle: { name: 'HiHatOpen', notes: CHORD_LIBRARY['HiHatOpen'], color: NOTE_COLORS.green },
+  ring: { name: 'Clap', notes: CHORD_LIBRARY['Clap'], color: NOTE_COLORS.blue },
+  pinky: { name: 'Cowbell', notes: CHORD_LIBRARY['Cowbell'], color: NOTE_COLORS.indigo },
+};
+
+const SFX_LEFT = {
+  thumb: { name: 'C3', notes: CHORD_LIBRARY['C3'], color: NOTE_COLORS.silver },
+  index: { name: 'E3', notes: CHORD_LIBRARY['E3'], color: NOTE_COLORS.cyan },
+  middle: { name: 'G3', notes: CHORD_LIBRARY['G3'], color: NOTE_COLORS.teal },
+  ring: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.blue },
+  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.indigo },
+};
+const SFX_RIGHT = {
+  thumb: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.violet },
+  index: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.purple },
+  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.magenta },
+  ring: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.pink },
+  pinky: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.rose },
+};
+
 export const INSTRUMENTS: InstrumentPreset[] = [
   // ==========================================
-  // KEYS
+  // PIANO (GM 0-7)
   // ==========================================
-  {
-    id: 'piano',
-    name: 'Grand Piano',
-    icon: 'piano',
-    description: 'Classic acoustic grand piano with rich harmonics',
-    category: 'keys',
-    instrument: 0,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.red },
-      index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.green },
-      middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.blue },
-      ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.amber },
-      pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.purple },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.pink },
-      index: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: NOTE_COLORS.teal },
-      middle: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: NOTE_COLORS.gold },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
-      pinky: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.cyan },
-    },
-  },
-
-  {
-    id: 'bright-piano',
-    name: 'Bright Piano',
-    icon: 'piano',
-    description: 'Crisp and bright acoustic piano',
-    category: 'keys',
-    instrument: 1,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#F8F9FA' },
-      index: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#E9ECEF' },
-      middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#DEE2E6' },
-      ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#CED4DA' },
-      pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#ADB5BD' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#6C757D' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#495057' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#343A40' },
-      ring: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#212529' },
-      pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#F8F9FA' },
-    },
-  },
-
-  {
-    id: 'electric-piano',
-    name: 'Electric Piano',
-    icon: 'piano',
-    description: 'Smooth Rhodes-style electric piano',
-    category: 'keys',
-    instrument: 4,
-    left: {
-      thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#E8D5B7' },
-      index: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#D4A574' },
-      middle: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#C9A86C' },
-      ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#DAA520' },
-      pinky: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#B8860B' },
-    },
-    right: {
-      thumb: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#CD853F' },
-      index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: '#DEB887' },
-      middle: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#F5DEB3' },
-      ring: { name: 'D7', notes: CHORD_LIBRARY['D7'], color: '#FFDEAD' },
-      pinky: { name: 'E7', notes: CHORD_LIBRARY['E7'], color: '#FFE4B5' },
-    },
-  },
-
-  {
-    id: 'honky-tonk',
-    name: 'Honky Tonk Piano',
-    icon: 'piano',
-    description: 'Detuned saloon-style piano',
-    category: 'keys',
-    instrument: 3,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#8B4513' },
-      index: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#A0522D' },
-      middle: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#CD853F' },
-      ring: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: '#D2691E' },
-      pinky: { name: 'D7', notes: CHORD_LIBRARY['D7'], color: '#B8860B' },
-    },
-    right: {
-      thumb: { name: 'E7', notes: CHORD_LIBRARY['E7'], color: '#DAA520' },
-      index: { name: 'A7', notes: CHORD_LIBRARY['A7'], color: '#F4A460' },
-      middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#DEB887' },
-      ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#FFDEAD' },
-      pinky: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FFE4B5' },
-    },
-  },
-
-  {
-    id: 'jazz-piano',
-    name: 'Jazz Piano',
-    icon: 'piano',
-    description: 'Sophisticated jazz voicings',
-    category: 'keys',
-    instrument: 0,
-    left: {
-      thumb: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#D4A574' },
-      index: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#C9A86C' },
-      middle: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#E8D5B7' },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#B8860B' },
-      pinky: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#DAA520' },
-    },
-    right: {
-      thumb: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#CD853F' },
-      index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: '#DEB887' },
-      middle: { name: 'E7', notes: CHORD_LIBRARY['E7'], color: '#F5DEB3' },
-      ring: { name: 'A7', notes: CHORD_LIBRARY['A7'], color: '#FFDEAD' },
-      pinky: { name: 'D7', notes: CHORD_LIBRARY['D7'], color: '#FFE4B5' },
-    },
-  },
-
-  {
-    id: 'harpsichord',
-    name: 'Harpsichord',
-    icon: 'piano',
-    description: 'Baroque plucked keyboard',
-    category: 'keys',
-    instrument: 6,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#8B0000' },
-      index: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#A52A2A' },
-      middle: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#B22222' },
-      ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#DC143C' },
-      pinky: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#CD5C5C' },
-    },
-    right: {
-      thumb: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FFD700' },
-      index: { name: 'Bdim', notes: CHORD_LIBRARY['Bdim'], color: '#DAA520' },
-      middle: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#B8860B' },
-      ring: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#CD853F' },
-      pinky: { name: 'E7', notes: CHORD_LIBRARY['E7'], color: '#D2691E' },
-    },
-  },
-
-  {
-    id: 'clavinet',
-    name: 'Clavinet',
-    icon: 'piano',
-    description: 'Funky electric clavinet',
-    category: 'keys',
-    instrument: 7,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FF6B00' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FF8500' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FFA000' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FFB800' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#FFD000' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#E65100' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#EF6C00' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#F57C00' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FB8C00' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FF9800' },
-    },
-  },
-
-  {
-    id: 'celesta',
-    name: 'Celesta',
-    icon: 'bell',
-    description: 'Delicate bell-like keyboard',
-    category: 'keys',
-    instrument: 8,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E8F4FD' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#D4E9FA' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#BBDEFB' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#90CAF9' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#64B5F6' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#42A5F5' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#2196F3' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#1E88E5' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#1976D2' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#1565C0' },
-    },
-  },
-
-  {
-    id: 'organ',
-    name: 'Church Organ',
-    icon: 'organ',
-    description: 'Majestic pipe organ tones',
-    category: 'keys',
-    instrument: 19,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#8B4513' },
-      index: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#A0522D' },
-      middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#CD853F' },
-      ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#DEB887' },
-      pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#D2691E' },
-    },
-    right: {
-      thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#8B0000' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#B22222' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#DC143C' },
-      ring: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#CD5C5C' },
-      pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#F08080' },
-    },
-  },
-
-  {
-    id: 'rock-organ',
-    name: 'Rock Organ',
-    icon: 'organ',
-    description: 'Distorted Hammond-style organ',
-    category: 'keys',
-    instrument: 18,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#FF4500' },
-      index: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#FF6347' },
-      middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#FF7F50' },
-      ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FF8C00' },
-      pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#FFA500' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#DC143C' },
-      index: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: '#B22222' },
-      middle: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#8B0000' },
-      ring: { name: 'D7', notes: CHORD_LIBRARY['D7'], color: '#A52A2A' },
-      pinky: { name: 'E7', notes: CHORD_LIBRARY['E7'], color: '#CD5C5C' },
-    },
-  },
-
-  {
-    id: 'accordion',
-    name: 'Accordion',
-    icon: 'organ',
-    description: 'Traditional accordion sound',
-    category: 'keys',
-    instrument: 21,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#E53935' },
-      index: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#D32F2F' },
-      middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#C62828' },
-      ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#B71C1C' },
-      pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#FF5252' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#212121' },
-      index: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#424242' },
-      middle: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: '#616161' },
-      ring: { name: 'D7', notes: CHORD_LIBRARY['D7'], color: '#757575' },
-      pinky: { name: 'A7', notes: CHORD_LIBRARY['A7'], color: '#9E9E9E' },
-    },
-  },
-
-  {
-    id: 'harmonica',
-    name: 'Harmonica',
-    icon: 'organ',
-    description: 'Blues harmonica',
-    category: 'keys',
-    instrument: 22,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#1565C0' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#1976D2' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#1E88E5' },
-      ring: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#2196F3' },
-      pinky: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#42A5F5' },
-    },
-    right: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#0D47A1' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#1565C0' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#1976D2' },
-      ring: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#1E88E5' },
-      pinky: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#2196F3' },
-    },
-  },
+  { id: 'acoustic-grand-piano', name: 'Acoustic Grand Piano', icon: 'piano', description: 'Classic concert grand piano with rich harmonics', category: 'piano', instrument: 0, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'bright-acoustic-piano', name: 'Bright Acoustic Piano', icon: 'piano', description: 'Crisp and bright acoustic piano tone', category: 'piano', instrument: 1, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'electric-grand-piano', name: 'Electric Grand Piano', icon: 'piano', description: 'Hybrid electric-acoustic grand piano', category: 'piano', instrument: 2, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'honky-tonk-piano', name: 'Honky-Tonk Piano', icon: 'piano', description: 'Detuned saloon-style upright piano', category: 'piano', instrument: 3, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'electric-piano-1', name: 'Electric Piano 1', icon: 'piano', description: 'Rhodes-style electric piano', category: 'piano', instrument: 4, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'electric-piano-2', name: 'Electric Piano 2', icon: 'piano', description: 'DX7-style FM electric piano', category: 'piano', instrument: 5, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'harpsichord', name: 'Harpsichord', icon: 'piano', description: 'Baroque plucked keyboard instrument', category: 'piano', instrument: 6, left: PIANO_LEFT, right: PIANO_RIGHT },
+  { id: 'clavinet', name: 'Clavinet', icon: 'piano', description: 'Funky electric clavichord', category: 'piano', instrument: 7, left: PIANO_LEFT, right: PIANO_RIGHT },
 
   // ==========================================
-  // STRINGS
+  // CHROMATIC PERCUSSION (GM 8-15)
   // ==========================================
-  {
-    id: 'guitar',
-    name: 'Electric Guitar',
-    icon: 'guitar',
-    description: 'Clean electric guitar tone',
-    category: 'strings',
-    instrument: 27,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#E74C3C' },
-      index: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#E67E22' },
-      middle: { name: 'D', notes: CHORD_LIBRARY['D'], color: '#F1C40F' },
-      ring: { name: 'A', notes: CHORD_LIBRARY['A'], color: '#2ECC71' },
-      pinky: { name: 'E', notes: CHORD_LIBRARY['E'], color: '#3498DB' },
-    },
-    right: {
-      thumb: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#9B59B6' },
-      index: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#1ABC9C' },
-      middle: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#34495E' },
-      ring: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: '#E91E63' },
-      pinky: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#00BCD4' },
-    },
-  },
-
-  {
-    id: 'acoustic-guitar',
-    name: 'Acoustic Guitar',
-    icon: 'guitar',
-    description: 'Warm acoustic steel strings',
-    category: 'strings',
-    instrument: 25,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#D4A574' },
-      index: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#C9A86C' },
-      middle: { name: 'D', notes: CHORD_LIBRARY['D'], color: '#E8D5B7' },
-      ring: { name: 'A', notes: CHORD_LIBRARY['A'], color: '#B8860B' },
-      pinky: { name: 'E', notes: CHORD_LIBRARY['E'], color: '#DAA520' },
-    },
-    right: {
-      thumb: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#CD853F' },
-      index: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#DEB887' },
-      middle: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#F5DEB3' },
-      ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#FFDEAD' },
-      pinky: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: '#FFE4B5' },
-    },
-  },
-
-  {
-    id: 'nylon-guitar',
-    name: 'Nylon Guitar',
-    icon: 'guitar',
-    description: 'Classical nylon string guitar',
-    category: 'strings',
-    instrument: 24,
-    left: {
-      thumb: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#8D6E63' },
-      index: { name: 'E', notes: CHORD_LIBRARY['E'], color: '#A1887F' },
-      middle: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#BCAAA4' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#D7CCC8' },
-      pinky: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#EFEBE9' },
-    },
-    right: {
-      thumb: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#5D4037' },
-      index: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#6D4C41' },
-      middle: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#795548' },
-      ring: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#8D6E63' },
-      pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#A1887F' },
-    },
-  },
-
-  {
-    id: 'overdriven-guitar',
-    name: 'Overdriven Guitar',
-    icon: 'guitar',
-    description: 'Crunchy overdriven tone',
-    category: 'strings',
-    instrument: 29,
-    left: {
-      thumb: { name: 'E', notes: CHORD_LIBRARY['E'], color: '#FF1744' },
-      index: { name: 'A', notes: CHORD_LIBRARY['A'], color: '#F50057' },
-      middle: { name: 'D', notes: CHORD_LIBRARY['D'], color: '#D500F9' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#651FFF' },
-      pinky: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#3D5AFE' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#00E676' },
-      index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#76FF03' },
-      middle: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#FFEA00' },
-      ring: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: '#FF9100' },
-      pinky: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#FF3D00' },
-    },
-  },
-
-  {
-    id: 'distortion-guitar',
-    name: 'Distortion Guitar',
-    icon: 'guitar',
-    description: 'Heavy metal distortion',
-    category: 'strings',
-    instrument: 30,
-    left: {
-      thumb: { name: 'E', notes: CHORD_LIBRARY['E'], color: '#B71C1C' },
-      index: { name: 'A', notes: CHORD_LIBRARY['A'], color: '#880E4F' },
-      middle: { name: 'D', notes: CHORD_LIBRARY['D'], color: '#4A148C' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#311B92' },
-      pinky: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#1A237E' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#263238' },
-      index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#37474F' },
-      middle: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: '#455A64' },
-      ring: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#546E7A' },
-      pinky: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#607D8B' },
-    },
-  },
-
-  {
-    id: 'orchestra-strings',
-    name: 'Orchestra Strings',
-    icon: 'violin',
-    description: 'Lush orchestral string ensemble',
-    category: 'strings',
-    instrument: 48,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#8B4513' },
-      index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#A0522D' },
-      middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#CD853F' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#DEB887' },
-      pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#D2691E' },
-    },
-    right: {
-      thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#8B0000' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#B22222' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#DC143C' },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#CD5C5C' },
-      pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#F08080' },
-    },
-  },
-
-  {
-    id: 'violin',
-    name: 'Solo Violin',
-    icon: 'violin',
-    description: 'Expressive solo violin',
-    category: 'strings',
-    instrument: 40,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#8B4513' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#A0522D' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#CD853F' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#DEB887' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#D2691E' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#F4A460' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#FFDAB9' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FFE4B5' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FFE4C4' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FFEFD5' },
-    },
-  },
-
-  {
-    id: 'cello',
-    name: 'Solo Cello',
-    icon: 'violin',
-    description: 'Rich and warm cello',
-    category: 'strings',
-    instrument: 42,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#3E2723' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#4E342E' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#5D4037' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#6D4C41' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#795548' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#8D6E63' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#A1887F' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#BCAAA4' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#D7CCC8' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#EFEBE9' },
-    },
-  },
-
-  {
-    id: 'pizzicato',
-    name: 'Pizzicato Strings',
-    icon: 'violin',
-    description: 'Plucked orchestral strings',
-    category: 'strings',
-    instrument: 45,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FF7043' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FF8A65' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FFAB91' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FFCCBC' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#FBE9E7' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#FF5722' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#F4511E' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E64A19' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#D84315' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#BF360C' },
-    },
-  },
-
-  {
-    id: 'bass',
-    name: 'Electric Bass',
-    icon: 'bass',
-    description: 'Punchy electric bass guitar',
-    category: 'strings',
-    instrument: 33,
-    left: {
-      thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: '#1A237E' },
-      index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: '#283593' },
-      middle: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: '#303F9F' },
-      ring: { name: 'BassF', notes: CHORD_LIBRARY['BassF'], color: '#3949AB' },
-      pinky: { name: 'BassG', notes: CHORD_LIBRARY['BassG'], color: '#3F51B5' },
-    },
-    right: {
-      thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: '#5C6BC0' },
-      index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: '#7986CB' },
-      middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#9FA8DA' },
-      ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#C5CAE9' },
-      pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#E8EAF6' },
-    },
-  },
-
-  {
-    id: 'slap-bass',
-    name: 'Slap Bass',
-    icon: 'bass',
-    description: 'Funky slap bass sound',
-    category: 'strings',
-    instrument: 36,
-    left: {
-      thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: '#FF6F00' },
-      index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: '#FF8F00' },
-      middle: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: '#FFA000' },
-      ring: { name: 'BassF', notes: CHORD_LIBRARY['BassF'], color: '#FFB300' },
-      pinky: { name: 'BassG', notes: CHORD_LIBRARY['BassG'], color: '#FFC107' },
-    },
-    right: {
-      thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: '#E65100' },
-      index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: '#EF6C00' },
-      middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#F57C00' },
-      ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FB8C00' },
-      pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FF9800' },
-    },
-  },
-
-  {
-    id: 'synth-bass',
-    name: 'Synth Bass',
-    icon: 'bass',
-    description: 'Deep synthesizer bass',
-    category: 'strings',
-    instrument: 38,
-    left: {
-      thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: '#7C4DFF' },
-      index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: '#651FFF' },
-      middle: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: '#6200EA' },
-      ring: { name: 'BassF', notes: CHORD_LIBRARY['BassF'], color: '#304FFE' },
-      pinky: { name: 'BassG', notes: CHORD_LIBRARY['BassG'], color: '#2962FF' },
-    },
-    right: {
-      thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: '#AA00FF' },
-      index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: '#D500F9' },
-      middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#E040FB' },
-      ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#EA80FC' },
-      pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#B388FF' },
-    },
-  },
-
-  {
-    id: 'harp',
-    name: 'Concert Harp',
-    icon: 'harp',
-    description: 'Elegant classical harp',
-    category: 'strings',
-    instrument: 46,
-    left: {
-      thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#FFD700' },
-      index: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#FFA500' },
-      middle: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#FF8C00' },
-      ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#FF7F50' },
-      pinky: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#FF6347' },
-    },
-    right: {
-      thumb: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#FFE4B5' },
-      index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: '#FFDAB9' },
-      middle: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#FFE4C4' },
-      ring: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#FFEFD5' },
-      pinky: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#FFF8DC' },
-    },
-  },
+  { id: 'celesta', name: 'Celesta', icon: 'bell', description: 'Delicate bell-like keyboard', category: 'chromatic', instrument: 8, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'glockenspiel', name: 'Glockenspiel', icon: 'bell', description: 'Bright metallic percussion bells', category: 'chromatic', instrument: 9, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'music-box', name: 'Music Box', icon: 'bell', description: 'Delicate music box tones', category: 'chromatic', instrument: 10, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'vibraphone', name: 'Vibraphone', icon: 'bell', description: 'Jazz vibraphone with motor vibrato', category: 'chromatic', instrument: 11, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'marimba', name: 'Marimba', icon: 'bell', description: 'Wooden percussion marimba', category: 'chromatic', instrument: 12, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'xylophone', name: 'Xylophone', icon: 'bell', description: 'Bright wooden xylophone', category: 'chromatic', instrument: 13, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'tubular-bells', name: 'Tubular Bells', icon: 'bell', description: 'Orchestral chimes', category: 'chromatic', instrument: 14, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'dulcimer', name: 'Dulcimer', icon: 'harp', description: 'Hammered dulcimer strings', category: 'chromatic', instrument: 15, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
 
   // ==========================================
-  // BRASS
+  // ORGAN (GM 16-23)
   // ==========================================
-  {
-    id: 'brass-ensemble',
-    name: 'Brass Ensemble',
-    icon: 'brass',
-    description: 'Powerful brass section',
-    category: 'brass',
-    instrument: 61,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#FFD700' },
-      index: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#FFA500' },
-      middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#FF8C00' },
-      ring: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#FF7F50' },
-      pinky: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FF6347' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#DAA520' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#B8860B' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#CD853F' },
-      ring: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#D2691E' },
-      pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#8B4513' },
-    },
-  },
-
-  {
-    id: 'trumpet',
-    name: 'Trumpet',
-    icon: 'brass',
-    description: 'Bright jazz trumpet',
-    category: 'brass',
-    instrument: 56,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FFD700' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FFA500' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FF8C00' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FF7F50' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#FF6347' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#DAA520' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#B8860B' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#CD853F' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#D2691E' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#8B4513' },
-    },
-  },
-
-  {
-    id: 'muted-trumpet',
-    name: 'Muted Trumpet',
-    icon: 'brass',
-    description: 'Muted jazz trumpet',
-    category: 'brass',
-    instrument: 59,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FFAB91' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FFCCBC' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FBE9E7' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FF8A65' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#FF7043' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#FF5722' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#F4511E' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E64A19' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#D84315' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#BF360C' },
-    },
-  },
-
-  {
-    id: 'trombone',
-    name: 'Trombone',
-    icon: 'brass',
-    description: 'Smooth jazz trombone',
-    category: 'brass',
-    instrument: 57,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#B8860B' },
-      index: { name: 'D', notes: CHORD_LIBRARY['D'], color: '#CD853F' },
-      middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#DAA520' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#D2691E' },
-      pinky: { name: 'A', notes: CHORD_LIBRARY['A'], color: '#8B4513' },
-    },
-    right: {
-      thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#FFD700' },
-      index: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#FFA500' },
-      middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FF8C00' },
-      ring: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: '#FF7F50' },
-      pinky: { name: 'Cm', notes: CHORD_LIBRARY['Cm'], color: '#FF6347' },
-    },
-  },
-
-  {
-    id: 'french-horn',
-    name: 'French Horn',
-    icon: 'brass',
-    description: 'Majestic orchestral horn',
-    category: 'brass',
-    instrument: 60,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#5D4037' },
-      index: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#6D4C41' },
-      middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#795548' },
-      ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#8D6E63' },
-      pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#A1887F' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#BCAAA4' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#D7CCC8' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#EFEBE9' },
-      ring: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#3E2723' },
-      pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#4E342E' },
-    },
-  },
-
-  {
-    id: 'tuba',
-    name: 'Tuba',
-    icon: 'brass',
-    description: 'Deep brass tuba',
-    category: 'brass',
-    instrument: 58,
-    left: {
-      thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: '#3E2723' },
-      index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: '#4E342E' },
-      middle: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: '#5D4037' },
-      ring: { name: 'BassF', notes: CHORD_LIBRARY['BassF'], color: '#6D4C41' },
-      pinky: { name: 'BassG', notes: CHORD_LIBRARY['BassG'], color: '#795548' },
-    },
-    right: {
-      thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: '#8D6E63' },
-      index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: '#A1887F' },
-      middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#BCAAA4' },
-      ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#D7CCC8' },
-      pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#EFEBE9' },
-    },
-  },
+  { id: 'drawbar-organ', name: 'Drawbar Organ', icon: 'organ', description: 'Hammond-style drawbar organ', category: 'organ', instrument: 16, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'percussive-organ', name: 'Percussive Organ', icon: 'organ', description: 'Organ with percussive attack', category: 'organ', instrument: 17, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'rock-organ', name: 'Rock Organ', icon: 'organ', description: 'Distorted rock organ', category: 'organ', instrument: 18, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'church-organ', name: 'Church Organ', icon: 'organ', description: 'Majestic pipe organ', category: 'organ', instrument: 19, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'reed-organ', name: 'Reed Organ', icon: 'organ', description: 'Pump organ with reeds', category: 'organ', instrument: 20, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'accordion', name: 'Accordion', icon: 'accordion', description: 'French musette accordion', category: 'organ', instrument: 21, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'harmonica', name: 'Harmonica', icon: 'wind', description: 'Blues harmonica', category: 'organ', instrument: 22, left: ORGAN_LEFT, right: ORGAN_RIGHT },
+  { id: 'tango-accordion', name: 'Tango Accordion', icon: 'accordion', description: 'Bandoneón-style tango accordion', category: 'organ', instrument: 23, left: ORGAN_LEFT, right: ORGAN_RIGHT },
 
   // ==========================================
-  // WOODWINDS
+  // GUITAR (GM 24-31)
   // ==========================================
-  {
-    id: 'saxophone',
-    name: 'Alto Saxophone',
-    icon: 'saxophone',
-    description: 'Smooth jazz saxophone',
-    category: 'woodwinds',
-    instrument: 65,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FFB347' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FFCC00' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FF9966' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FFD700' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#FFA500' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#FF8C00' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#FF7F50' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FF6347' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FF4500' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#DC143C' },
-    },
-  },
-
-  {
-    id: 'tenor-sax',
-    name: 'Tenor Saxophone',
-    icon: 'saxophone',
-    description: 'Rich tenor sax',
-    category: 'woodwinds',
-    instrument: 66,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#CD853F' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#DEB887' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#D2691E' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#8B4513' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#A0522D' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#DAA520' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#B8860B' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FFD700' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FFA500' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FF8C00' },
-    },
-  },
-
-  {
-    id: 'flute',
-    name: 'Concert Flute',
-    icon: 'flute',
-    description: 'Airy classical flute',
-    category: 'woodwinds',
-    instrument: 73,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E0FFFF' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#B0E0E6' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#87CEEB' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#87CEFA' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#00BFFF' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#1E90FF' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#6495ED' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#4169E1' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#0000FF' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#0000CD' },
-    },
-  },
-
-  {
-    id: 'pan-flute',
-    name: 'Pan Flute',
-    icon: 'flute',
-    description: 'Ethereal pan pipes',
-    category: 'woodwinds',
-    instrument: 75,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#98FB98' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#90EE90' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#8FBC8F' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#3CB371' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#2E8B57' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#228B22' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#006400' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#32CD32' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#00FF00' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#7CFC00' },
-    },
-  },
-
-  {
-    id: 'clarinet',
-    name: 'Clarinet',
-    icon: 'flute',
-    description: 'Rich woodwind clarinet',
-    category: 'woodwinds',
-    instrument: 71,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#2F4F4F' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#556B2F' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#6B8E23' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#808000' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#9ACD32' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#32CD32' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#00FA9A' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#00FF7F' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#7FFF00' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#ADFF2F' },
-    },
-  },
-
-  {
-    id: 'oboe',
-    name: 'Oboe',
-    icon: 'flute',
-    description: 'Expressive double reed',
-    category: 'woodwinds',
-    instrument: 68,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#8B0000' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#A52A2A' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#B22222' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#DC143C' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#CD5C5C' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#F08080' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#FA8072' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E9967A' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FFA07A' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FF7F50' },
-    },
-  },
-
-  {
-    id: 'bassoon',
-    name: 'Bassoon',
-    icon: 'flute',
-    description: 'Deep orchestral bassoon',
-    category: 'woodwinds',
-    instrument: 70,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#4A148C' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#6A1B9A' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#7B1FA2' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#8E24AA' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#9C27B0' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#AB47BC' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#BA68C8' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#CE93D8' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#E1BEE7' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#F3E5F5' },
-    },
-  },
-
-  {
-    id: 'recorder',
-    name: 'Recorder',
-    icon: 'flute',
-    description: 'Sweet baroque recorder',
-    category: 'woodwinds',
-    instrument: 74,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FFF9C4' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FFF59D' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FFF176' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#FFEE58' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#FFEB3B' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#FDD835' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#FBC02D' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#F9A825' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#F57F17' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FF8F00' },
-    },
-  },
+  { id: 'acoustic-guitar-nylon', name: 'Acoustic Guitar (Nylon)', icon: 'guitar', description: 'Classical nylon string guitar', category: 'guitar', instrument: 24, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'acoustic-guitar-steel', name: 'Acoustic Guitar (Steel)', icon: 'guitar', description: 'Steel string acoustic guitar', category: 'guitar', instrument: 25, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'electric-guitar-jazz', name: 'Electric Guitar (Jazz)', icon: 'guitar', description: 'Hollow-body jazz guitar', category: 'guitar', instrument: 26, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'electric-guitar-clean', name: 'Electric Guitar (Clean)', icon: 'guitar', description: 'Clean electric guitar tone', category: 'guitar', instrument: 27, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'electric-guitar-muted', name: 'Electric Guitar (Muted)', icon: 'guitar', description: 'Palm-muted electric guitar', category: 'guitar', instrument: 28, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'overdriven-guitar', name: 'Overdriven Guitar', icon: 'guitar', description: 'Crunchy overdriven guitar', category: 'guitar', instrument: 29, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'distortion-guitar', name: 'Distortion Guitar', icon: 'guitar', description: 'Heavy distortion guitar', category: 'guitar', instrument: 30, left: GUITAR_LEFT, right: GUITAR_RIGHT },
+  { id: 'guitar-harmonics', name: 'Guitar Harmonics', icon: 'guitar', description: 'Natural guitar harmonics', category: 'guitar', instrument: 31, left: GUITAR_LEFT, right: GUITAR_RIGHT },
 
   // ==========================================
-  // SYNTH
+  // BASS (GM 32-39)
   // ==========================================
-  {
-    id: 'lead-synth',
-    name: 'Lead Synth',
-    icon: 'synth',
-    description: 'Bright synthesizer lead sounds',
-    category: 'synth',
-    instrument: 81,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.neonCyan },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.neonGreen },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.neonYellow },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.orange },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.neonPink },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.neonPurple },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.blue },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.lime },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.yellow },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.magenta },
-    },
-  },
-
-  {
-    id: 'square-lead',
-    name: 'Square Lead',
-    icon: 'synth',
-    description: 'Classic square wave lead',
-    category: 'synth',
-    instrument: 80,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#00E5FF' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#00B8D4' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#0097A7' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#00838F' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#006064' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#18FFFF' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#84FFFF' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#A7FFEB' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#64FFDA' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#1DE9B6' },
-    },
-  },
-
-  {
-    id: 'pad-synth',
-    name: 'Synth Pad',
-    icon: 'wave',
-    description: 'Warm evolving pad sounds',
-    category: 'synth',
-    instrument: 89,
-    left: {
-      thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#667eea' },
-      index: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#764ba2' },
-      middle: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#6B8DD6' },
-      ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#8E54E9' },
-      pinky: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#e94560' },
-    },
-    right: {
-      thumb: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#00fff5' },
-      index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: '#00d9ff' },
-      middle: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#00b4ff' },
-      ring: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#0091ff' },
-      pinky: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#006eff' },
-    },
-  },
-
-  {
-    id: 'warm-pad',
-    name: 'Warm Pad',
-    icon: 'wave',
-    description: 'Soft warm analog pad',
-    category: 'synth',
-    instrument: 89,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#FF8A80' },
-      index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FF80AB' },
-      middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#EA80FC' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#B388FF' },
-      pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#8C9EFF' },
-    },
-    right: {
-      thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#82B1FF' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#80D8FF' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#84FFFF' },
-      ring: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#A7FFEB' },
-      pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#B9F6CA' },
-    },
-  },
-
-  {
-    id: 'retro-wave',
-    name: 'Retrowave',
-    icon: 'electronic',
-    description: '80s synthwave vibes',
-    category: 'synth',
-    instrument: 85,
-    left: {
-      thumb: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FF1493' },
-      index: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#FF69B4' },
-      middle: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#DA70D6' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#BA55D3' },
-      pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#9400D3' },
-    },
-    right: {
-      thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#00CED1' },
-      index: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#00FFFF' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#7FFFD4' },
-      ring: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#40E0D0' },
-      pinky: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#48D1CC' },
-    },
-  },
-
-  {
-    id: 'fantasy-synth',
-    name: 'Fantasy Synth',
-    icon: 'synth',
-    description: 'Dreamy fantasy soundscape',
-    category: 'synth',
-    instrument: 88,
-    left: {
-      thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#E1F5FE' },
-      index: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#B3E5FC' },
-      middle: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#81D4FA' },
-      ring: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#4FC3F7' },
-      pinky: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#29B6F6' },
-    },
-    right: {
-      thumb: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#03A9F4' },
-      index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: '#039BE5' },
-      middle: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#0288D1' },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#0277BD' },
-      pinky: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#01579B' },
-    },
-  },
+  { id: 'acoustic-bass', name: 'Acoustic Bass', icon: 'bass', description: 'Upright double bass', category: 'bass', instrument: 32, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'electric-bass-finger', name: 'Electric Bass (Finger)', icon: 'bass', description: 'Fingerstyle electric bass', category: 'bass', instrument: 33, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'electric-bass-pick', name: 'Electric Bass (Pick)', icon: 'bass', description: 'Pick-style electric bass', category: 'bass', instrument: 34, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'fretless-bass', name: 'Fretless Bass', icon: 'bass', description: 'Smooth fretless bass', category: 'bass', instrument: 35, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'slap-bass-1', name: 'Slap Bass 1', icon: 'bass', description: 'Funky slap bass', category: 'bass', instrument: 36, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'slap-bass-2', name: 'Slap Bass 2', icon: 'bass', description: 'Aggressive slap bass', category: 'bass', instrument: 37, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'synth-bass-1', name: 'Synth Bass 1', icon: 'bass', description: 'Classic synth bass', category: 'bass', instrument: 38, left: BASS_LEFT, right: BASS_RIGHT },
+  { id: 'synth-bass-2', name: 'Synth Bass 2', icon: 'bass', description: 'Resonant synth bass', category: 'bass', instrument: 39, left: BASS_LEFT, right: BASS_RIGHT },
 
   // ==========================================
-  // ELECTRONIC
+  // STRINGS (GM 40-47)
   // ==========================================
-  {
-    id: 'dubstep-bass',
-    name: 'Dubstep Bass',
-    icon: 'electronic',
-    description: 'Heavy wobble bass sounds',
-    category: 'electronic',
-    instrument: 38,
-    left: {
-      thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: '#8B00FF' },
-      index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: '#9400D3' },
-      middle: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: '#9932CC' },
-      ring: { name: 'BassF', notes: CHORD_LIBRARY['BassF'], color: '#BA55D3' },
-      pinky: { name: 'BassG', notes: CHORD_LIBRARY['BassG'], color: '#DA70D6' },
-    },
-    right: {
-      thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: '#EE82EE' },
-      index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: '#FF00FF' },
-      middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FF69B4' },
-      ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FF1493' },
-      pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FF007F' },
-    },
-  },
-
-  {
-    id: 'chiptune',
-    name: 'Chiptune',
-    icon: 'electronic',
-    description: '8-bit retro game sounds',
-    category: 'electronic',
-    instrument: 80,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#00FF00' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#32CD32' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#7FFF00' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#ADFF2F' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#00FF7F' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#00FFFF' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#00CED1' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#40E0D0' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#48D1CC' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#7FFFD4' },
-    },
-  },
-
-  {
-    id: 'sci-fi',
-    name: 'Sci-Fi FX',
-    icon: 'electronic',
-    description: 'Futuristic sci-fi sounds',
-    category: 'electronic',
-    instrument: 103,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#00BCD4' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#00ACC1' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#0097A7' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#00838F' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#006064' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#26C6DA' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#4DD0E1' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#80DEEA' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#B2EBF2' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#E0F7FA' },
-    },
-  },
+  { id: 'violin', name: 'Violin', icon: 'violin', description: 'Solo violin', category: 'strings', instrument: 40, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'viola', name: 'Viola', icon: 'violin', description: 'Solo viola', category: 'strings', instrument: 41, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'cello', name: 'Cello', icon: 'violin', description: 'Solo cello', category: 'strings', instrument: 42, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'contrabass', name: 'Contrabass', icon: 'violin', description: 'Orchestral double bass', category: 'strings', instrument: 43, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'tremolo-strings', name: 'Tremolo Strings', icon: 'violin', description: 'Tremolo string section', category: 'strings', instrument: 44, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'pizzicato-strings', name: 'Pizzicato Strings', icon: 'violin', description: 'Plucked string section', category: 'strings', instrument: 45, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'orchestral-harp', name: 'Orchestral Harp', icon: 'harp', description: 'Concert pedal harp', category: 'strings', instrument: 46, left: STRINGS_LEFT, right: STRINGS_RIGHT },
+  { id: 'timpani', name: 'Timpani', icon: 'drum', description: 'Orchestral kettledrums', category: 'strings', instrument: 47, left: STRINGS_LEFT, right: STRINGS_RIGHT },
 
   // ==========================================
-  // ETHNIC / WORLD
+  // ENSEMBLE (GM 48-55)
   // ==========================================
-  {
-    id: 'sitar',
-    name: 'Sitar',
-    icon: 'sitar',
-    description: 'Traditional Indian sitar',
-    category: 'ethnic',
-    instrument: 104,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FF6600' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FF9933' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FFCC00' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FF6633' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#FF3300' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#CC3300' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#993300' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#996633' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#CC6600' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FF9900' },
-    },
-  },
-
-  {
-    id: 'banjo',
-    name: 'Banjo',
-    icon: 'guitar',
-    description: 'Twangy American banjo',
-    category: 'ethnic',
-    instrument: 105,
-    left: {
-      thumb: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#FFA726' },
-      index: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#FFB74D' },
-      middle: { name: 'D', notes: CHORD_LIBRARY['D'], color: '#FFCC80' },
-      ring: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#FFE0B2' },
-      pinky: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FFF3E0' },
-    },
-    right: {
-      thumb: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: '#FF9800' },
-      index: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: '#FB8C00' },
-      middle: { name: 'D7', notes: CHORD_LIBRARY['D7'], color: '#F57C00' },
-      ring: { name: 'A7', notes: CHORD_LIBRARY['A7'], color: '#EF6C00' },
-      pinky: { name: 'E7', notes: CHORD_LIBRARY['E7'], color: '#E65100' },
-    },
-  },
-
-  {
-    id: 'shamisen',
-    name: 'Shamisen',
-    icon: 'koto',
-    description: 'Japanese three-stringed lute',
-    category: 'ethnic',
-    instrument: 106,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#E8EAF6' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#C5CAE9' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#9FA8DA' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#7986CB' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#5C6BC0' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#3F51B5' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#3949AB' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#303F9F' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#283593' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#1A237E' },
-    },
-  },
-
-  {
-    id: 'koto',
-    name: 'Koto',
-    icon: 'koto',
-    description: 'Japanese traditional koto',
-    category: 'ethnic',
-    instrument: 107,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#DC143C' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#B22222' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#8B0000' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#800000' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#A52A2A' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#CD5C5C' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#F08080' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FA8072' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#E9967A' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FFA07A' },
-    },
-  },
-
-  {
-    id: 'kalimba',
-    name: 'Kalimba',
-    icon: 'mallet',
-    description: 'African thumb piano',
-    category: 'ethnic',
-    instrument: 108,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#8B4513' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#A0522D' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#CD853F' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#DEB887' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#D2691E' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#F4A460' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#FFDAB9' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FFE4B5' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FFE4C4' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FFEFD5' },
-    },
-  },
-
-  {
-    id: 'bagpipe',
-    name: 'Bagpipe',
-    icon: 'flute',
-    description: 'Scottish highland bagpipes',
-    category: 'ethnic',
-    instrument: 109,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#1B5E20' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#2E7D32' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#388E3C' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#43A047' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#4CAF50' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#66BB6A' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#81C784' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#A5D6A7' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#C8E6C9' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#E8F5E9' },
-    },
-  },
-
-  {
-    id: 'steel-drums',
-    name: 'Steel Drums',
-    icon: 'drum',
-    description: 'Caribbean steel pan drums',
-    category: 'ethnic',
-    instrument: 114,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#FFEB3B' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#FFC107' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#FF9800' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#FF5722' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#F44336' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#E91E63' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#9C27B0' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#673AB7' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#3F51B5' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#2196F3' },
-    },
-  },
+  { id: 'string-ensemble-1', name: 'String Ensemble 1', icon: 'violin', description: 'Lush string section', category: 'ensemble', instrument: 48, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'string-ensemble-2', name: 'String Ensemble 2', icon: 'violin', description: 'Slower string ensemble', category: 'ensemble', instrument: 49, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'synth-strings-1', name: 'Synth Strings 1', icon: 'synth', description: 'Analog synth strings', category: 'ensemble', instrument: 50, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'synth-strings-2', name: 'Synth Strings 2', icon: 'synth', description: 'Digital synth strings', category: 'ensemble', instrument: 51, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'choir-aahs', name: 'Choir Aahs', icon: 'voice', description: 'Vocal choir aahs', category: 'ensemble', instrument: 52, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'voice-oohs', name: 'Voice Oohs', icon: 'voice', description: 'Vocal choir oohs', category: 'ensemble', instrument: 53, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'synth-voice', name: 'Synth Voice', icon: 'voice', description: 'Synthetic vocal pad', category: 'ensemble', instrument: 54, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
+  { id: 'orchestra-hit', name: 'Orchestra Hit', icon: 'orchestra', description: 'Orchestral stab', category: 'ensemble', instrument: 55, left: ENSEMBLE_LEFT, right: ENSEMBLE_RIGHT },
 
   // ==========================================
-  // PERCUSSION
+  // BRASS (GM 56-63)
   // ==========================================
-  {
-    id: 'drums',
-    name: 'Drum Kit',
-    icon: 'drum',
-    description: 'Full acoustic drum kit',
-    category: 'percussion',
-    instrument: 0,
-    left: {
-      thumb: { name: 'Kick', notes: CHORD_LIBRARY['Kick'], color: '#2C3E50' },
-      index: { name: 'Snare', notes: CHORD_LIBRARY['Snare'], color: '#E74C3C' },
-      middle: { name: 'HiHat', notes: CHORD_LIBRARY['HiHat'], color: '#F39C12' },
-      ring: { name: 'Tom1', notes: CHORD_LIBRARY['Tom1'], color: '#27AE60' },
-      pinky: { name: 'Tom2', notes: CHORD_LIBRARY['Tom2'], color: '#3498DB' },
-    },
-    right: {
-      thumb: { name: 'Crash', notes: CHORD_LIBRARY['Crash'], color: '#9B59B6' },
-      index: { name: 'Ride', notes: CHORD_LIBRARY['Ride'], color: '#1ABC9C' },
-      middle: { name: 'HiHatOpen', notes: CHORD_LIBRARY['HiHatOpen'], color: '#E67E22' },
-      ring: { name: 'Clap', notes: CHORD_LIBRARY['Clap'], color: '#E91E63' },
-      pinky: { name: 'SideStick', notes: CHORD_LIBRARY['SideStick'], color: '#00BCD4' },
-    },
-  },
-
-  {
-    id: 'electronic-drums',
-    name: 'Electronic Kit',
-    icon: 'electronic',
-    description: 'Punchy electronic percussion',
-    category: 'percussion',
-    instrument: 0,
-    left: {
-      thumb: { name: 'Kick2', notes: CHORD_LIBRARY['Kick2'], color: '#6C5CE7' },
-      index: { name: 'Snare2', notes: CHORD_LIBRARY['Snare2'], color: '#FD79A8' },
-      middle: { name: 'HiHat', notes: CHORD_LIBRARY['HiHat'], color: '#FFEAA7' },
-      ring: { name: 'Tom3', notes: CHORD_LIBRARY['Tom3'], color: '#00CEC9' },
-      pinky: { name: 'Tom4', notes: CHORD_LIBRARY['Tom4'], color: '#0984E3' },
-    },
-    right: {
-      thumb: { name: 'Crash2', notes: CHORD_LIBRARY['Crash2'], color: '#A29BFE' },
-      index: { name: 'RideBell', notes: CHORD_LIBRARY['RideBell'], color: '#55EFC4' },
-      middle: { name: 'Cowbell', notes: CHORD_LIBRARY['Cowbell'], color: '#FDCB6E' },
-      ring: { name: 'Tambourine', notes: CHORD_LIBRARY['Tambourine'], color: '#E17055' },
-      pinky: { name: 'Clap', notes: CHORD_LIBRARY['Clap'], color: '#74B9FF' },
-    },
-  },
-
-  {
-    id: 'glockenspiel',
-    name: 'Glockenspiel',
-    icon: 'mallet',
-    description: 'Bright metallic bells',
-    category: 'percussion',
-    instrument: 9,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E3F2FD' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#BBDEFB' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#90CAF9' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#64B5F6' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#42A5F5' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#2196F3' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#1E88E5' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#1976D2' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#1565C0' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#0D47A1' },
-    },
-  },
-
-  {
-    id: 'music-box',
-    name: 'Music Box',
-    icon: 'bell',
-    description: 'Delicate music box tones',
-    category: 'percussion',
-    instrument: 10,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FCE4EC' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#F8BBD9' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#F48FB1' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#F06292' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#EC407A' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#E91E63' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#D81B60' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#C2185B' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#AD1457' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#880E4F' },
-    },
-  },
-
-  {
-    id: 'vibraphone',
-    name: 'Vibraphone',
-    icon: 'mallet',
-    description: 'Shimmering jazz vibraphone',
-    category: 'percussion',
-    instrument: 11,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#C0C0C0' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#D3D3D3' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#A9A9A9' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#808080' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#696969' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#778899' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#708090' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#B0C4DE' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#ADD8E6' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#87CEEB' },
-    },
-  },
-
-  {
-    id: 'marimba',
-    name: 'Marimba',
-    icon: 'mallet',
-    description: 'Warm wooden marimba',
-    category: 'percussion',
-    instrument: 12,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#8B4513' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#A0522D' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#CD853F' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#DEB887' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#D2691E' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#F4A460' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#FFDAB9' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FFE4B5' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#FFE4C4' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FFEFD5' },
-    },
-  },
-
-  {
-    id: 'xylophone',
-    name: 'Xylophone',
-    icon: 'mallet',
-    description: 'Bright wooden xylophone',
-    category: 'percussion',
-    instrument: 13,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#FFCDD2' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#EF9A9A' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#E57373' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#EF5350' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#F44336' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#E53935' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#D32F2F' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#C62828' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#B71C1C' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#FF8A80' },
-    },
-  },
-
-  {
-    id: 'tubular-bells',
-    name: 'Tubular Bells',
-    icon: 'bell',
-    description: 'Orchestral chimes',
-    category: 'percussion',
-    instrument: 14,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#CFD8DC' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#B0BEC5' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#90A4AE' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#78909C' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#607D8B' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#546E7A' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#455A64' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#37474F' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#263238' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#ECEFF1' },
-    },
-  },
-
-  {
-    id: 'timpani',
-    name: 'Timpani',
-    icon: 'drum',
-    description: 'Orchestral kettle drums',
-    category: 'percussion',
-    instrument: 47,
-    left: {
-      thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: '#4E342E' },
-      index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: '#5D4037' },
-      middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: '#6D4C41' },
-      ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: '#795548' },
-      pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: '#8D6E63' },
-    },
-    right: {
-      thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: '#A1887F' },
-      index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: '#BCAAA4' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#D7CCC8' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#EFEBE9' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#3E2723' },
-    },
-  },
+  { id: 'trumpet', name: 'Trumpet', icon: 'trumpet', description: 'Solo trumpet', category: 'brass', instrument: 56, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'trombone', name: 'Trombone', icon: 'brass', description: 'Solo trombone', category: 'brass', instrument: 57, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'tuba', name: 'Tuba', icon: 'brass', description: 'Solo tuba', category: 'brass', instrument: 58, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'muted-trumpet', name: 'Muted Trumpet', icon: 'trumpet', description: 'Harmon-muted trumpet', category: 'brass', instrument: 59, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'french-horn', name: 'French Horn', icon: 'brass', description: 'Solo French horn', category: 'brass', instrument: 60, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'brass-section', name: 'Brass Section', icon: 'brass', description: 'Full brass section', category: 'brass', instrument: 61, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'synth-brass-1', name: 'Synth Brass 1', icon: 'synth', description: 'Analog synth brass', category: 'brass', instrument: 62, left: BRASS_LEFT, right: BRASS_RIGHT },
+  { id: 'synth-brass-2', name: 'Synth Brass 2', icon: 'synth', description: 'Digital synth brass', category: 'brass', instrument: 63, left: BRASS_LEFT, right: BRASS_RIGHT },
 
   // ==========================================
-  // AMBIENT
+  // REED (GM 64-71)
   // ==========================================
-  {
-    id: 'ambient-pad',
-    name: 'Ambient Pad',
-    icon: 'wave',
-    description: 'Ethereal atmospheric textures',
-    category: 'ambient',
-    instrument: 89,
-    left: {
-      thumb: { name: 'Csus2', notes: CHORD_LIBRARY['Csus2'], color: '#667eea' },
-      index: { name: 'Gsus2', notes: CHORD_LIBRARY['Gsus2'], color: '#764ba2' },
-      middle: { name: 'Fsus2', notes: CHORD_LIBRARY['Fsus2'], color: '#6B8DD6' },
-      ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#8E54E9' },
-      pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#e94560' },
-    },
-    right: {
-      thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#00fff5' },
-      index: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#00d9ff' },
-      middle: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#00b4ff' },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#0091ff' },
-      pinky: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#006eff' },
-    },
-  },
+  { id: 'soprano-sax', name: 'Soprano Sax', icon: 'sax', description: 'Soprano saxophone', category: 'reed', instrument: 64, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'alto-sax', name: 'Alto Sax', icon: 'sax', description: 'Alto saxophone', category: 'reed', instrument: 65, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'tenor-sax', name: 'Tenor Sax', icon: 'sax', description: 'Tenor saxophone', category: 'reed', instrument: 66, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'baritone-sax', name: 'Baritone Sax', icon: 'sax', description: 'Baritone saxophone', category: 'reed', instrument: 67, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'oboe', name: 'Oboe', icon: 'wind', description: 'Solo oboe', category: 'reed', instrument: 68, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'english-horn', name: 'English Horn', icon: 'wind', description: 'Cor anglais', category: 'reed', instrument: 69, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'bassoon', name: 'Bassoon', icon: 'wind', description: 'Solo bassoon', category: 'reed', instrument: 70, left: REED_LEFT, right: REED_RIGHT },
+  { id: 'clarinet', name: 'Clarinet', icon: 'wind', description: 'Solo clarinet', category: 'reed', instrument: 71, left: REED_LEFT, right: REED_RIGHT },
 
-  {
-    id: 'space-ambient',
-    name: 'Space Ambient',
-    icon: 'wave',
-    description: 'Deep space soundscapes',
-    category: 'ambient',
-    instrument: 94,
-    left: {
-      thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#0D1B2A' },
-      index: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#1B263B' },
-      middle: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#415A77' },
-      ring: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#778DA9' },
-      pinky: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: '#E0E1DD' },
-    },
-    right: {
-      thumb: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#4CC9F0' },
-      index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: '#4895EF' },
-      middle: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#4361EE' },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#3F37C9' },
-      pinky: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: '#7209B7' },
-    },
-  },
+  // ==========================================
+  // PIPE (GM 72-79)
+  // ==========================================
+  { id: 'piccolo', name: 'Piccolo', icon: 'wind', description: 'High-pitched piccolo', category: 'pipe', instrument: 72, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'flute', name: 'Flute', icon: 'flute', description: 'Concert flute', category: 'pipe', instrument: 73, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'recorder', name: 'Recorder', icon: 'wind', description: 'Baroque recorder', category: 'pipe', instrument: 74, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'pan-flute', name: 'Pan Flute', icon: 'wind', description: 'Pan pipes', category: 'pipe', instrument: 75, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'blown-bottle', name: 'Blown Bottle', icon: 'wind', description: 'Bottle blowing sound', category: 'pipe', instrument: 76, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'shakuhachi', name: 'Shakuhachi', icon: 'wind', description: 'Japanese bamboo flute', category: 'pipe', instrument: 77, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'whistle', name: 'Whistle', icon: 'wind', description: 'Tin whistle', category: 'pipe', instrument: 78, left: PIPE_LEFT, right: PIPE_RIGHT },
+  { id: 'ocarina', name: 'Ocarina', icon: 'wind', description: 'Clay ocarina', category: 'pipe', instrument: 79, left: PIPE_LEFT, right: PIPE_RIGHT },
 
-  {
-    id: 'celestial',
-    name: 'Celestial Bells',
-    icon: 'bell',
-    description: 'Heavenly bell textures',
-    category: 'ambient',
-    instrument: 88,
-    left: {
-      thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#E0FFFF' },
-      index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#B0E0E6' },
-      middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#AFEEEE' },
-      ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: '#00CED1' },
-      pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: '#48D1CC' },
-    },
-    right: {
-      thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: '#40E0D0' },
-      index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: '#00FFFF' },
-      middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: '#7FFFD4' },
-      ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: '#66CDAA' },
-      pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: '#5F9EA0' },
-    },
-  },
+  // ==========================================
+  // SYNTH LEAD (GM 80-87)
+  // ==========================================
+  { id: 'lead-square', name: 'Lead 1 (Square)', icon: 'synth', description: 'Square wave lead', category: 'synth-lead', instrument: 80, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-sawtooth', name: 'Lead 2 (Sawtooth)', icon: 'synth', description: 'Sawtooth wave lead', category: 'synth-lead', instrument: 81, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-calliope', name: 'Lead 3 (Calliope)', icon: 'synth', description: 'Calliope lead', category: 'synth-lead', instrument: 82, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-chiff', name: 'Lead 4 (Chiff)', icon: 'synth', description: 'Chiff lead', category: 'synth-lead', instrument: 83, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-charang', name: 'Lead 5 (Charang)', icon: 'synth', description: 'Charang lead', category: 'synth-lead', instrument: 84, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-voice', name: 'Lead 6 (Voice)', icon: 'synth', description: 'Voice lead', category: 'synth-lead', instrument: 85, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-fifths', name: 'Lead 7 (Fifths)', icon: 'synth', description: 'Fifth interval lead', category: 'synth-lead', instrument: 86, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
+  { id: 'lead-bass-lead', name: 'Lead 8 (Bass + Lead)', icon: 'synth', description: 'Bass and lead combo', category: 'synth-lead', instrument: 87, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
 
-  {
-    id: 'choir',
-    name: 'Choir Aahs',
-    icon: 'wave',
-    description: 'Angelic choir voices',
-    category: 'ambient',
-    instrument: 52,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#F3E5F5' },
-      index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#E1BEE7' },
-      middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#CE93D8' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#BA68C8' },
-      pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#AB47BC' },
-    },
-    right: {
-      thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#9C27B0' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#8E24AA' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#7B1FA2' },
-      ring: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#6A1B9A' },
-      pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#4A148C' },
-    },
-  },
+  // ==========================================
+  // SYNTH PAD (GM 88-95)
+  // ==========================================
+  { id: 'pad-new-age', name: 'Pad 1 (New Age)', icon: 'synth', description: 'New age pad', category: 'synth-pad', instrument: 88, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-warm', name: 'Pad 2 (Warm)', icon: 'synth', description: 'Warm analog pad', category: 'synth-pad', instrument: 89, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-polysynth', name: 'Pad 3 (Polysynth)', icon: 'synth', description: 'Polysynth pad', category: 'synth-pad', instrument: 90, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-choir', name: 'Pad 4 (Choir)', icon: 'synth', description: 'Choir pad', category: 'synth-pad', instrument: 91, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-bowed', name: 'Pad 5 (Bowed)', icon: 'synth', description: 'Bowed glass pad', category: 'synth-pad', instrument: 92, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-metallic', name: 'Pad 6 (Metallic)', icon: 'synth', description: 'Metallic pad', category: 'synth-pad', instrument: 93, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-halo', name: 'Pad 7 (Halo)', icon: 'synth', description: 'Halo pad', category: 'synth-pad', instrument: 94, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'pad-sweep', name: 'Pad 8 (Sweep)', icon: 'synth', description: 'Sweep pad', category: 'synth-pad', instrument: 95, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
 
-  {
-    id: 'voice-oohs',
-    name: 'Voice Oohs',
-    icon: 'wave',
-    description: 'Soft vocal oohs',
-    category: 'ambient',
-    instrument: 53,
-    left: {
-      thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: '#FFEBEE' },
-      index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: '#FFCDD2' },
-      middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: '#EF9A9A' },
-      ring: { name: 'G', notes: CHORD_LIBRARY['G'], color: '#E57373' },
-      pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: '#EF5350' },
-    },
-    right: {
-      thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: '#F44336' },
-      index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: '#E53935' },
-      middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: '#D32F2F' },
-      ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: '#C62828' },
-      pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: '#B71C1C' },
-    },
-  },
+  // ==========================================
+  // SYNTH FX (GM 96-103)
+  // ==========================================
+  { id: 'fx-rain', name: 'FX 1 (Rain)', icon: 'fx', description: 'Rain effect', category: 'synth-fx', instrument: 96, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-soundtrack', name: 'FX 2 (Soundtrack)', icon: 'fx', description: 'Soundtrack texture', category: 'synth-fx', instrument: 97, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-crystal', name: 'FX 3 (Crystal)', icon: 'fx', description: 'Crystal texture', category: 'synth-fx', instrument: 98, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-atmosphere', name: 'FX 4 (Atmosphere)', icon: 'fx', description: 'Atmospheric texture', category: 'synth-fx', instrument: 99, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-brightness', name: 'FX 5 (Brightness)', icon: 'fx', description: 'Bright texture', category: 'synth-fx', instrument: 100, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-goblins', name: 'FX 6 (Goblins)', icon: 'fx', description: 'Goblin texture', category: 'synth-fx', instrument: 101, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-echoes', name: 'FX 7 (Echoes)', icon: 'fx', description: 'Echo texture', category: 'synth-fx', instrument: 102, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-sci-fi', name: 'FX 8 (Sci-Fi)', icon: 'fx', description: 'Science fiction texture', category: 'synth-fx', instrument: 103, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+
+  // ==========================================
+  // ETHNIC (GM 104-111)
+  // ==========================================
+  { id: 'sitar', name: 'Sitar', icon: 'sitar', description: 'Indian sitar', category: 'ethnic', instrument: 104, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'banjo', name: 'Banjo', icon: 'banjo', description: 'American banjo', category: 'ethnic', instrument: 105, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'shamisen', name: 'Shamisen', icon: 'koto', description: 'Japanese shamisen', category: 'ethnic', instrument: 106, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'koto', name: 'Koto', icon: 'koto', description: 'Japanese koto', category: 'ethnic', instrument: 107, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'kalimba', name: 'Kalimba', icon: 'kalimba', description: 'African thumb piano', category: 'ethnic', instrument: 108, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'bagpipe', name: 'Bagpipe', icon: 'bagpipe', description: 'Scottish bagpipes', category: 'ethnic', instrument: 109, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'fiddle', name: 'Fiddle', icon: 'violin', description: 'Folk fiddle', category: 'ethnic', instrument: 110, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+  { id: 'shanai', name: 'Shanai', icon: 'wind', description: 'Indian shehnai', category: 'ethnic', instrument: 111, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
+
+  // ==========================================
+  // PERCUSSIVE (GM 112-119)
+  // ==========================================
+  { id: 'tinkle-bell', name: 'Tinkle Bell', icon: 'bell', description: 'Small bell', category: 'percussive', instrument: 112, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'agogo', name: 'Agogo', icon: 'percussion', description: 'Agogo bells', category: 'percussive', instrument: 113, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
+  { id: 'steel-drums', name: 'Steel Drums', icon: 'steel-drum', description: 'Caribbean steel drums', category: 'percussive', instrument: 114, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
+  { id: 'woodblock', name: 'Woodblock', icon: 'percussion', description: 'Wooden block', category: 'percussive', instrument: 115, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
+  { id: 'taiko-drum', name: 'Taiko Drum', icon: 'drum', description: 'Japanese taiko', category: 'percussive', instrument: 116, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
+  { id: 'melodic-tom', name: 'Melodic Tom', icon: 'drum', description: 'Melodic tom drums', category: 'percussive', instrument: 117, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
+  { id: 'synth-drum', name: 'Synth Drum', icon: 'drum', description: 'Electronic synth drum', category: 'percussive', instrument: 118, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
+  { id: 'reverse-cymbal', name: 'Reverse Cymbal', icon: 'drum', description: 'Reversed cymbal swell', category: 'percussive', instrument: 119, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
+
+  // ==========================================
+  // SOUND FX (GM 120-127)
+  // ==========================================
+  { id: 'guitar-fret-noise', name: 'Guitar Fret Noise', icon: 'fx', description: 'Guitar string noise', category: 'sound-fx', instrument: 120, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'breath-noise', name: 'Breath Noise', icon: 'fx', description: 'Breath sound', category: 'sound-fx', instrument: 121, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'seashore', name: 'Seashore', icon: 'fx', description: 'Ocean waves', category: 'sound-fx', instrument: 122, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'bird-tweet', name: 'Bird Tweet', icon: 'fx', description: 'Bird sounds', category: 'sound-fx', instrument: 123, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'telephone-ring', name: 'Telephone Ring', icon: 'fx', description: 'Phone ringing', category: 'sound-fx', instrument: 124, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'helicopter', name: 'Helicopter', icon: 'fx', description: 'Helicopter blades', category: 'sound-fx', instrument: 125, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'applause', name: 'Applause', icon: 'fx', description: 'Crowd applause', category: 'sound-fx', instrument: 126, left: SFX_LEFT, right: SFX_RIGHT },
+  { id: 'gunshot', name: 'Gunshot', icon: 'fx', description: 'Gunshot sound', category: 'sound-fx', instrument: 127, left: SFX_LEFT, right: SFX_RIGHT },
 ];
 
-// Get instrument by ID
-export const getInstrumentById = (id: string): InstrumentPreset | undefined => {
-  return INSTRUMENTS.find(inst => inst.id === id);
+// Category display names for UI
+export const CATEGORY_NAMES: Record<string, string> = {
+  'piano': 'Piano',
+  'chromatic': 'Chromatic Percussion',
+  'organ': 'Organ',
+  'guitar': 'Guitar',
+  'bass': 'Bass',
+  'strings': 'Strings',
+  'ensemble': 'Ensemble',
+  'brass': 'Brass',
+  'reed': 'Reed',
+  'pipe': 'Pipe',
+  'synth-lead': 'Synth Lead',
+  'synth-pad': 'Synth Pad',
+  'synth-fx': 'Synth FX',
+  'ethnic': 'Ethnic',
+  'percussive': 'Percussive',
+  'sound-fx': 'Sound FX',
 };
 
-// Get instruments by category
-export const getInstrumentsByCategory = (category: string): InstrumentPreset[] => {
-  return INSTRUMENTS.filter(inst => inst.category === category);
-};
-
-// Default instrument
-export const DEFAULT_INSTRUMENT_ID = 'piano';
+// GM Category order
+export const CATEGORY_ORDER = [
+  'piano', 'chromatic', 'organ', 'guitar', 'bass', 'strings',
+  'ensemble', 'brass', 'reed', 'pipe', 'synth-lead', 'synth-pad',
+  'synth-fx', 'ethnic', 'percussive', 'sound-fx'
+];

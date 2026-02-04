@@ -50,7 +50,7 @@ export function useAudioEngine({
     if (audioRef.current) {
       audioRef.current.setInstrument({
         instrument: instrument.instrument,
-        isDrum: instrument.category === 'percussion',
+        isDrum: instrument.category === 'percussive',
       });
     }
   }, [instrument]);
