@@ -874,80 +874,80 @@
 @media (max-width: 768px) {
   .app__main {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto auto;
+    grid-template-rows: 1fr auto;
   }
-  
+
   .sidebar {
     order: 2;
     border-right: none;
     border-top: 1px solid var(--color-border-light);
-    max-height: 180px;
+    max-height: 120px;
+    overflow-y: auto;
   }
-  
+
   .sidebar__header {
     display: none;
   }
-  
+
   .sidebar__content {
-    padding: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
   }
-  
+
   .sidebar__section {
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-xs);
   }
-  
+
   .sidebar__section-title {
     display: none;
   }
-  
+
   .instrument-list {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: var(--space-xs);
+    overflow-x: auto;
+    padding-bottom: var(--space-xs);
   }
-  
+
   .instrument-item {
     flex: 0 0 auto;
-    padding: var(--space-sm);
+    padding: var(--space-xs);
     border-radius: var(--radius-md);
   }
-  
+
   .instrument-item__info {
     display: none;
   }
-  
+
   .instrument-item__icon {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     background: rgba(255, 255, 255, 0.05);
   }
-  
+
   .stage {
     order: 1;
   }
-  
+
+  /* Hide right panel on mobile - finger mapping shown in accuracy bar area */
   .panel-right {
-    order: 3;
-    border-left: none;
-    border-top: 1px solid var(--color-border-light);
-    max-height: 160px;
-  }
-  
-  .panel-right__content {
-    padding: var(--space-sm);
-    display: flex;
-    gap: var(--space-lg);
-    overflow-x: auto;
-  }
-  
-  .finger-mapping {
-    flex: 0 0 auto;
-    margin-bottom: 0;
-    min-width: 140px;
-  }
-  
-  .note-history {
     display: none;
+  }
+
+  /* Hide settings panel on mobile */
+  .settings-panel,
+  .recording-panel {
+    display: none;
+  }
+
+  /* Accuracy bar adjustments for tablet */
+  .accuracy-bar {
+    bottom: calc(120px + var(--space-sm));
+  }
+
+  .accuracy-bar__section {
+    padding: 5px 10px;
+    font-size: 0.6875rem;
   }
 }
 
@@ -956,25 +956,97 @@
    ============================================ */
 
 @media (max-width: 480px) {
-  .sidebar {
-    max-height: 140px;
+  .app__main {
+    grid-template-rows: 1fr auto;
   }
-  
+
+  .sidebar {
+    max-height: 80px;
+  }
+
+  .sidebar__content {
+    padding: var(--space-xs);
+  }
+
+  .instrument-item {
+    padding: 4px;
+  }
+
   .instrument-item__icon {
     width: 36px;
     height: 36px;
   }
-  
-  .panel-right {
-    max-height: 140px;
-  }
-  
+
   .stage__instrument-badge {
-    padding: var(--space-xs) var(--space-md);
+    padding: 4px 10px;
+    gap: var(--space-xs);
   }
-  
+
+  .stage__instrument-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .stage__instrument-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
   .stage__instrument-name {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+  }
+
+  /* Compact accuracy bar for phones */
+  .accuracy-bar {
+    bottom: calc(80px + var(--space-xs));
+    gap: var(--space-xs);
+  }
+
+  .accuracy-bar__section {
+    padding: 4px 8px;
+    font-size: 0.625rem;
+  }
+
+  .accuracy-bar__section--left .accuracy-bar__label,
+  .accuracy-bar__section--right .accuracy-bar__label {
+    display: none;
+  }
+
+  .accuracy-bar__dot {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+/* ============================================
+   Responsive - Extra Small Phone
+   ============================================ */
+
+@media (max-width: 360px) {
+  .sidebar {
+    max-height: 70px;
+  }
+
+  .instrument-item__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .accuracy-bar {
+    bottom: calc(70px + var(--space-xs));
+  }
+
+  .accuracy-bar__section--left,
+  .accuracy-bar__section--right {
+    display: none;
+  }
+
+  .stage__instrument-badge {
+    padding: 3px 8px;
+  }
+
+  .stage__instrument-name {
+    font-size: 0.6875rem;
   }
 }
 
@@ -984,91 +1056,113 @@
 
 @media (max-width: 900px) and (orientation: landscape) {
   .app__main {
-    grid-template-columns: 64px 1fr 160px;
+    grid-template-columns: 56px 1fr;
   }
-  
+
   .sidebar {
     order: 1;
     max-height: none;
     border-top: none;
     border-right: 1px solid var(--color-border-light);
+    overflow-y: auto;
   }
-  
+
   .sidebar__header {
     display: none;
   }
-  
+
   .sidebar__content {
     padding: var(--space-xs);
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: 2px;
   }
-  
+
   .sidebar__section {
-    margin-bottom: var(--space-xs);
+    margin-bottom: 0;
   }
-  
+
   .sidebar__section-title {
     display: none;
   }
-  
+
   .instrument-list {
     flex-direction: column;
     gap: 2px;
   }
-  
+
   .instrument-item {
-    padding: var(--space-xs);
+    padding: 4px;
     justify-content: center;
   }
-  
+
   .instrument-item__info {
     display: none;
   }
-  
+
   .instrument-item__icon {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   }
-  
-  /* Hide settings in landscape mobile to save space */
-  .settings-panel {
+
+  /* Hide panels in landscape mobile */
+  .settings-panel,
+  .recording-panel {
     display: none;
   }
-  
+
   .stage {
     order: 2;
   }
-  
+
   .panel-right {
-    order: 3;
-    max-height: none;
-    border-top: none;
-    border-left: 1px solid var(--color-border-light);
+    display: none;
   }
-  
-  .panel-right__content {
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
+
+  /* Accuracy bar in landscape */
+  .accuracy-bar {
+    bottom: var(--space-sm);
   }
-  
-  .finger-mapping {
-    min-width: auto;
+
+  .accuracy-bar__section {
+    padding: 4px 10px;
+    font-size: 0.6875rem;
   }
-  
-  .finger-mapping__title {
-    font-size: 0.625rem;
+}
+
+/* ============================================
+   Touch-Friendly Improvements
+   ============================================ */
+
+@media (pointer: coarse) {
+  /* Ensure minimum tap target sizes */
+  .instrument-item {
+    min-height: 44px;
+    min-width: 44px;
   }
-  
-  .finger-mapping__finger {
-    width: 40px;
-    font-size: 0.625rem;
+
+  .sidebar__help-btn {
+    min-width: 44px;
+    min-height: 44px;
   }
-  
-  .finger-mapping__note {
-    font-size: 0.75rem;
+
+  /* Remove hover effects that don't work well on touch */
+  .instrument-item:hover {
+    transform: none;
+  }
+
+  .landing__instrument-icon:hover {
+    transform: none;
+  }
+
+  /* Add active states for touch feedback */
+  .instrument-item:active {
+    background: var(--color-bg-glass-hover);
+    transform: scale(0.95);
+  }
+
+  .accuracy-bar__section:active {
+    transform: scale(0.95);
   }
 }
 
