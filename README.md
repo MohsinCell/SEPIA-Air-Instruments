@@ -6,7 +6,7 @@
 
 **A touchless music performance system powered by hand tracking**
 
-Create notes, build chords, and play 60+ instruments using intuitive hand gestures.
+Play 120 General MIDI instruments using intuitive hand gestures - no hardware required.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -28,14 +28,15 @@ Sepia Air Instruments transforms your webcam into a musical instrument. Using ad
 
 ## Features
 
-- **Gesture-Based Music Creation** - Each finger triggers a unique note or chord
-- **60+ Virtual Instruments** - Piano, guitar, synthesizers, brass, woodwinds, ethnic instruments, and more
+- **120 General MIDI Instruments** - Complete GM sound set including pianos, guitars, strings, brass, synths, ethnic instruments, and percussion
+- **Unique Note Mappings** - Each instrument has musically accurate chord voicings and note ranges tailored to its character
+- **Gesture-Based Music Creation** - Each finger triggers a unique note or chord (10 total with both hands)
 - **Real-Time Hand Tracking** - Powered by Google's MediaPipe for accurate, low-latency detection
-- **Two-Hand Support** - Use both hands simultaneously for 10 different notes/chords
+- **Hand Accuracy Indicator** - Live feedback showing detection quality for each hand
 - **Visual Feedback** - Beautiful particle effects and real-time hand skeleton visualization
 - **Audio Recording** - Record your performances and download as audio files
+- **Fully Responsive** - Optimized for desktop, tablet, and phone (portrait & landscape)
 - **No Installation Required** - Runs entirely in the browser
-- **Mobile Friendly** - Works on tablets and phones in landscape mode
 - **Privacy First** - All processing happens locally; no data leaves your device
 
 ## Getting Started
@@ -114,69 +115,114 @@ The app uses a sophisticated algorithm to determine if a finger is raised:
 
 - **Thumb**: Uses a voting system with 4 checks (extension, pointing direction, straightness, distance from index)
 - **Other Fingers**: Compares fingertip position to the middle knuckle (PIP joint)
+- **Debouncing**: Fingers must be raised for 3 consecutive frames to prevent flickering
+
+### Hand Accuracy
+
+The accuracy indicator measures:
+- **Palm stability** - How steady your hand position is
+- **Hand orientation** - Whether your palm is facing the camera
+- **Presence** - Continuous detection without dropouts
 
 ### Sound Generation
 
-Audio is generated using the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with [Tone.js](https://tonejs.github.io/) for instrument synthesis. Each finger maps to a specific note or chord based on the selected instrument preset.
+Audio is generated using the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with General MIDI instrument synthesis. Each instrument has unique note mappings designed for its musical character:
+
+- **Pianos** - Full chord voicings (triads, 7ths, 9ths)
+- **Guitars** - 6-string chord voicings with proper fingerings
+- **Bass** - Low register single notes (E1-G4)
+- **Brass** - Spread voicings with octave doublings
+- **Reeds/Pipes** - Melodic single notes in appropriate ranges
+- **Synth Pads** - Rich extended chords (maj7, m9, add9)
+- **Ethnic** - Pentatonic scales and cultural modes
+- **Percussion** - GM drum kit sounds
 
 ## Instruments
 
-Sepia includes **68 instruments** across 9 categories:
+Sepia includes all **120 General MIDI instruments** across 15 categories:
 
-| Category | Instruments |
-|----------|-------------|
-| **Keys** | Grand Piano, Bright Piano, Electric Piano, Honky Tonk, Jazz Piano, Harpsichord, Clavinet, Celesta, Church Organ, Rock Organ, Accordion, Harmonica |
-| **Strings** | Electric Guitar, Acoustic Guitar, Nylon Guitar, Overdriven Guitar, Distortion Guitar, Orchestra Strings, Solo Violin, Solo Cello, Pizzicato, Electric Bass, Slap Bass, Synth Bass, Harp |
-| **Brass** | Brass Ensemble, Trumpet, Muted Trumpet, Trombone, French Horn, Tuba |
-| **Woodwinds** | Alto Saxophone, Tenor Saxophone, Flute, Pan Flute, Clarinet, Oboe, Bassoon, Recorder |
-| **Synth** | Lead Synth, Square Lead, Synth Pad, Warm Pad, Retrowave, Fantasy Synth |
-| **Electronic** | Dubstep Bass, Chiptune, Sci-Fi FX |
-| **Ethnic/World** | Sitar, Banjo, Shamisen, Koto, Kalimba, Bagpipe, Steel Drums |
-| **Percussion** | Drum Kit, Electronic Kit, Glockenspiel, Music Box, Vibraphone, Marimba, Xylophone, Tubular Bells, Timpani |
-| **Ambient** | Ambient Pad, Space Ambient, Celestial Bells, Choir Aahs, Voice Oohs |
+| Category | GM # | Instruments |
+|----------|------|-------------|
+| **Piano** | 0-7 | Acoustic Grand, Bright Acoustic, Electric Grand, Honky-Tonk, Electric Piano 1 (Rhodes), Electric Piano 2 (DX7), Harpsichord, Clavinet |
+| **Chromatic Percussion** | 8-15 | Celesta, Glockenspiel, Music Box, Vibraphone, Marimba, Xylophone, Tubular Bells, Dulcimer |
+| **Organ** | 16-23 | Drawbar Organ, Percussive Organ, Rock Organ, Church Organ, Reed Organ, Accordion, Harmonica, Tango Accordion |
+| **Guitar** | 24-31 | Nylon Acoustic, Steel Acoustic, Jazz Electric, Clean Electric, Muted Electric, Overdriven, Distortion, Harmonics |
+| **Bass** | 32-39 | Acoustic Bass, Electric Finger, Electric Pick, Fretless, Slap Bass 1 & 2, Synth Bass 1 & 2 |
+| **Strings** | 40-47 | Violin, Viola, Cello, Contrabass, Tremolo Strings, Pizzicato Strings, Orchestral Harp, Timpani |
+| **Ensemble** | 48-55 | String Ensemble 1 & 2, Synth Strings 1 & 2, Choir Aahs, Voice Oohs, Synth Voice, Orchestra Hit |
+| **Brass** | 56-63 | Trumpet, Trombone, Tuba, Muted Trumpet, French Horn, Brass Section, Synth Brass 1 & 2 |
+| **Reed** | 64-71 | Soprano Sax, Alto Sax, Tenor Sax, Baritone Sax, Oboe, English Horn, Bassoon, Clarinet |
+| **Pipe** | 72-79 | Piccolo, Flute, Recorder, Pan Flute, Blown Bottle, Shakuhachi, Whistle, Ocarina |
+| **Synth Lead** | 80-87 | Square, Sawtooth, Calliope, Chiff, Charang, Voice, Fifths, Bass+Lead |
+| **Synth Pad** | 88-95 | New Age, Warm, Polysynth, Choir, Bowed, Metallic, Halo, Sweep |
+| **Synth FX** | 96-103 | Rain, Soundtrack, Crystal, Atmosphere, Brightness, Goblins, Echoes, Sci-Fi |
+| **Ethnic** | 104-111 | Sitar, Banjo, Shamisen, Koto, Kalimba, Bagpipe, Fiddle, Shanai |
+| **Percussive** | 112-119 | Tinkle Bell, Agogo, Steel Drums, Woodblock, Taiko Drum, Melodic Tom, Synth Drum, Reverse Cymbal |
 
 ## Controls
 
 ### Finger Mapping
 
-Each hand has 5 fingers mapped to different notes/chords:
+Each instrument has unique note/chord mappings. Here's an example for **Acoustic Grand Piano**:
 
 | Finger | Left Hand | Right Hand |
 |--------|-----------|------------|
-| Thumb | Note/Chord 1 | Note/Chord 6 |
-| Index | Note/Chord 2 | Note/Chord 7 |
-| Middle | Note/Chord 3 | Note/Chord 8 |
-| Ring | Note/Chord 4 | Note/Chord 9 |
-| Pinky | Note/Chord 5 | Note/Chord 10 |
+| Thumb | C Major | E minor |
+| Index | G Major | C7 |
+| Middle | A minor | G7 |
+| Ring | F Major | Am7 |
+| Pinky | D minor | Fmaj7 |
+
+Different instrument types use appropriate mappings:
+- **Lead instruments** (sax, flute, etc.) use single melodic notes
+- **Chord instruments** (piano, guitar, etc.) use full chord voicings
+- **Bass instruments** use low register single notes
+- **Percussion** uses drum kit sounds (kick, snare, hi-hat, etc.)
 
 ### Settings
 
-- **Volume** - Adjust master volume
+- **Volume** - Adjust master volume (0-100%)
 - **Show Skeleton** - Toggle hand skeleton visualization
 - **Show Particles** - Toggle particle effects on note trigger
-- **Recording** - Record and download your performance
+
+### Status Bar
+
+The bottom status bar shows:
+- **Left hand accuracy** - Detection quality percentage
+- **Hand status** - "Show hands to play" or "X hand(s) detected"
+- **Right hand accuracy** - Detection quality percentage
 
 ## Project Structure
 
 ```
-sepia-air-instruments/
+air-instruments/
 ├── src/
 │   ├── components/          # React components
 │   │   ├── landing/         # Landing page
-│   │   ├── panels/          # Sidebar, RightPanel, Stage
+│   │   ├── panels/          # Sidebar, RightPanel
+│   │   ├── visualizer/      # Stage (camera view)
 │   │   └── ui/              # Reusable UI components & icons
-│   ├── constants/           # Instrument presets, chords, config
+│   ├── constants/           # Configuration
+│   │   ├── chords.ts        # Chord library (MIDI note definitions)
+│   │   ├── instruments.ts   # 120 GM instrument definitions
+│   │   ├── instrumentMappings.ts  # Unique mappings per instrument
+│   │   └── config.ts        # App configuration
 │   ├── hooks/               # Custom React hooks
 │   │   ├── useAudioEngine   # Sound synthesis
 │   │   ├── useAudioRecorder # Recording functionality
 │   │   ├── useHandTracking  # MediaPipe integration
-│   │   └── ...
+│   │   ├── useParticles     # Particle effects
+│   │   └── useSettings      # User preferences
 │   ├── styles/              # CSS stylesheets
+│   │   ├── global.css       # Design system variables
+│   │   ├── App.css          # Main app styles
+│   │   └── Landing.css      # Landing page styles
 │   ├── types/               # TypeScript type definitions
 │   ├── utils/               # Utility functions
-│   │   ├── AudioEngine      # Web Audio API wrapper
-│   │   ├── handDetection    # Finger detection algorithms
-│   │   └── drawing          # Canvas rendering utilities
+│   │   ├── AudioEngine.ts   # Web Audio API wrapper
+│   │   ├── handDetection.ts # Finger detection algorithms
+│   │   ├── canvas.ts        # Canvas rendering utilities
+│   │   └── particles.ts     # Particle system
 │   ├── App.tsx              # Main application component
 │   └── main.tsx             # Application entry point
 ├── public/                  # Static assets
@@ -191,7 +237,7 @@ sepia-air-instruments/
 - **Frontend Framework**: [React 18](https://reactjs.org/) with [TypeScript](https://www.typescriptlang.org/)
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **Hand Tracking**: [MediaPipe Hands](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)
-- **Audio Synthesis**: [Tone.js](https://tonejs.github.io/) + [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+- **Audio Synthesis**: [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with General MIDI
 - **Styling**: CSS with CSS Variables (custom design system)
 - **Deployment**: [Docker](https://www.docker.com/) + [Nginx](https://nginx.org/)
 
@@ -199,19 +245,29 @@ sepia-air-instruments/
 
 | Browser | Support |
 |---------|---------|
-| Chrome | ✅ Full support |
-| Firefox | ✅ Full support |
-| Edge | ✅ Full support |
-| Safari | ✅ Full support |
-| Mobile Chrome | ✅ Landscape mode |
-| Mobile Safari | ✅ Landscape mode |
+| Chrome | Full support |
+| Firefox | Full support |
+| Edge | Full support |
+| Safari | Full support |
+| Mobile Chrome | Full support |
+| Mobile Safari | Full support |
 
 > **Note**: Camera access requires HTTPS in production environments.
+
+## Responsive Design
+
+Sepia is fully responsive across all device sizes:
+
+- **Desktop** (1024px+) - Full 3-column layout with sidebar, camera, and finger mapping panel
+- **Tablet** (768px-1024px) - 2-column layout with horizontal instrument bar
+- **Phone Portrait** (480px) - Fullscreen camera with compact instrument bar
+- **Phone Landscape** - Slim sidebar with maximized camera view
 
 ## Performance Tips
 
 - Use good lighting for better hand detection
 - Position your hands 1-3 feet from the camera
+- Keep your palm facing the camera for best accuracy
 - Use landscape orientation on mobile devices
 - Close other camera-using applications
 - Chrome typically offers the best performance
@@ -242,15 +298,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - [MediaPipe](https://mediapipe.dev/) for the incredible hand tracking solution
-- [Tone.js](https://tonejs.github.io/) for the powerful audio synthesis library
+- [General MIDI](https://www.midi.org/specifications/item/gm-level-1-sound-set) for the standardized instrument specification
 - [Google Fonts](https://fonts.google.com/) for the Inter typeface
 
 ---
 
 <div align="center">
 
-**Made with ❤️ for musicians everywhere**
+**Made with love for musicians everywhere**
 
-[⬆ Back to top](#sepia-air-instruments)
+[Back to top](#sepia--air-instruments)
 
 </div>
