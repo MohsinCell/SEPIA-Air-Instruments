@@ -508,6 +508,62 @@
 }
 
 /* ============================================
+   Calibration Panel
+   ============================================ */
+
+.calibration-panel {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.calibration-panel__btn {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  color: var(--color-accent-primary);
+  transition: all var(--transition-fast);
+}
+
+.calibration-panel__btn:hover {
+  background: rgba(78, 205, 196, 0.2);
+  border-color: rgba(78, 205, 196, 0.5);
+}
+
+.calibration-panel__btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.calibration-panel__btn--active {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: rgba(255, 107, 107, 0.4);
+  color: #ff6b6b;
+}
+
+.calibration-panel__status {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.calibration-panel__bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.calibration-panel__bar span {
+  display: block;
+  height: 100%;
+  background: var(--color-accent-gradient);
+  transition: width 0.12s linear;
+}
+
+/* ============================================
    Main Stage (Center)
    ============================================ */
 
@@ -1216,19 +1272,40 @@
 }
 
 .help-modal__button {
-  padding: var(--space-md) var(--space-xl);
-  background: var(--color-accent-gradient);
-  color: var(--color-text-primary);
+  padding: var(--space-md) var(--space-2xl);
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 0.9375rem;
-  border-radius: var(--radius-md);
+  background: var(--color-accent-gradient);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 8px 32px rgba(255, 107, 107, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transition: all var(--transition-normal);
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: fadeIn 0.8s ease-out 0.5s backwards;
+  position: relative;
+  overflow: hidden;
+  opacity: 0.85;
+}
+
+.help-modal__button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
 }
 
 .help-modal__button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3);
+  box-shadow:
+    0 16px 48px rgba(255, 107, 107, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  opacity: 1;
 }
 
 /* Help Modal Responsive */

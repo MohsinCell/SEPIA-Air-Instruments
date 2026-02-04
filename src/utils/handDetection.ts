@@ -60,17 +60,25 @@ function calculatePalmSize(landmarks: { x: number; y: number; z: number }[]): nu
 }
 
 /**
+ * Get palm size for calibration and thresholds
+ */
+export function getPalmSize(hand: Hand): number {
+  return calculatePalmSize(hand.landmarks);
+}
+
+/**
  * Detect which fingers are raised for a hand
  * Uses adaptive thresholds based on palm size for better accuracy with all hand sizes
  * @param hand - Detected hand object
  * @returns Array of boolean values for each finger (thumb, index, middle, ring, pinky)
  */
-export function detectRaisedFingers(hand: Hand): boolean[] {
+export function detectRaisedFingers(hand: Hand, calibratedPalmSize?: number): boolean[] {
   const landmarks = hand.landmarks;
   const raised: boolean[] = [];
   
   // Calculate palm size for adaptive thresholds
   const palmSize = calculatePalmSize(landmarks);
+  const basePalmSize = calibratedPalmSize || palmSize;
   
   // ============================================
   // THUMB DETECTION - Adaptive for all hand sizes
@@ -171,7 +179,7 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
     const mcp = landmarks[mcpIdx];
     
     // ---- Check 1: Tip must be above PIP (basic Y check) ----
-    const tipAbovePIP = tip.y < pip.y - 0.02; // Require meaningful distance
+    const tipAbovePIP = tip.y < pip.y - basePalmSize * 0.08; // Scales with calibration
     
     // ---- Check 2: Finger must be STRAIGHT, not curled ----
     // When finger is curled, DIP-to-TIP vector points back toward palm
@@ -209,7 +217,7 @@ export function detectRaisedFingers(hand: Hand): boolean[] {
       Math.pow(tip.x - mcp.x, 2) + Math.pow(tip.y - mcp.y, 2)
     );
     // When curled, tip is close to MCP. When extended, tip is far from MCP.
-    const minExtension = palmSize * 0.5; // At least 50% of palm size
+    const minExtension = basePalmSize * 0.5; // At least 50% of palm size
     const hasGoodExtension = tipToMcpDist > minExtension;
     
     // FINAL: Finger is raised only if ALL conditions are met

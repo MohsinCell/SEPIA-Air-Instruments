@@ -42,6 +42,35 @@ export function useHandTracking({
     onHandsDetectedRef.current = onHandsDetected;
   }, [onHandsDetected]);
 
+  // Stop camera and cleanup when disabled
+  useEffect(() => {
+    if (enabled) return;
+
+    // Stop animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    // Stop camera stream
+    if (videoRef.current?.srcObject) {
+      const mediaStream = videoRef.current.srcObject as MediaStream;
+      mediaStream.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+
+    // Close hand landmarker
+    if (handLandmarkerRef.current) {
+      handLandmarkerRef.current.close();
+      handLandmarkerRef.current = null;
+    }
+
+    // Reset state
+    setHands([]);
+    setIsLoading(false);
+    setError(null);
+  }, [enabled]);
+
   // Process results from hand landmarker - stable reference
   const processResults = useCallback(
     (results: HandLandmarkerResult) => {

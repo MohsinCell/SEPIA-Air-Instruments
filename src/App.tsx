@@ -19,6 +19,7 @@ import {
 } from './hooks';
 import {
   detectRaisedFingers,
+  getPalmSize,
   getFingertipPosition,
   getRealHandSide,
   createFingerKey,
@@ -49,16 +50,23 @@ export default function App() {
   const [selectedInstrumentId, setSelectedInstrumentId] = useState(DEFAULT_INSTRUMENT_ID);
   const [activeFingers, setActiveFingers] = useState<Set<string>>(new Set());
   const [showHelp, setShowHelp] = useState(false);
+  const [isCalibrating, setIsCalibrating] = useState(false);
+  const [calibrationProgress, setCalibrationProgress] = useState(0);
+  const [calibratedPalmSize, setCalibratedPalmSize] = useState<number | null>(null);
   
   // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prevStatesRef = useRef<Map<string, boolean>>(new Map());
   const animationRef = useRef<number | undefined>(undefined);
+  const calibrationSamplesRef = useRef<number[]>([]);
+  const calibrationStartRef = useRef<number>(0);
+  const calibrationTimeoutRef = useRef<number | null>(null);
   
   // Debouncing: Track consecutive frames each finger has been raised
   // This prevents flickering from causing multiple note triggers
   const fingerRaisedFramesRef = useRef<Map<string, number>>(new Map());
   const DEBOUNCE_FRAMES = 3; // Finger must be raised for 3 consecutive frames to trigger
+  const CALIBRATION_DURATION_MS = 2000;
 
   // Get current instrument
   const instrument = INSTRUMENTS.find(i => i.id === selectedInstrumentId) || INSTRUMENTS[0];
@@ -85,9 +93,30 @@ export default function App() {
 
     const newActiveFingers = new Set<string>();
 
+    // Calibration sampling
+    if (isCalibrating) {
+      const now = performance.now();
+      const progress = Math.min((now - calibrationStartRef.current) / CALIBRATION_DURATION_MS, 1);
+      setCalibrationProgress(progress);
+
+      if (detectedHands[0]) {
+        const palmSize = getPalmSize(detectedHands[0]);
+        calibrationSamplesRef.current.push(palmSize);
+      }
+
+      if (progress >= 1) {
+        const samples = calibrationSamplesRef.current;
+        if (samples.length > 0) {
+          const avg = samples.reduce((sum, value) => sum + value, 0) / samples.length;
+          setCalibratedPalmSize(avg);
+        }
+        setIsCalibrating(false);
+      }
+    }
+
     detectedHands.forEach((hand) => {
       const handSide = getRealHandSide(hand);
-      const raisedFingers = detectRaisedFingers(hand);
+      const raisedFingers = detectRaisedFingers(hand, calibratedPalmSize || undefined);
       const fingerConfig = instrument[handSide];
 
       FINGER_NAMES.forEach((fingerName, index) => {
@@ -158,7 +187,30 @@ export default function App() {
     });
 
     setActiveFingers(newActiveFingers);
-  }, [instrument, playNote, stopNote, addParticle, addNote]);
+  }, [instrument, playNote, stopNote, addParticle, addNote, calibratedPalmSize, isCalibrating]);
+
+  const startCalibration = useCallback(() => {
+    if (isCalibrating) return;
+
+    calibrationSamplesRef.current = [];
+    calibrationStartRef.current = performance.now();
+    setCalibrationProgress(0);
+    setIsCalibrating(true);
+
+    if (calibrationTimeoutRef.current) {
+      window.clearTimeout(calibrationTimeoutRef.current);
+    }
+
+    calibrationTimeoutRef.current = window.setTimeout(() => {
+      const samples = calibrationSamplesRef.current;
+      if (samples.length > 0) {
+        const avg = samples.reduce((sum, value) => sum + value, 0) / samples.length;
+        setCalibratedPalmSize(avg);
+      }
+      setIsCalibrating(false);
+      setCalibrationProgress(1);
+    }, CALIBRATION_DURATION_MS);
+  }, [isCalibrating]);
 
   // Hand tracking hook
   const { videoRef, isLoading, error, hands } = useHandTracking({
@@ -240,6 +292,12 @@ export default function App() {
     fingerRaisedFramesRef.current.clear(); // Clear debounce counters
     setActiveFingers(new Set());
     setIsStarted(false);
+    setIsCalibrating(false);
+    setCalibrationProgress(0);
+    if (calibrationTimeoutRef.current) {
+      window.clearTimeout(calibrationTimeoutRef.current);
+      calibrationTimeoutRef.current = null;
+    }
   }, [stopAll]);
 
   // Show landing page if not started
@@ -270,6 +328,9 @@ export default function App() {
           onShowSkeletonChange={(v) => updateSettings({ showSkeleton: v })}
           showParticles={settings.showParticles}
           onShowParticlesChange={(v) => updateSettings({ showParticles: v })}
+          onStartCalibration={startCalibration}
+          isCalibrating={isCalibrating}
+          calibrationProgress={calibrationProgress}
           onHelpClick={() => setShowHelp(true)}
           onHomeClick={handleGoHome}
           isRecording={isRecording}

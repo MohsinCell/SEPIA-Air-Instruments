@@ -24,6 +24,9 @@ interface SidebarProps {
   onShowSkeletonChange: (show: boolean) => void;
   showParticles: boolean;
   onShowParticlesChange: (show: boolean) => void;
+  onStartCalibration?: () => void;
+  isCalibrating?: boolean;
+  calibrationProgress?: number;
   onHelpClick?: () => void;
   onHomeClick?: () => void;
   // Recording props
@@ -43,6 +46,9 @@ export function Sidebar({
   onShowSkeletonChange,
   showParticles,
   onShowParticlesChange,
+  onStartCalibration,
+  isCalibrating = false,
+  calibrationProgress = 0,
   onHelpClick,
   onHomeClick,
   isRecording = false,
@@ -219,6 +225,27 @@ export function Sidebar({
                 <span>Show particles</span>
               </label>
             </div>
+
+            {/* Calibration */}
+            {onStartCalibration && (
+              <div className="settings-panel__row">
+                <div className="calibration-panel">
+                  <button
+                    className={`calibration-panel__btn ${isCalibrating ? 'calibration-panel__btn--active' : ''}`}
+                    onClick={onStartCalibration}
+                    disabled={isCalibrating}
+                  >
+                    {isCalibrating ? 'Calibrating...' : 'Calibrate Gesture'}
+                  </button>
+                  <div className="calibration-panel__status">
+                    {isCalibrating ? `Hold steady ${Math.round(calibrationProgress * 100)}%` : 'Improve accuracy for your hand'}
+                  </div>
+                  <div className="calibration-panel__bar">
+                    <span style={{ width: `${Math.round(calibrationProgress * 100)}%` }} />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
