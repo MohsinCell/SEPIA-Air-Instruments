@@ -129,96 +129,6 @@ const BRASS_RIGHT = {
   pinky: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: NOTE_COLORS.purple },
 };
 
-const REED_LEFT = {
-  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.amber },
-  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.gold },
-  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.orange },
-  ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.coral },
-  pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
-};
-const REED_RIGHT = {
-  thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
-  index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.rose },
-  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
-  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.magenta },
-  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
-};
-
-const PIPE_LEFT = {
-  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.sky },
-  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.cyan },
-  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.teal },
-  ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: NOTE_COLORS.green },
-  pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.lime },
-};
-const PIPE_RIGHT = {
-  thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.blue },
-  index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: NOTE_COLORS.indigo },
-  middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.violet },
-  ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.purple },
-  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.magenta },
-};
-
-const SYNTH_LEAD_LEFT = {
-  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.neonCyan },
-  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.neonGreen },
-  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.neonYellow },
-  ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.neonPink },
-  pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.neonPurple },
-};
-const SYNTH_LEAD_RIGHT = {
-  thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.cyan },
-  index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.magenta },
-  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
-  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.violet },
-  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
-};
-
-const SYNTH_PAD_LEFT = {
-  thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.cyan },
-  index: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: NOTE_COLORS.teal },
-  middle: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: NOTE_COLORS.green },
-  ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.blue },
-  pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.indigo },
-};
-const SYNTH_PAD_RIGHT = {
-  thumb: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
-  index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: NOTE_COLORS.purple },
-  middle: { name: 'Csus2', notes: CHORD_LIBRARY['Csus2'], color: NOTE_COLORS.magenta },
-  ring: { name: 'Gsus2', notes: CHORD_LIBRARY['Gsus2'], color: NOTE_COLORS.pink },
-  pinky: { name: 'Dsus2', notes: CHORD_LIBRARY['Dsus2'], color: NOTE_COLORS.rose },
-};
-
-const ETHNIC_LEFT = {
-  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.amber },
-  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.orange },
-  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.coral },
-  ring: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
-  pinky: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
-};
-const ETHNIC_RIGHT = {
-  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.gold },
-  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.amber },
-  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.orange },
-  ring: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.coral },
-  pinky: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.red },
-};
-
-const PERCUSSIVE_LEFT = {
-  thumb: { name: 'Kick', notes: CHORD_LIBRARY['Kick'], color: NOTE_COLORS.red },
-  index: { name: 'Snare', notes: CHORD_LIBRARY['Snare'], color: NOTE_COLORS.orange },
-  middle: { name: 'HiHat', notes: CHORD_LIBRARY['HiHat'], color: NOTE_COLORS.amber },
-  ring: { name: 'Tom1', notes: CHORD_LIBRARY['Tom1'], color: NOTE_COLORS.gold },
-  pinky: { name: 'Tom2', notes: CHORD_LIBRARY['Tom2'], color: NOTE_COLORS.brown },
-};
-const PERCUSSIVE_RIGHT = {
-  thumb: { name: 'Crash', notes: CHORD_LIBRARY['Crash'], color: NOTE_COLORS.cyan },
-  index: { name: 'Ride', notes: CHORD_LIBRARY['Ride'], color: NOTE_COLORS.teal },
-  middle: { name: 'HiHatOpen', notes: CHORD_LIBRARY['HiHatOpen'], color: NOTE_COLORS.green },
-  ring: { name: 'Clap', notes: CHORD_LIBRARY['Clap'], color: NOTE_COLORS.blue },
-  pinky: { name: 'Cowbell', notes: CHORD_LIBRARY['Cowbell'], color: NOTE_COLORS.indigo },
-};
-
 export const INSTRUMENTS: InstrumentPreset[] = [
   // ==========================================
   // PIANO (GM 0-7)
@@ -331,18 +241,10 @@ export const CATEGORY_NAMES: Record<string, string> = {
   'strings': 'Strings',
   'ensemble': 'Ensemble',
   'brass': 'Brass',
-  'reed': 'Reed',
-  'pipe': 'Pipe',
-  'synth-lead': 'Synth Lead',
-  'synth-pad': 'Synth Pad',
-  'synth-fx': 'Synth FX',
-  'ethnic': 'Ethnic',
-  'percussive': 'Percussive',
 };
 
 // GM Category order
 export const CATEGORY_ORDER = [
   'piano', 'chromatic', 'organ', 'guitar', 'bass', 'strings',
-  'ensemble', 'brass', 'reed', 'pipe', 'synth-lead', 'synth-pad',
-  'synth-fx', 'ethnic', 'percussive'
+  'ensemble', 'brass'
 ];
