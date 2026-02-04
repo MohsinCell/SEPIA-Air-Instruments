@@ -86,7 +86,6 @@ export function Sidebar({
     { id: 'synth-fx', label: 'Synth FX' },
     { id: 'ethnic', label: 'Ethnic' },
     { id: 'percussive', label: 'Percussive' },
-    { id: 'sound-fx', label: 'Sound FX' },
   ];
 
   const instrumentsByCategory = categories.map(cat => ({

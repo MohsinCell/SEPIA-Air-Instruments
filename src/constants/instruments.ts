@@ -219,21 +219,6 @@ const PERCUSSIVE_RIGHT = {
   pinky: { name: 'Cowbell', notes: CHORD_LIBRARY['Cowbell'], color: NOTE_COLORS.indigo },
 };
 
-const SFX_LEFT = {
-  thumb: { name: 'C3', notes: CHORD_LIBRARY['C3'], color: NOTE_COLORS.silver },
-  index: { name: 'E3', notes: CHORD_LIBRARY['E3'], color: NOTE_COLORS.cyan },
-  middle: { name: 'G3', notes: CHORD_LIBRARY['G3'], color: NOTE_COLORS.teal },
-  ring: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.blue },
-  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.indigo },
-};
-const SFX_RIGHT = {
-  thumb: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.violet },
-  index: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.purple },
-  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.magenta },
-  ring: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.pink },
-  pinky: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.rose },
-};
-
 export const INSTRUMENTS: InstrumentPreset[] = [
   // ==========================================
   // PIANO (GM 0-7)
@@ -332,100 +317,8 @@ export const INSTRUMENTS: InstrumentPreset[] = [
   { id: 'synth-brass-2', name: 'Synth Brass 2', icon: 'synth', description: 'Digital synth brass', category: 'brass', instrument: 63, left: BRASS_LEFT, right: BRASS_RIGHT },
 
   // ==========================================
-  // REED (GM 64-71)
+  // SOUND FX (GM 120-127) - REMOVED
   // ==========================================
-  { id: 'soprano-sax', name: 'Soprano Sax', icon: 'sax', description: 'Soprano saxophone', category: 'reed', instrument: 64, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'alto-sax', name: 'Alto Sax', icon: 'sax', description: 'Alto saxophone', category: 'reed', instrument: 65, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'tenor-sax', name: 'Tenor Sax', icon: 'sax', description: 'Tenor saxophone', category: 'reed', instrument: 66, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'baritone-sax', name: 'Baritone Sax', icon: 'sax', description: 'Baritone saxophone', category: 'reed', instrument: 67, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'oboe', name: 'Oboe', icon: 'wind', description: 'Solo oboe', category: 'reed', instrument: 68, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'english-horn', name: 'English Horn', icon: 'wind', description: 'Cor anglais', category: 'reed', instrument: 69, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'bassoon', name: 'Bassoon', icon: 'wind', description: 'Solo bassoon', category: 'reed', instrument: 70, left: REED_LEFT, right: REED_RIGHT },
-  { id: 'clarinet', name: 'Clarinet', icon: 'wind', description: 'Solo clarinet', category: 'reed', instrument: 71, left: REED_LEFT, right: REED_RIGHT },
-
-  // ==========================================
-  // PIPE (GM 72-79)
-  // ==========================================
-  { id: 'piccolo', name: 'Piccolo', icon: 'wind', description: 'High-pitched piccolo', category: 'pipe', instrument: 72, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'flute', name: 'Flute', icon: 'flute', description: 'Concert flute', category: 'pipe', instrument: 73, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'recorder', name: 'Recorder', icon: 'wind', description: 'Baroque recorder', category: 'pipe', instrument: 74, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'pan-flute', name: 'Pan Flute', icon: 'wind', description: 'Pan pipes', category: 'pipe', instrument: 75, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'blown-bottle', name: 'Blown Bottle', icon: 'wind', description: 'Bottle blowing sound', category: 'pipe', instrument: 76, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'shakuhachi', name: 'Shakuhachi', icon: 'wind', description: 'Japanese bamboo flute', category: 'pipe', instrument: 77, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'whistle', name: 'Whistle', icon: 'wind', description: 'Tin whistle', category: 'pipe', instrument: 78, left: PIPE_LEFT, right: PIPE_RIGHT },
-  { id: 'ocarina', name: 'Ocarina', icon: 'wind', description: 'Clay ocarina', category: 'pipe', instrument: 79, left: PIPE_LEFT, right: PIPE_RIGHT },
-
-  // ==========================================
-  // SYNTH LEAD (GM 80-87)
-  // ==========================================
-  { id: 'lead-square', name: 'Lead 1 (Square)', icon: 'synth', description: 'Square wave lead', category: 'synth-lead', instrument: 80, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-sawtooth', name: 'Lead 2 (Sawtooth)', icon: 'synth', description: 'Sawtooth wave lead', category: 'synth-lead', instrument: 81, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-calliope', name: 'Lead 3 (Calliope)', icon: 'synth', description: 'Calliope lead', category: 'synth-lead', instrument: 82, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-chiff', name: 'Lead 4 (Chiff)', icon: 'synth', description: 'Chiff lead', category: 'synth-lead', instrument: 83, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-charang', name: 'Lead 5 (Charang)', icon: 'synth', description: 'Charang lead', category: 'synth-lead', instrument: 84, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-voice', name: 'Lead 6 (Voice)', icon: 'synth', description: 'Voice lead', category: 'synth-lead', instrument: 85, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-fifths', name: 'Lead 7 (Fifths)', icon: 'synth', description: 'Fifth interval lead', category: 'synth-lead', instrument: 86, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-  { id: 'lead-bass-lead', name: 'Lead 8 (Bass + Lead)', icon: 'synth', description: 'Bass and lead combo', category: 'synth-lead', instrument: 87, left: SYNTH_LEAD_LEFT, right: SYNTH_LEAD_RIGHT },
-
-  // ==========================================
-  // SYNTH PAD (GM 88-95)
-  // ==========================================
-  { id: 'pad-new-age', name: 'Pad 1 (New Age)', icon: 'synth', description: 'New age pad', category: 'synth-pad', instrument: 88, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-warm', name: 'Pad 2 (Warm)', icon: 'synth', description: 'Warm analog pad', category: 'synth-pad', instrument: 89, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-polysynth', name: 'Pad 3 (Polysynth)', icon: 'synth', description: 'Polysynth pad', category: 'synth-pad', instrument: 90, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-choir', name: 'Pad 4 (Choir)', icon: 'synth', description: 'Choir pad', category: 'synth-pad', instrument: 91, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-bowed', name: 'Pad 5 (Bowed)', icon: 'synth', description: 'Bowed glass pad', category: 'synth-pad', instrument: 92, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-metallic', name: 'Pad 6 (Metallic)', icon: 'synth', description: 'Metallic pad', category: 'synth-pad', instrument: 93, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-halo', name: 'Pad 7 (Halo)', icon: 'synth', description: 'Halo pad', category: 'synth-pad', instrument: 94, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'pad-sweep', name: 'Pad 8 (Sweep)', icon: 'synth', description: 'Sweep pad', category: 'synth-pad', instrument: 95, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-
-  // ==========================================
-  // SYNTH FX (GM 96-103)
-  // ==========================================
-  { id: 'fx-rain', name: 'FX 1 (Rain)', icon: 'fx', description: 'Rain effect', category: 'synth-fx', instrument: 96, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-soundtrack', name: 'FX 2 (Soundtrack)', icon: 'fx', description: 'Soundtrack texture', category: 'synth-fx', instrument: 97, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-crystal', name: 'FX 3 (Crystal)', icon: 'fx', description: 'Crystal texture', category: 'synth-fx', instrument: 98, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-atmosphere', name: 'FX 4 (Atmosphere)', icon: 'fx', description: 'Atmospheric texture', category: 'synth-fx', instrument: 99, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-brightness', name: 'FX 5 (Brightness)', icon: 'fx', description: 'Bright texture', category: 'synth-fx', instrument: 100, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-goblins', name: 'FX 6 (Goblins)', icon: 'fx', description: 'Goblin texture', category: 'synth-fx', instrument: 101, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-echoes', name: 'FX 7 (Echoes)', icon: 'fx', description: 'Echo texture', category: 'synth-fx', instrument: 102, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-sci-fi', name: 'FX 8 (Sci-Fi)', icon: 'fx', description: 'Science fiction texture', category: 'synth-fx', instrument: 103, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-
-  // ==========================================
-  // ETHNIC (GM 104-111)
-  // ==========================================
-  { id: 'sitar', name: 'Sitar', icon: 'sitar', description: 'Indian sitar', category: 'ethnic', instrument: 104, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'banjo', name: 'Banjo', icon: 'banjo', description: 'American banjo', category: 'ethnic', instrument: 105, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'shamisen', name: 'Shamisen', icon: 'koto', description: 'Japanese shamisen', category: 'ethnic', instrument: 106, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'koto', name: 'Koto', icon: 'koto', description: 'Japanese koto', category: 'ethnic', instrument: 107, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'kalimba', name: 'Kalimba', icon: 'kalimba', description: 'African thumb piano', category: 'ethnic', instrument: 108, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'bagpipe', name: 'Bagpipe', icon: 'bagpipe', description: 'Scottish bagpipes', category: 'ethnic', instrument: 109, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'fiddle', name: 'Fiddle', icon: 'violin', description: 'Folk fiddle', category: 'ethnic', instrument: 110, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-  { id: 'shanai', name: 'Shanai', icon: 'wind', description: 'Indian shehnai', category: 'ethnic', instrument: 111, left: ETHNIC_LEFT, right: ETHNIC_RIGHT },
-
-  // ==========================================
-  // PERCUSSIVE (GM 112-119)
-  // ==========================================
-  { id: 'tinkle-bell', name: 'Tinkle Bell', icon: 'bell', description: 'Small bell', category: 'percussive', instrument: 112, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
-  { id: 'agogo', name: 'Agogo', icon: 'percussion', description: 'Agogo bells', category: 'percussive', instrument: 113, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
-  { id: 'steel-drums', name: 'Steel Drums', icon: 'steel-drum', description: 'Caribbean steel drums', category: 'percussive', instrument: 114, left: CHROMATIC_LEFT, right: CHROMATIC_RIGHT },
-  { id: 'woodblock', name: 'Woodblock', icon: 'percussion', description: 'Wooden block', category: 'percussive', instrument: 115, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
-  { id: 'taiko-drum', name: 'Taiko Drum', icon: 'drum', description: 'Japanese taiko', category: 'percussive', instrument: 116, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
-  { id: 'melodic-tom', name: 'Melodic Tom', icon: 'drum', description: 'Melodic tom drums', category: 'percussive', instrument: 117, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
-  { id: 'synth-drum', name: 'Synth Drum', icon: 'drum', description: 'Electronic synth drum', category: 'percussive', instrument: 118, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
-  { id: 'reverse-cymbal', name: 'Reverse Cymbal', icon: 'drum', description: 'Reversed cymbal swell', category: 'percussive', instrument: 119, left: PERCUSSIVE_LEFT, right: PERCUSSIVE_RIGHT },
-
-  // ==========================================
-  // SOUND FX (GM 120-127)
-  // ==========================================
-  { id: 'guitar-fret-noise', name: 'Guitar Fret Noise', icon: 'fx', description: 'Guitar string noise', category: 'sound-fx', instrument: 120, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'breath-noise', name: 'Breath Noise', icon: 'fx', description: 'Breath sound', category: 'sound-fx', instrument: 121, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'seashore', name: 'Seashore', icon: 'fx', description: 'Ocean waves', category: 'sound-fx', instrument: 122, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'bird-tweet', name: 'Bird Tweet', icon: 'fx', description: 'Bird sounds', category: 'sound-fx', instrument: 123, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'telephone-ring', name: 'Telephone Ring', icon: 'fx', description: 'Phone ringing', category: 'sound-fx', instrument: 124, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'helicopter', name: 'Helicopter', icon: 'fx', description: 'Helicopter blades', category: 'sound-fx', instrument: 125, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'applause', name: 'Applause', icon: 'fx', description: 'Crowd applause', category: 'sound-fx', instrument: 126, left: SFX_LEFT, right: SFX_RIGHT },
-  { id: 'gunshot', name: 'Gunshot', icon: 'fx', description: 'Gunshot sound', category: 'sound-fx', instrument: 127, left: SFX_LEFT, right: SFX_RIGHT },
 ];
 
 // Category display names for UI
@@ -445,12 +338,11 @@ export const CATEGORY_NAMES: Record<string, string> = {
   'synth-fx': 'Synth FX',
   'ethnic': 'Ethnic',
   'percussive': 'Percussive',
-  'sound-fx': 'Sound FX',
 };
 
 // GM Category order
 export const CATEGORY_ORDER = [
   'piano', 'chromatic', 'organ', 'guitar', 'bass', 'strings',
   'ensemble', 'brass', 'reed', 'pipe', 'synth-lead', 'synth-pad',
-  'synth-fx', 'ethnic', 'percussive', 'sound-fx'
+  'synth-fx', 'ethnic', 'percussive'
 ];

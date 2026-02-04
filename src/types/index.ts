@@ -59,8 +59,7 @@ export type InstrumentCategory =
   | 'synth-pad'       // GM 88-95: Synth Pad
   | 'synth-fx'        // GM 96-103: Synth Effects
   | 'ethnic'          // GM 104-111: Ethnic
-  | 'percussive'      // GM 112-119: Percussive
-  | 'sound-fx';       // GM 120-127: Sound Effects
+  | 'percussive';     // GM 112-119: Percussive
 
 // Visual particle effect
 export interface Particle {

@@ -49,7 +49,7 @@ export function Landing({ onStart }: LandingProps) {
         
         <p className="landing__subtitle">
           A touchless music performance system powered by hand tracking. Create notes, 
-          build chords, and play 60+ instruments using intuitive gestures.
+          build chords, and play 120 instruments using intuitive gestures.
         </p>
         
         <div className="landing__instruments">
@@ -106,7 +106,7 @@ export function Landing({ onStart }: LandingProps) {
             <div className="landing__feature-icon">
               <MusicNoteIcon size={28} />
             </div>
-            <div className="landing__feature-title">60+ Instruments</div>
+            <div className="landing__feature-title">120 Instruments</div>
             <div className="landing__feature-desc">
               Piano, guitar, synths, brass, world instruments and more
             </div>
