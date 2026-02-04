@@ -508,66 +508,41 @@
 }
 
 /* ============================================
-   Calibration Panel
+   Accuracy Bar
    ============================================ */
 
-.calibration-panel {
-  display: grid;
-  gap: var(--space-xs);
-}
-
-.calibration-panel__btn {
-  width: 100%;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  font-size: 0.8125rem;
+.accuracy-bar {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-md);
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-lg);
+  background: rgba(10, 10, 12, 0.65);
+  border: 1px solid var(--color-border-light);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
   font-weight: 600;
-  background: rgba(78, 205, 196, 0.1);
-  border: 1px solid rgba(78, 205, 196, 0.3);
-  color: var(--color-accent-primary);
-  transition: all var(--transition-fast);
+  backdrop-filter: var(--glass-blur) var(--glass-saturate);
+  -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+  z-index: 6;
 }
 
-.calibration-panel__btn:hover {
-  background: rgba(78, 205, 196, 0.2);
-  border-color: rgba(78, 205, 196, 0.5);
+.accuracy-bar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
 }
 
-.calibration-panel__btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.calibration-panel__btn--active {
-  background: rgba(255, 107, 107, 0.15);
-  border-color: rgba(255, 107, 107, 0.4);
-  color: #ff6b6b;
-}
-
-.calibration-panel__status {
-  font-size: 0.6875rem;
+.accuracy-bar__label {
   color: var(--color-text-muted);
 }
 
-.calibration-panel__accuracy {
-  display: grid;
-  gap: 2px;
-  font-size: 0.6875rem;
-  color: var(--color-text-secondary);
-}
-
-.calibration-panel__bar {
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-}
-
-.calibration-panel__bar span {
-  display: block;
-  height: 100%;
-  background: var(--color-accent-gradient);
-  transition: width 0.12s linear;
+.accuracy-bar__value {
+  color: var(--color-accent-primary);
 }
 
 /* ============================================

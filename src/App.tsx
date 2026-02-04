@@ -50,9 +50,6 @@ export default function App() {
   const [selectedInstrumentId, setSelectedInstrumentId] = useState(DEFAULT_INSTRUMENT_ID);
   const [activeFingers, setActiveFingers] = useState<Set<string>>(new Set());
   const [showHelp, setShowHelp] = useState(false);
-  const [isCalibrating, setIsCalibrating] = useState(false);
-  const [calibrationProgress, setCalibrationProgress] = useState(0);
-  const [calibratedPalmSize, setCalibratedPalmSize] = useState<number | null>(null);
   const [leftAccuracy, setLeftAccuracy] = useState(0);
   const [rightAccuracy, setRightAccuracy] = useState(0);
   
@@ -60,24 +57,19 @@ export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prevStatesRef = useRef<Map<string, boolean>>(new Map());
   const animationRef = useRef<number | undefined>(undefined);
-  const calibrationSamplesRef = useRef<number[]>([]);
-  const calibrationLeftSamplesRef = useRef<number[]>([]);
-  const calibrationRightSamplesRef = useRef<number[]>([]);
-  const calibrationFrameCountRef = useRef(0);
-  const calibrationLeftFrameCountRef = useRef(0);
-  const calibrationRightFrameCountRef = useRef(0);
-  const calibrationStartRef = useRef<number>(0);
-  const calibrationTimeoutRef = useRef<number | null>(null);
-  const calibrationRafRef = useRef<number | null>(null);
+  const leftSamplesRef = useRef<number[]>([]);
+  const rightSamplesRef = useRef<number[]>([]);
+  const leftLastSeenRef = useRef<number>(0);
+  const rightLastSeenRef = useRef<number>(0);
   
   // Debouncing: Track consecutive frames each finger has been raised
   // This prevents flickering from causing multiple note triggers
   const fingerRaisedFramesRef = useRef<Map<string, number>>(new Map());
   const DEBOUNCE_FRAMES = 3; // Finger must be raised for 3 consecutive frames to trigger
-  const CALIBRATION_DURATION_MS = 5000;
+  const ACCURACY_WINDOW = 30;
 
-  const computeAccuracy = useCallback((samples: number[], detectedFrames: number, totalFrames: number) => {
-    if (totalFrames === 0 || samples.length < 3) return 0;
+  const computeAccuracy = useCallback((samples: number[], lastSeenMs: number, now: number) => {
+    if (samples.length < 3) return 0;
 
     const mean = samples.reduce((sum, v) => sum + v, 0) / samples.length;
     const variance = samples.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / samples.length;
@@ -85,7 +77,7 @@ export default function App() {
     const cv = stdDev / (mean || 1);
 
     const stability = Math.max(0, Math.min(1, 1 - cv / 0.12));
-    const presence = Math.max(0, Math.min(1, detectedFrames / totalFrames));
+    const presence = Math.max(0, Math.min(1, 1 - (now - lastSeenMs) / 1000));
 
     return Math.max(0, Math.min(1, stability * presence));
   }, []);
@@ -115,37 +107,30 @@ export default function App() {
 
     const newActiveFingers = new Set<string>();
 
-    // Calibration sampling
-    if (isCalibrating) {
-      calibrationFrameCountRef.current += 1;
+    const now = performance.now();
 
-      const seenSides = new Set<'left' | 'right'>();
+    detectedHands.forEach((hand) => {
+      const side = getRealHandSide(hand);
+      const palmSize = getPalmSize(hand);
 
-      detectedHands.forEach((hand) => {
-        const side = getRealHandSide(hand);
-        seenSides.add(side);
-
-        const palmSize = getPalmSize(hand);
-        calibrationSamplesRef.current.push(palmSize);
-
-        if (side === 'left') {
-          calibrationLeftSamplesRef.current.push(palmSize);
-        } else {
-          calibrationRightSamplesRef.current.push(palmSize);
+      if (side === 'left') {
+        leftSamplesRef.current.push(palmSize);
+        if (leftSamplesRef.current.length > ACCURACY_WINDOW) {
+          leftSamplesRef.current.shift();
         }
-      });
-
-      if (seenSides.has('left')) {
-        calibrationLeftFrameCountRef.current += 1;
+        leftLastSeenRef.current = now;
+      } else {
+        rightSamplesRef.current.push(palmSize);
+        if (rightSamplesRef.current.length > ACCURACY_WINDOW) {
+          rightSamplesRef.current.shift();
+        }
+        rightLastSeenRef.current = now;
       }
-      if (seenSides.has('right')) {
-        calibrationRightFrameCountRef.current += 1;
-      }
-    }
+    });
 
     detectedHands.forEach((hand) => {
       const handSide = getRealHandSide(hand);
-      const raisedFingers = detectRaisedFingers(hand, calibratedPalmSize || undefined);
+      const raisedFingers = detectRaisedFingers(hand);
       const fingerConfig = instrument[handSide];
 
       FINGER_NAMES.forEach((fingerName, index) => {
@@ -216,73 +201,10 @@ export default function App() {
     });
 
     setActiveFingers(newActiveFingers);
-  }, [instrument, playNote, stopNote, addParticle, addNote, calibratedPalmSize, isCalibrating]);
 
-  const startCalibration = useCallback(() => {
-    if (isCalibrating) return;
-
-    calibrationSamplesRef.current = [];
-    calibrationLeftSamplesRef.current = [];
-    calibrationRightSamplesRef.current = [];
-    calibrationFrameCountRef.current = 0;
-    calibrationLeftFrameCountRef.current = 0;
-    calibrationRightFrameCountRef.current = 0;
-    calibrationStartRef.current = performance.now();
-    setCalibrationProgress(0);
-    setLeftAccuracy(0);
-    setRightAccuracy(0);
-    setIsCalibrating(true);
-
-    if (calibrationTimeoutRef.current) {
-      window.clearTimeout(calibrationTimeoutRef.current);
-    }
-    if (calibrationRafRef.current) {
-      cancelAnimationFrame(calibrationRafRef.current);
-    }
-
-    const tick = () => {
-      const progress = Math.min((performance.now() - calibrationStartRef.current) / CALIBRATION_DURATION_MS, 1);
-      setCalibrationProgress(progress);
-
-      const totalFrames = calibrationFrameCountRef.current;
-      setLeftAccuracy(
-        computeAccuracy(
-          calibrationLeftSamplesRef.current,
-          calibrationLeftFrameCountRef.current,
-          totalFrames
-        )
-      );
-      setRightAccuracy(
-        computeAccuracy(
-          calibrationRightSamplesRef.current,
-          calibrationRightFrameCountRef.current,
-          totalFrames
-        )
-      );
-
-      if (progress < 1) {
-        calibrationRafRef.current = requestAnimationFrame(tick);
-      } else {
-        calibrationRafRef.current = null;
-      }
-    };
-
-    calibrationRafRef.current = requestAnimationFrame(tick);
-
-    calibrationTimeoutRef.current = window.setTimeout(() => {
-      const samples = calibrationSamplesRef.current;
-      if (samples.length > 0) {
-        const avg = samples.reduce((sum, value) => sum + value, 0) / samples.length;
-        setCalibratedPalmSize(avg);
-      }
-      setIsCalibrating(false);
-      setCalibrationProgress(1);
-      if (calibrationRafRef.current) {
-        cancelAnimationFrame(calibrationRafRef.current);
-        calibrationRafRef.current = null;
-      }
-    }, CALIBRATION_DURATION_MS);
-  }, [computeAccuracy, isCalibrating]);
+    setLeftAccuracy(computeAccuracy(leftSamplesRef.current, leftLastSeenRef.current, now));
+    setRightAccuracy(computeAccuracy(rightSamplesRef.current, rightLastSeenRef.current, now));
+  }, [instrument, playNote, stopNote, addParticle, addNote, computeAccuracy]);
 
   // Hand tracking hook
   const { videoRef, isLoading, error, hands } = useHandTracking({
@@ -364,16 +286,8 @@ export default function App() {
     fingerRaisedFramesRef.current.clear(); // Clear debounce counters
     setActiveFingers(new Set());
     setIsStarted(false);
-    setIsCalibrating(false);
-    setCalibrationProgress(0);
-    if (calibrationTimeoutRef.current) {
-      window.clearTimeout(calibrationTimeoutRef.current);
-      calibrationTimeoutRef.current = null;
-    }
-    if (calibrationRafRef.current) {
-      cancelAnimationFrame(calibrationRafRef.current);
-      calibrationRafRef.current = null;
-    }
+    setLeftAccuracy(0);
+    setRightAccuracy(0);
   }, [stopAll]);
 
   // Show landing page if not started
@@ -404,11 +318,6 @@ export default function App() {
           onShowSkeletonChange={(v) => updateSettings({ showSkeleton: v })}
           showParticles={settings.showParticles}
           onShowParticlesChange={(v) => updateSettings({ showParticles: v })}
-          onStartCalibration={startCalibration}
-          isCalibrating={isCalibrating}
-          calibrationProgress={calibrationProgress}
-          leftAccuracy={leftAccuracy}
-          rightAccuracy={rightAccuracy}
           onHelpClick={() => setShowHelp(true)}
           onHomeClick={handleGoHome}
           isRecording={isRecording}
@@ -432,6 +341,16 @@ export default function App() {
           activeFingers={activeFingers}
           noteHistory={history}
         />
+      </div>
+      <div className="accuracy-bar" aria-live="polite">
+        <div className="accuracy-bar__item">
+          <span className="accuracy-bar__label">Left hand accuracy</span>
+          <span className="accuracy-bar__value">{Math.round(leftAccuracy * 100)}%</span>
+        </div>
+        <div className="accuracy-bar__item">
+          <span className="accuracy-bar__label">Right hand accuracy</span>
+          <span className="accuracy-bar__value">{Math.round(rightAccuracy * 100)}%</span>
+        </div>
       </div>
     </div>
   );

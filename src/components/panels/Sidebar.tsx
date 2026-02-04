@@ -24,11 +24,6 @@ interface SidebarProps {
   onShowSkeletonChange: (show: boolean) => void;
   showParticles: boolean;
   onShowParticlesChange: (show: boolean) => void;
-  onStartCalibration?: () => void;
-  isCalibrating?: boolean;
-  calibrationProgress?: number;
-  leftAccuracy?: number;
-  rightAccuracy?: number;
   onHelpClick?: () => void;
   onHomeClick?: () => void;
   // Recording props
@@ -48,11 +43,6 @@ export function Sidebar({
   onShowSkeletonChange,
   showParticles,
   onShowParticlesChange,
-  onStartCalibration,
-  isCalibrating = false,
-  calibrationProgress = 0,
-  leftAccuracy = 0,
-  rightAccuracy = 0,
   onHelpClick,
   onHomeClick,
   isRecording = false,
@@ -230,32 +220,6 @@ export function Sidebar({
               </label>
             </div>
 
-            {/* Calibration */}
-            {onStartCalibration && (
-              <div className="settings-panel__row">
-                <div className="calibration-panel">
-                  <button
-                    className={`calibration-panel__btn ${isCalibrating ? 'calibration-panel__btn--active' : ''}`}
-                    onClick={onStartCalibration}
-                    disabled={isCalibrating}
-                  >
-                    {isCalibrating ? 'Calibrating...' : 'Calibrate Gesture'}
-                  </button>
-                  <div className="calibration-panel__status">
-                    {isCalibrating ? `Hold steady ${Math.round(calibrationProgress * 100)}%` : 'Improve accuracy for your hand'}
-                  </div>
-                  {isCalibrating && (
-                    <div className="calibration-panel__accuracy">
-                      <span>Left hand accuracy: {Math.round(leftAccuracy * 100)}%</span>
-                      <span>Right hand accuracy: {Math.round(rightAccuracy * 100)}%</span>
-                    </div>
-                  )}
-                  <div className="calibration-panel__bar">
-                    <span style={{ width: `${Math.round(calibrationProgress * 100)}%` }} />
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </section>
 
