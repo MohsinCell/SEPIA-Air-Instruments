@@ -201,11 +201,11 @@
 .landing__instrument-icon:hover {
   transform: translateY(-4px) scale(1.05);
   background: rgba(255, 255, 255, 0.06);
-  border-color: var(--color-accent-primary);
-  color: var(--color-accent-primary);
+  border-color: hsl(var(--icon-hue, 180), 70%, 55%);
+  color: hsl(var(--icon-hue, 180), 70%, 55%);
   box-shadow: 
-    0 12px 40px rgba(78, 205, 196, 0.2),
-    0 0 0 1px rgba(78, 205, 196, 0.1);
+    0 12px 40px hsla(var(--icon-hue, 180), 70%, 55%, 0.25),
+    0 0 0 1px hsla(var(--icon-hue, 180), 70%, 55%, 0.15);
 }
 
 /* ============================================

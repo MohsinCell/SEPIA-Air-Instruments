@@ -55,11 +55,16 @@ export function Landing({ onStart }: LandingProps) {
         <div className="landing__instruments">
           {uniqueIcons.map((iconId, index) => {
             const IconComponent = getInstrumentIcon(iconId);
+            // Calculate hue: 25 (orange) to 210 (blue) across all icons
+            const hue = 25 + (index / (uniqueIcons.length - 1)) * (210 - 25);
             return (
               <div 
                 key={iconId} 
                 className="landing__instrument-icon"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                style={{ 
+                  animationDelay: `${index * 0.1}s`,
+                  '--icon-hue': hue,
+                } as React.CSSProperties}
               >
                 <IconComponent size={24} />
               </div>
