@@ -382,14 +382,14 @@ export default function App() {
         />
       </div>
       <div className="accuracy-bar" aria-live="polite">
-        <div className="accuracy-bar__item accuracy-bar__item--left">
+        <div className="accuracy-bar__section accuracy-bar__section--left">
           <span className="accuracy-bar__label">Left hand accuracy</span>
           <span className="accuracy-bar__value">{Math.round(leftAccuracy * 100)}%</span>
         </div>
-        <div className="accuracy-bar__center">
-          <span className="accuracy-bar__chip">{hands.length} hands detected</span>
+        <div className="accuracy-bar__section accuracy-bar__section--center">
+          <span className="accuracy-bar__label">Accuracy</span>
         </div>
-        <div className="accuracy-bar__item accuracy-bar__item--right">
+        <div className="accuracy-bar__section accuracy-bar__section--right">
           <span className="accuracy-bar__label">Right hand accuracy</span>
           <span className="accuracy-bar__value">{Math.round(rightAccuracy * 100)}%</span>
         </div>
