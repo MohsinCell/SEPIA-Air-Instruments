@@ -221,7 +221,7 @@
   color: var(--color-text-primary);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 
-    0 8px 32px rgba(255, 107, 107, 0.3),
+    0 8px 32px rgba(255, 107, 107, 0.2),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transition: all var(--transition-normal);
   display: inline-flex;
@@ -230,6 +230,7 @@
   animation: fadeIn 0.8s ease-out 0.5s backwards;
   position: relative;
   overflow: hidden;
+  opacity: 0.85;
 }
 
 .landing__start-btn::before {
@@ -243,8 +244,9 @@
 
 .landing__start-btn:hover {
   box-shadow: 
-    0 16px 48px rgba(255, 107, 107, 0.4),
+    0 16px 48px rgba(255, 107, 107, 0.25),
     0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  opacity: 1;
 }
 
 .landing__start-btn:hover::before {
