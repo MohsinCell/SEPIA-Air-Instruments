@@ -61,23 +61,27 @@ export default function App() {
   const rightSamplesRef = useRef<number[]>([]);
   const leftLastSeenRef = useRef<number>(0);
   const rightLastSeenRef = useRef<number>(0);
+  const leftAccuracyRef = useRef<number>(0);
+  const rightAccuracyRef = useRef<number>(0);
   
   // Debouncing: Track consecutive frames each finger has been raised
   // This prevents flickering from causing multiple note triggers
   const fingerRaisedFramesRef = useRef<Map<string, number>>(new Map());
   const DEBOUNCE_FRAMES = 3; // Finger must be raised for 3 consecutive frames to trigger
   const ACCURACY_WINDOW = 30;
+  const ACCURACY_DECAY_MS = 1200;
 
   const computeAccuracy = useCallback((samples: number[], lastSeenMs: number, now: number) => {
     if (samples.length < 3) return 0;
+    if (now - lastSeenMs > ACCURACY_DECAY_MS) return 0;
 
     const mean = samples.reduce((sum, v) => sum + v, 0) / samples.length;
     const variance = samples.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / samples.length;
     const stdDev = Math.sqrt(variance);
     const cv = stdDev / (mean || 1);
 
-    const stability = Math.max(0, Math.min(1, 1 - cv / 0.12));
-    const presence = Math.max(0, Math.min(1, 1 - (now - lastSeenMs) / 1000));
+    const stability = Math.max(0, Math.min(1, 1 - cv / 0.08));
+    const presence = Math.max(0, Math.min(1, 1 - (now - lastSeenMs) / ACCURACY_DECAY_MS));
 
     return Math.max(0, Math.min(1, stability * presence));
   }, []);
@@ -202,8 +206,14 @@ export default function App() {
 
     setActiveFingers(newActiveFingers);
 
-    setLeftAccuracy(computeAccuracy(leftSamplesRef.current, leftLastSeenRef.current, now));
-    setRightAccuracy(computeAccuracy(rightSamplesRef.current, rightLastSeenRef.current, now));
+    const leftRaw = computeAccuracy(leftSamplesRef.current, leftLastSeenRef.current, now);
+    const rightRaw = computeAccuracy(rightSamplesRef.current, rightLastSeenRef.current, now);
+
+    leftAccuracyRef.current = leftAccuracyRef.current * 0.8 + leftRaw * 0.2;
+    rightAccuracyRef.current = rightAccuracyRef.current * 0.8 + rightRaw * 0.2;
+
+    setLeftAccuracy(leftAccuracyRef.current);
+    setRightAccuracy(rightAccuracyRef.current);
   }, [instrument, playNote, stopNote, addParticle, addNote, computeAccuracy]);
 
   // Hand tracking hook
@@ -343,11 +353,14 @@ export default function App() {
         />
       </div>
       <div className="accuracy-bar" aria-live="polite">
-        <div className="accuracy-bar__item">
+        <div className="accuracy-bar__item accuracy-bar__item--left">
           <span className="accuracy-bar__label">Left hand accuracy</span>
           <span className="accuracy-bar__value">{Math.round(leftAccuracy * 100)}%</span>
         </div>
-        <div className="accuracy-bar__item">
+        <div className="accuracy-bar__center">
+          <span className="accuracy-bar__chip">{hands.length} hands detected</span>
+        </div>
+        <div className="accuracy-bar__item accuracy-bar__item--right">
           <span className="accuracy-bar__label">Right hand accuracy</span>
           <span className="accuracy-bar__value">{Math.round(rightAccuracy * 100)}%</span>
         </div>
