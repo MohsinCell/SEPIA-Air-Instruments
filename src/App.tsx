@@ -61,12 +61,13 @@ export default function App() {
   const calibrationSamplesRef = useRef<number[]>([]);
   const calibrationStartRef = useRef<number>(0);
   const calibrationTimeoutRef = useRef<number | null>(null);
+  const calibrationIntervalRef = useRef<number | null>(null);
   
   // Debouncing: Track consecutive frames each finger has been raised
   // This prevents flickering from causing multiple note triggers
   const fingerRaisedFramesRef = useRef<Map<string, number>>(new Map());
   const DEBOUNCE_FRAMES = 3; // Finger must be raised for 3 consecutive frames to trigger
-  const CALIBRATION_DURATION_MS = 2000;
+  const CALIBRATION_DURATION_MS = 5000;
 
   // Get current instrument
   const instrument = INSTRUMENTS.find(i => i.id === selectedInstrumentId) || INSTRUMENTS[0];
@@ -94,24 +95,9 @@ export default function App() {
     const newActiveFingers = new Set<string>();
 
     // Calibration sampling
-    if (isCalibrating) {
-      const now = performance.now();
-      const progress = Math.min((now - calibrationStartRef.current) / CALIBRATION_DURATION_MS, 1);
-      setCalibrationProgress(progress);
-
-      if (detectedHands[0]) {
-        const palmSize = getPalmSize(detectedHands[0]);
-        calibrationSamplesRef.current.push(palmSize);
-      }
-
-      if (progress >= 1) {
-        const samples = calibrationSamplesRef.current;
-        if (samples.length > 0) {
-          const avg = samples.reduce((sum, value) => sum + value, 0) / samples.length;
-          setCalibratedPalmSize(avg);
-        }
-        setIsCalibrating(false);
-      }
+    if (isCalibrating && detectedHands[0]) {
+      const palmSize = getPalmSize(detectedHands[0]);
+      calibrationSamplesRef.current.push(palmSize);
     }
 
     detectedHands.forEach((hand) => {
@@ -200,6 +186,18 @@ export default function App() {
     if (calibrationTimeoutRef.current) {
       window.clearTimeout(calibrationTimeoutRef.current);
     }
+    if (calibrationIntervalRef.current) {
+      window.clearInterval(calibrationIntervalRef.current);
+    }
+
+    calibrationIntervalRef.current = window.setInterval(() => {
+      const progress = Math.min((performance.now() - calibrationStartRef.current) / CALIBRATION_DURATION_MS, 1);
+      setCalibrationProgress(progress);
+      if (progress >= 1 && calibrationIntervalRef.current) {
+        window.clearInterval(calibrationIntervalRef.current);
+        calibrationIntervalRef.current = null;
+      }
+    }, 100);
 
     calibrationTimeoutRef.current = window.setTimeout(() => {
       const samples = calibrationSamplesRef.current;
@@ -209,6 +207,10 @@ export default function App() {
       }
       setIsCalibrating(false);
       setCalibrationProgress(1);
+      if (calibrationIntervalRef.current) {
+        window.clearInterval(calibrationIntervalRef.current);
+        calibrationIntervalRef.current = null;
+      }
     }, CALIBRATION_DURATION_MS);
   }, [isCalibrating]);
 
@@ -297,6 +299,10 @@ export default function App() {
     if (calibrationTimeoutRef.current) {
       window.clearTimeout(calibrationTimeoutRef.current);
       calibrationTimeoutRef.current = null;
+    }
+    if (calibrationIntervalRef.current) {
+      window.clearInterval(calibrationIntervalRef.current);
+      calibrationIntervalRef.current = null;
     }
   }, [stopAll]);
 
