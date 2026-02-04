@@ -5,6 +5,9 @@
 import type { InstrumentPreset } from '../types';
 import { CHORD_LIBRARY, NOTE_COLORS } from './chords';
 
+// Default instrument ID
+export const DEFAULT_INSTRUMENT_ID = 'piano';
+
 // Helper finger mappings by instrument type
 const PIANO_LEFT = {
   thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.red },

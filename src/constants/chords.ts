@@ -184,8 +184,8 @@ export const CHORD_LIBRARY: Record<string, number[]> = {
   'Dadd9': [62, 66, 69, 76],
 
   // 6th chords
-  'C6': [60, 64, 67, 69],
-  'G6': [67, 71, 74, 76],
+  'Cmaj6': [60, 64, 67, 69],
+  'Gmaj6': [67, 71, 74, 76],
   'Am6': [69, 72, 76, 78],
 };
 
