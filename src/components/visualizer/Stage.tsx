@@ -9,13 +9,12 @@ import { getInstrumentIcon } from '../ui/Icons';
 
 interface StageProps {
   instrument: InstrumentPreset;
-  handsCount: number;
   videoRef: React.RefObject<HTMLVideoElement | null>;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
 }
 
 export const Stage = forwardRef<HTMLDivElement, StageProps>(
-  function Stage({ instrument, handsCount, videoRef, canvasRef }, ref) {
+  function Stage({ instrument, videoRef, canvasRef }, ref) {
     const IconComponent = getInstrumentIcon(instrument.icon);
     
     return (

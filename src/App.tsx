@@ -369,7 +369,6 @@ export default function App() {
         {/* Main Stage */}
         <Stage
           instrument={instrument}
-          handsCount={hands.length}
           videoRef={videoRef}
           canvasRef={canvasRef}
         />
