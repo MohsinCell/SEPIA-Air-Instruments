@@ -47,19 +47,6 @@ export const Stage = forwardRef<HTMLDivElement, StageProps>(
           </div>
         </div>
 
-        {/* Bottom Overlay - Status */}
-        <div className="stage__overlay-bottom">
-          <div
-            className={`stage__status ${
-              handsCount > 0 ? 'stage__status--detected' : 'stage__status--waiting'
-            }`}
-          >
-            <span className="stage__status-dot" />
-            {handsCount > 0
-              ? `${handsCount} hand${handsCount > 1 ? 's' : ''} detected`
-              : 'Show your hands to play'}
-          </div>
-        </div>
       </main>
     );
   }
