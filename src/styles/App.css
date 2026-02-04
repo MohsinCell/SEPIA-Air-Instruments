@@ -622,7 +622,7 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-lg);
   animation: slideInUp 0.4s ease-out;
   box-shadow: var(--shadow-md);
 }
@@ -634,12 +634,27 @@
   align-items: center;
   justify-content: center;
   color: var(--color-accent-primary);
+  flex-shrink: 0;
+}
+
+.stage__instrument-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .stage__instrument-name {
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.stage__instrument-desc {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  line-height: 1.2;
 }
 
 .stage__overlay-bottom {
@@ -978,7 +993,7 @@
   }
 
   .stage__instrument-badge {
-    padding: 4px 10px;
+    padding: 6px 12px;
     gap: var(--space-xs);
   }
 
@@ -994,6 +1009,10 @@
 
   .stage__instrument-name {
     font-size: 0.75rem;
+  }
+
+  .stage__instrument-desc {
+    display: none;
   }
 
   /* Compact accuracy bar for phones */

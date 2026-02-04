@@ -42,7 +42,10 @@ export const Stage = forwardRef<HTMLDivElement, StageProps>(
             <span className="stage__instrument-icon">
               <IconComponent size={24} />
             </span>
-            <span className="stage__instrument-name">{instrument.name}</span>
+            <div className="stage__instrument-info">
+              <span className="stage__instrument-name">{instrument.name}</span>
+              <span className="stage__instrument-desc">{instrument.description}</span>
+            </div>
           </div>
         </div>
 
