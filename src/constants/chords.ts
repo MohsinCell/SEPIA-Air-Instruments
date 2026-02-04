@@ -187,6 +187,62 @@ export const CHORD_LIBRARY: Record<string, number[]> = {
   'Cmaj6': [60, 64, 67, 69],
   'Gmaj6': [67, 71, 74, 76],
   'Am6': [69, 72, 76, 78],
+
+  // Guitar voicings (different inversions for guitar-friendly playing)
+  'Cgt': [67, 72, 76, 79],
+  'Ggt': [67, 71, 74, 78],
+  'Amgt': [69, 72, 76, 79],
+  'Fgt': [65, 69, 72, 77],
+  'Dmgt': [62, 65, 69, 74],
+  'Emgt': [64, 67, 71, 76],
+
+  // String section voicings (lush 7ths and 9ths)
+  'Cstr': [60, 64, 67, 71, 74],
+  'Gstr': [67, 71, 74, 78, 81],
+  'Amstr': [69, 72, 76, 79, 83],
+  'Fstr': [65, 69, 72, 76, 79],
+  'Dmstr': [62, 65, 69, 72, 76],
+  'Emstr': [64, 67, 71, 74, 78],
+
+  // Brass section voicings (spread with octave doublings)
+  'Cbrs': [60, 64, 67, 72, 76],
+  'Gbrs': [55, 67, 71, 74, 79],
+  'Ambrs': [57, 69, 72, 76, 81],
+  'Fbrs': [53, 65, 69, 72, 77],
+  'Dmbrs': [50, 62, 65, 69, 74],
+  'Embrs': [52, 64, 67, 71, 76],
+
+  // Ensemble pad voicings (rich extended chords)
+  'Cpad': [60, 64, 67, 71, 74, 77],
+  'Gpad': [55, 67, 71, 74, 78, 81],
+  'Ampad': [57, 69, 72, 76, 79, 83],
+  'Fpad': [53, 65, 69, 72, 76, 79],
+  'Dmpad': [50, 62, 65, 69, 72, 76],
+  'Empad': [52, 64, 67, 71, 74, 78],
+
+  // Organ voicings (full organ style)
+  'Corg': [60, 64, 67, 72, 76, 79],
+  'Gorg': [55, 67, 71, 74, 79, 83],
+  'Amorg': [57, 69, 72, 76, 81, 84],
+  'Forg': [53, 65, 69, 72, 77, 80],
+  'Dmorg': [50, 62, 65, 69, 74, 77],
+  'Emorg': [52, 64, 67, 71, 76, 79],
+
+  // Reed/Lead single notes
+  'Clead': [72],
+  'Glead': [74],
+  'Amlead': [76],
+  'Flead': [77],
+  'Dmlead': [74],
+  'Emlead': [76],
+
+  // Ethic pentatonic-style groupings
+  'Ceth': [60, 62, 64, 67, 69],
+  'Geth': [67, 69, 71, 74, 76],
+  'Ameth': [69, 71, 72, 76, 77],
+  'Feth': [65, 67, 69, 72, 74],
+  'Dmeth': [62, 64, 65, 69, 71],
+  'Emeth': [64, 65, 67, 71, 72],
 };
 
 // Color palette for notes

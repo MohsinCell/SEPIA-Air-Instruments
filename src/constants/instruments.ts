@@ -9,6 +9,9 @@ import { CHORD_LIBRARY, NOTE_COLORS } from './chords';
 export const DEFAULT_INSTRUMENT_ID = 'acoustic-grand-piano';
 
 // Helper finger mappings by instrument type
+// Each category uses musically appropriate chord voicings
+
+// PIANO: Standard root position triads and 7ths
 const PIANO_LEFT = {
   thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.red },
   index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.green },
@@ -24,6 +27,7 @@ const PIANO_RIGHT = {
   pinky: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.cyan },
 };
 
+// CHROMATIC PERCUSSION: Single notes (ideal for bells, marimba, xylophone)
 const CHROMATIC_LEFT = {
   thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.cyan },
   index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.sky },
@@ -34,41 +38,44 @@ const CHROMATIC_LEFT = {
 const CHROMATIC_RIGHT = {
   thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.purple },
   index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: NOTE_COLORS.magenta },
-  middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.pink },
-  ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.rose },
-  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.coral },
+  middle: { name: 'C6', notes: CHORD_LIBRARY['C6'], color: NOTE_COLORS.pink },
+  ring: { name: 'D6', notes: CHORD_LIBRARY['D6'], color: NOTE_COLORS.rose },
+  pinky: { name: 'E6', notes: CHORD_LIBRARY['E6'], color: NOTE_COLORS.coral },
 };
 
+// ORGAN: Full organ-style voicings with octave doublings
 const ORGAN_LEFT = {
-  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.amber },
-  index: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
-  middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.gold },
-  ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.brown },
-  pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.coral },
+  thumb: { name: 'Corg', notes: CHORD_LIBRARY['Corg'], color: NOTE_COLORS.amber },
+  index: { name: 'Forg', notes: CHORD_LIBRARY['Forg'], color: NOTE_COLORS.orange },
+  middle: { name: 'Gorg', notes: CHORD_LIBRARY['Gorg'], color: NOTE_COLORS.gold },
+  ring: { name: 'Amorg', notes: CHORD_LIBRARY['Amorg'], color: NOTE_COLORS.brown },
+  pinky: { name: 'Dmorg', notes: CHORD_LIBRARY['Dmorg'], color: NOTE_COLORS.coral },
 };
 const ORGAN_RIGHT = {
-  thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.red },
+  thumb: { name: 'Emorg', notes: CHORD_LIBRARY['Emorg'], color: NOTE_COLORS.red },
   index: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: NOTE_COLORS.amber },
   middle: { name: 'C7', notes: CHORD_LIBRARY['C7'], color: NOTE_COLORS.orange },
   ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.gold },
   pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.brown },
 };
 
+// GUITAR: Guitar-friendly voicings with barre chord style
 const GUITAR_LEFT = {
-  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.amber },
-  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.green },
-  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.blue },
-  ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
-  pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.teal },
+  thumb: { name: 'Cgt', notes: CHORD_LIBRARY['Cgt'], color: NOTE_COLORS.amber },
+  index: { name: 'Fgt', notes: CHORD_LIBRARY['Fgt'], color: NOTE_COLORS.orange },
+  middle: { name: 'Ggt', notes: CHORD_LIBRARY['Ggt'], color: NOTE_COLORS.gold },
+  ring: { name: 'Amgt', notes: CHORD_LIBRARY['Amgt'], color: NOTE_COLORS.brown },
+  pinky: { name: 'Dmgt', notes: CHORD_LIBRARY['Dmgt'], color: NOTE_COLORS.coral },
 };
 const GUITAR_RIGHT = {
-  thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.purple },
-  index: { name: 'A', notes: CHORD_LIBRARY['A'], color: NOTE_COLORS.red },
-  middle: { name: 'E', notes: CHORD_LIBRARY['E'], color: NOTE_COLORS.cyan },
-  ring: { name: 'D', notes: CHORD_LIBRARY['D'], color: NOTE_COLORS.gold },
-  pinky: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: NOTE_COLORS.violet },
+  thumb: { name: 'Emgt', notes: CHORD_LIBRARY['Emgt'], color: NOTE_COLORS.red },
+  index: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.pink },
+  middle: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.gold },
+  ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.violet },
+  pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.purple },
 };
 
+// BASS: Low octave bass notes
 const BASS_LEFT = {
   thumb: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: NOTE_COLORS.indigo },
   index: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: NOTE_COLORS.blue },
@@ -79,131 +86,156 @@ const BASS_LEFT = {
 const BASS_RIGHT = {
   thumb: { name: 'BassA', notes: CHORD_LIBRARY['BassA'], color: NOTE_COLORS.purple },
   index: { name: 'BassB', notes: CHORD_LIBRARY['BassB'], color: NOTE_COLORS.violet },
-  middle: { name: 'C3', notes: CHORD_LIBRARY['C3'], color: NOTE_COLORS.magenta },
-  ring: { name: 'D3', notes: CHORD_LIBRARY['D3'], color: NOTE_COLORS.pink },
-  pinky: { name: 'E3', notes: CHORD_LIBRARY['E3'], color: NOTE_COLORS.rose },
+  middle: { name: 'BassC', notes: CHORD_LIBRARY['BassC'], color: NOTE_COLORS.magenta },
+  ring: { name: 'BassD', notes: CHORD_LIBRARY['BassD'], color: NOTE_COLORS.pink },
+  pinky: { name: 'BassE', notes: CHORD_LIBRARY['BassE'], color: NOTE_COLORS.rose },
 };
 
+// STRINGS: Lush 7th and 9th chord voicings
 const STRINGS_LEFT = {
-  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.brown },
-  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.amber },
-  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.orange },
-  ring: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.gold },
-  pinky: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.coral },
+  thumb: { name: 'Cstr', notes: CHORD_LIBRARY['Cstr'], color: NOTE_COLORS.brown },
+  index: { name: 'Gstr', notes: CHORD_LIBRARY['Gstr'], color: NOTE_COLORS.amber },
+  middle: { name: 'Amstr', notes: CHORD_LIBRARY['Amstr'], color: NOTE_COLORS.orange },
+  ring: { name: 'Fstr', notes: CHORD_LIBRARY['Fstr'], color: NOTE_COLORS.gold },
+  pinky: { name: 'Dmstr', notes: CHORD_LIBRARY['Dmstr'], color: NOTE_COLORS.coral },
 };
 const STRINGS_RIGHT = {
-  thumb: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.red },
+  thumb: { name: 'Emstr', notes: CHORD_LIBRARY['Emstr'], color: NOTE_COLORS.red },
   index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.rose },
   middle: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.pink },
   ring: { name: 'G7', notes: CHORD_LIBRARY['G7'], color: NOTE_COLORS.magenta },
   pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.purple },
 };
 
+// ENSEMBLE: Rich pad-style extended chords
 const ENSEMBLE_LEFT = {
-  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.gold },
-  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.amber },
-  middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
-  ring: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.coral },
-  pinky: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.red },
+  thumb: { name: 'Cpad', notes: CHORD_LIBRARY['Cpad'], color: NOTE_COLORS.gold },
+  index: { name: 'Gpad', notes: CHORD_LIBRARY['Gpad'], color: NOTE_COLORS.amber },
+  middle: { name: 'Fpad', notes: CHORD_LIBRARY['Fpad'], color: NOTE_COLORS.orange },
+  ring: { name: 'Ampad', notes: CHORD_LIBRARY['Ampad'], color: NOTE_COLORS.coral },
+  pinky: { name: 'Empad', notes: CHORD_LIBRARY['Empad'], color: NOTE_COLORS.red },
 };
 const ENSEMBLE_RIGHT = {
-  thumb: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.rose },
+  thumb: { name: 'Dmpad', notes: CHORD_LIBRARY['Dmpad'], color: NOTE_COLORS.rose },
   index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.pink },
   middle: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.magenta },
   ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.purple },
   pinky: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
 };
 
+// BRASS: Bold spread voicings with octave doublings
 const BRASS_LEFT = {
-  thumb: { name: 'C', notes: CHORD_LIBRARY['C'], color: NOTE_COLORS.gold },
-  index: { name: 'G', notes: CHORD_LIBRARY['G'], color: NOTE_COLORS.amber },
-  middle: { name: 'F', notes: CHORD_LIBRARY['F'], color: NOTE_COLORS.orange },
-  ring: { name: 'D', notes: CHORD_LIBRARY['D'], color: NOTE_COLORS.coral },
-  pinky: { name: 'A', notes: CHORD_LIBRARY['A'], color: NOTE_COLORS.red },
+  thumb: { name: 'Cbrs', notes: CHORD_LIBRARY['Cbrs'], color: NOTE_COLORS.gold },
+  index: { name: 'Gbrs', notes: CHORD_LIBRARY['Gbrs'], color: NOTE_COLORS.amber },
+  middle: { name: 'Fbrs', notes: CHORD_LIBRARY['Fbrs'], color: NOTE_COLORS.orange },
+  ring: { name: 'Dbrs', notes: CHORD_LIBRARY['Dbrs'] || [62, 66, 69, 74, 79], color: NOTE_COLORS.coral },
+  pinky: { name: 'Abrs', notes: CHORD_LIBRARY['Abrs'] || [57, 69, 73, 76, 81], color: NOTE_COLORS.red },
 };
 const BRASS_RIGHT = {
-  thumb: { name: 'E', notes: CHORD_LIBRARY['E'], color: NOTE_COLORS.brown },
-  index: { name: 'Dm', notes: CHORD_LIBRARY['Dm'], color: NOTE_COLORS.rose },
-  middle: { name: 'Am', notes: CHORD_LIBRARY['Am'], color: NOTE_COLORS.pink },
-  ring: { name: 'Em', notes: CHORD_LIBRARY['Em'], color: NOTE_COLORS.magenta },
-  pinky: { name: 'Bm', notes: CHORD_LIBRARY['Bm'], color: NOTE_COLORS.purple },
+  thumb: { name: 'Embrs', notes: CHORD_LIBRARY['Embrs'], color: NOTE_COLORS.brown },
+  index: { name: 'Dmbrs', notes: CHORD_LIBRARY['Dmbrs'], color: NOTE_COLORS.rose },
+  middle: { name: 'Ambrs', notes: CHORD_LIBRARY['Ambrs'], color: NOTE_COLORS.pink },
+  ring: { name: 'Embrs', notes: CHORD_LIBRARY['Embrs'], color: NOTE_COLORS.magenta },
+  pinky: { name: 'Bmbrs', notes: CHORD_LIBRARY['Bmbrs'] || [59, 71, 74, 78, 83], color: NOTE_COLORS.purple },
 };
 
+// REED: Single notes (ideal for sax, clarinet, oboe)
 const REED_LEFT = {
-  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.amber },
-  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.gold },
-  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.orange },
-  ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.coral },
-  pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
+  thumb: { name: 'Clead', notes: CHORD_LIBRARY['Clead'], color: NOTE_COLORS.amber },
+  index: { name: 'Dlead', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.gold },
+  middle: { name: 'Elead', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.orange },
+  ring: { name: 'Flead', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.coral },
+  pinky: { name: 'Glead', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
 };
 const REED_RIGHT = {
-  thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
-  index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.rose },
-  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
-  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.magenta },
-  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
+  thumb: { name: 'Alead', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
+  index: { name: 'Blead', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.rose },
+  middle: { name: 'Clead', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
+  ring: { name: 'Dlead', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.magenta },
+  pinky: { name: 'Elead', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
 };
 
+// PIPE: Single notes in higher register
 const PIPE_LEFT = {
-  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.sky },
-  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.cyan },
-  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.teal },
-  ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: NOTE_COLORS.green },
-  pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.lime },
+  thumb: { name: 'C6', notes: CHORD_LIBRARY['C6'], color: NOTE_COLORS.sky },
+  index: { name: 'D6', notes: CHORD_LIBRARY['D6'], color: NOTE_COLORS.cyan },
+  middle: { name: 'E6', notes: CHORD_LIBRARY['E6'], color: NOTE_COLORS.teal },
+  ring: { name: 'F6', notes: CHORD_LIBRARY['F6'] || [77], color: NOTE_COLORS.green },
+  pinky: { name: 'G6', notes: CHORD_LIBRARY['G6'] || [79], color: NOTE_COLORS.lime },
 };
 const PIPE_RIGHT = {
-  thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.blue },
-  index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: NOTE_COLORS.indigo },
-  middle: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.violet },
-  ring: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.purple },
-  pinky: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.magenta },
+  thumb: { name: 'A6', notes: CHORD_LIBRARY['A6'] || [81], color: NOTE_COLORS.blue },
+  index: { name: 'B6', notes: CHORD_LIBRARY['B6'] || [83], color: NOTE_COLORS.indigo },
+  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.violet },
+  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.purple },
+  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.magenta },
 };
 
+// SYNTH LEAD: Single lead synth notes
 const SYNTH_LEAD_LEFT = {
-  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.neonCyan },
-  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.neonGreen },
-  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.neonYellow },
-  ring: { name: 'F4', notes: CHORD_LIBRARY['F4'], color: NOTE_COLORS.neonPink },
-  pinky: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.neonPurple },
+  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.neonCyan },
+  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.neonGreen },
+  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.neonYellow },
+  ring: { name: 'F5', notes: CHORD_LIBRARY['F5'], color: NOTE_COLORS.neonPink },
+  pinky: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.neonPurple },
 };
 const SYNTH_LEAD_RIGHT = {
-  thumb: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.cyan },
-  index: { name: 'B4', notes: CHORD_LIBRARY['B4'], color: NOTE_COLORS.magenta },
-  middle: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.pink },
-  ring: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.violet },
-  pinky: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.purple },
+  thumb: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.cyan },
+  index: { name: 'B5', notes: CHORD_LIBRARY['B5'], color: NOTE_COLORS.magenta },
+  middle: { name: 'C6', notes: CHORD_LIBRARY['C6'], color: NOTE_COLORS.pink },
+  ring: { name: 'D6', notes: CHORD_LIBRARY['D6'], color: NOTE_COLORS.violet },
+  pinky: { name: 'E6', notes: CHORD_LIBRARY['E6'], color: NOTE_COLORS.purple },
 };
 
+// SYNTH PAD: Rich pad-style extended chords
 const SYNTH_PAD_LEFT = {
-  thumb: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.cyan },
-  index: { name: 'Dm7', notes: CHORD_LIBRARY['Dm7'], color: NOTE_COLORS.teal },
-  middle: { name: 'Em7', notes: CHORD_LIBRARY['Em7'], color: NOTE_COLORS.green },
-  ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.blue },
-  pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.indigo },
+  thumb: { name: 'Cpad', notes: CHORD_LIBRARY['Cpad'], color: NOTE_COLORS.cyan },
+  index: { name: 'Gpad', notes: CHORD_LIBRARY['Gpad'], color: NOTE_COLORS.teal },
+  middle: { name: 'Fpad', notes: CHORD_LIBRARY['Fpad'], color: NOTE_COLORS.green },
+  ring: { name: 'Ampad', notes: CHORD_LIBRARY['Ampad'], color: NOTE_COLORS.blue },
+  pinky: { name: 'Empad', notes: CHORD_LIBRARY['Empad'], color: NOTE_COLORS.indigo },
 };
 const SYNTH_PAD_RIGHT = {
-  thumb: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.violet },
-  index: { name: 'Bm7', notes: CHORD_LIBRARY['Bm7'], color: NOTE_COLORS.purple },
-  middle: { name: 'Csus2', notes: CHORD_LIBRARY['Csus2'], color: NOTE_COLORS.magenta },
-  ring: { name: 'Gsus2', notes: CHORD_LIBRARY['Gsus2'], color: NOTE_COLORS.pink },
-  pinky: { name: 'Dsus2', notes: CHORD_LIBRARY['Dsus2'], color: NOTE_COLORS.rose },
+  thumb: { name: 'Dmpad', notes: CHORD_LIBRARY['Dmpad'], color: NOTE_COLORS.violet },
+  index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.purple },
+  middle: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.magenta },
+  ring: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.pink },
+  pinky: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.rose },
 };
 
+// SYNTH FX: Atmospheric textures (using pad chords)
+const SYNTH_FX_LEFT = {
+  thumb: { name: 'Cpad', notes: CHORD_LIBRARY['Cpad'], color: NOTE_COLORS.silver },
+  index: { name: 'Gpad', notes: CHORD_LIBRARY['Gpad'], color: NOTE_COLORS.cyan },
+  middle: { name: 'Ampad', notes: CHORD_LIBRARY['Ampad'], color: NOTE_COLORS.teal },
+  ring: { name: 'Fpad', notes: CHORD_LIBRARY['Fpad'], color: NOTE_COLORS.blue },
+  pinky: { name: 'Empad', notes: CHORD_LIBRARY['Empad'], color: NOTE_COLORS.indigo },
+};
+const SYNTH_FX_RIGHT = {
+  thumb: { name: 'Dmpad', notes: CHORD_LIBRARY['Dmpad'], color: NOTE_COLORS.violet },
+  index: { name: 'Cmaj7', notes: CHORD_LIBRARY['Cmaj7'], color: NOTE_COLORS.purple },
+  middle: { name: 'Gmaj7', notes: CHORD_LIBRARY['Gmaj7'], color: NOTE_COLORS.magenta },
+  ring: { name: 'Am7', notes: CHORD_LIBRARY['Am7'], color: NOTE_COLORS.pink },
+  pinky: { name: 'Fmaj7', notes: CHORD_LIBRARY['Fmaj7'], color: NOTE_COLORS.rose },
+};
+
+// ETHNIC: Pentatonic and modal groupings
 const ETHNIC_LEFT = {
-  thumb: { name: 'C4', notes: CHORD_LIBRARY['C4'], color: NOTE_COLORS.amber },
-  index: { name: 'D4', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.orange },
-  middle: { name: 'E4', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.coral },
-  ring: { name: 'G4', notes: CHORD_LIBRARY['G4'], color: NOTE_COLORS.red },
-  pinky: { name: 'A4', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
+  thumb: { name: 'Ceth', notes: CHORD_LIBRARY['Ceth'], color: NOTE_COLORS.amber },
+  index: { name: 'Deth', notes: CHORD_LIBRARY['D4'], color: NOTE_COLORS.orange },
+  middle: { name: 'Eeth', notes: CHORD_LIBRARY['E4'], color: NOTE_COLORS.coral },
+  ring: { name: 'Geth', notes: CHORD_LIBRARY['Geth'], color: NOTE_COLORS.red },
+  pinky: { name: 'Aeth', notes: CHORD_LIBRARY['A4'], color: NOTE_COLORS.brown },
 };
 const ETHNIC_RIGHT = {
-  thumb: { name: 'C5', notes: CHORD_LIBRARY['C5'], color: NOTE_COLORS.gold },
-  index: { name: 'D5', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.amber },
-  middle: { name: 'E5', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.orange },
-  ring: { name: 'G5', notes: CHORD_LIBRARY['G5'], color: NOTE_COLORS.coral },
-  pinky: { name: 'A5', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.red },
+  thumb: { name: 'Ceth', notes: CHORD_LIBRARY['Ceth'], color: NOTE_COLORS.gold },
+  index: { name: 'Deth', notes: CHORD_LIBRARY['D5'], color: NOTE_COLORS.amber },
+  middle: { name: 'Eeth', notes: CHORD_LIBRARY['E5'], color: NOTE_COLORS.orange },
+  ring: { name: 'Geth', notes: CHORD_LIBRARY['Geth'], color: NOTE_COLORS.coral },
+  pinky: { name: 'Aeth', notes: CHORD_LIBRARY['A5'], color: NOTE_COLORS.red },
 };
 
+// PERCUSSIVE: Drum kit sounds
 const PERCUSSIVE_LEFT = {
   thumb: { name: 'Kick', notes: CHORD_LIBRARY['Kick'], color: NOTE_COLORS.red },
   index: { name: 'Snare', notes: CHORD_LIBRARY['Snare'], color: NOTE_COLORS.orange },
@@ -367,14 +399,14 @@ export const INSTRUMENTS: InstrumentPreset[] = [
   // ==========================================
   // SYNTH FX (GM 96-103)
   // ==========================================
-  { id: 'fx-rain', name: 'FX 1 (Rain)', icon: 'fx', description: 'Rain effect', category: 'synth-fx', instrument: 96, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-soundtrack', name: 'FX 2 (Soundtrack)', icon: 'fx', description: 'Soundtrack texture', category: 'synth-fx', instrument: 97, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-crystal', name: 'FX 3 (Crystal)', icon: 'fx', description: 'Crystal texture', category: 'synth-fx', instrument: 98, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-atmosphere', name: 'FX 4 (Atmosphere)', icon: 'fx', description: 'Atmospheric texture', category: 'synth-fx', instrument: 99, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-brightness', name: 'FX 5 (Brightness)', icon: 'fx', description: 'Bright texture', category: 'synth-fx', instrument: 100, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-goblins', name: 'FX 6 (Goblins)', icon: 'fx', description: 'Goblin texture', category: 'synth-fx', instrument: 101, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-echoes', name: 'FX 7 (Echoes)', icon: 'fx', description: 'Echo texture', category: 'synth-fx', instrument: 102, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
-  { id: 'fx-sci-fi', name: 'FX 8 (Sci-Fi)', icon: 'fx', description: 'Science fiction texture', category: 'synth-fx', instrument: 103, left: SYNTH_PAD_LEFT, right: SYNTH_PAD_RIGHT },
+  { id: 'fx-rain', name: 'FX 1 (Rain)', icon: 'fx', description: 'Rain effect', category: 'synth-fx', instrument: 96, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-soundtrack', name: 'FX 2 (Soundtrack)', icon: 'fx', description: 'Soundtrack texture', category: 'synth-fx', instrument: 97, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-crystal', name: 'FX 3 (Crystal)', icon: 'fx', description: 'Crystal texture', category: 'synth-fx', instrument: 98, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-atmosphere', name: 'FX 4 (Atmosphere)', icon: 'fx', description: 'Atmospheric texture', category: 'synth-fx', instrument: 99, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-brightness', name: 'FX 5 (Brightness)', icon: 'fx', description: 'Bright texture', category: 'synth-fx', instrument: 100, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-goblins', name: 'FX 6 (Goblins)', icon: 'fx', description: 'Goblin texture', category: 'synth-fx', instrument: 101, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-echoes', name: 'FX 7 (Echoes)', icon: 'fx', description: 'Echo texture', category: 'synth-fx', instrument: 102, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
+  { id: 'fx-sci-fi', name: 'FX 8 (Sci-Fi)', icon: 'fx', description: 'Science fiction texture', category: 'synth-fx', instrument: 103, left: SYNTH_FX_LEFT, right: SYNTH_FX_RIGHT },
 
   // ==========================================
   // ETHNIC (GM 104-111)
