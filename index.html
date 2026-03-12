@@ -35,8 +35,11 @@
     <meta name="twitter:title" content="Sepia | Play Music with Hand Gestures" />
     <meta name="twitter:description" content="Play music from hand gestures in your browser with low-latency tracking and expressive instruments." />
     <meta name="twitter:image" content="https://sepia.website/sepia-long.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/sepia.svg" />
-    <link rel="apple-touch-icon" href="/sepia.svg" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -103,6 +106,16 @@
     </style>
   </head>
   <body>
+    <nav aria-label="Breadcrumb" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="https://sepia.website/"><span itemprop="name">Home</span></a>
+        <meta itemprop="position" content="1" />
+      </span>
+    </nav>
+    <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" itemscope itemtype="https://schema.org/WebSite">
+      <meta itemprop="name" content="Sepia" />
+      <meta itemprop="url" content="https://sepia.website/" />
+    </div>
     <noscript>
       <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center;background:#0a0a0a;color:#fff;">
         <div>
