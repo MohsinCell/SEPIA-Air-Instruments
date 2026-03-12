@@ -90,65 +90,87 @@ export function useHandTracking({ enabled, onHandsDetected, }: UseHandTrackingOp
             detectionLoopId = requestAnimationFrame(detectHands);
         };
         const initialize = async () => {
+            let handLandmarkerPromise: Promise<HandLandmarker> | null = null;
             try {
                 setIsLoading(true);
                 setError(null);
-                const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_CONFIG.wasmPath);
-                if (!mounted)
-                    return;
-                const createHandLandmarker = (delegate: 'GPU' | 'CPU') => HandLandmarker.createFromOptions(vision, {
-                    baseOptions: {
-                        modelAssetPath: MEDIAPIPE_CONFIG.modelPath,
-                        delegate,
-                    },
-                    runningMode: 'VIDEO',
-                    numHands: HAND_CONFIG.maxNumHands,
-                    minHandDetectionConfidence: HAND_CONFIG.minDetectionConfidence,
-                    minHandPresenceConfidence: HAND_CONFIG.minTrackingConfidence,
-                    minTrackingConfidence: HAND_CONFIG.minTrackingConfidence,
-                });
-                let handLandmarker: HandLandmarker;
-                try {
-                    handLandmarker = await createHandLandmarker('GPU');
-                }
-                catch (gpuError) {
-                    console.warn('GPU delegate initialization failed, retrying with CPU.', gpuError);
-                    handLandmarker = await createHandLandmarker('CPU');
-                }
-                if (!mounted) {
-                    handLandmarker.close();
-                    return;
-                }
-                handLandmarkerRef.current = handLandmarker;
+                lastVideoTimeRef.current = -1;
                 if (!navigator.mediaDevices?.getUserMedia) {
                     throw new Error('Camera API is not available in this browser.');
                 }
-                stream = await navigator.mediaDevices.getUserMedia({
+                const streamPromise = navigator.mediaDevices.getUserMedia({
                     video: {
                         width: { ideal: VIDEO_CONFIG.width },
                         height: { ideal: VIDEO_CONFIG.height },
                         facingMode: VIDEO_CONFIG.facingMode,
                     },
+                    audio: false,
                 });
+                handLandmarkerPromise = (async () => {
+                    const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_CONFIG.wasmPath);
+                    const createHandLandmarker = (delegate: 'GPU' | 'CPU') => HandLandmarker.createFromOptions(vision, {
+                        baseOptions: {
+                            modelAssetPath: MEDIAPIPE_CONFIG.modelPath,
+                            delegate,
+                        },
+                        runningMode: 'VIDEO',
+                        numHands: HAND_CONFIG.maxNumHands,
+                        minHandDetectionConfidence: HAND_CONFIG.minDetectionConfidence,
+                        minHandPresenceConfidence: HAND_CONFIG.minTrackingConfidence,
+                        minTrackingConfidence: HAND_CONFIG.minTrackingConfidence,
+                    });
+                    try {
+                        return await createHandLandmarker('GPU');
+                    }
+                    catch (gpuError) {
+                        console.warn('GPU delegate initialization failed, retrying with CPU.', gpuError);
+                        return createHandLandmarker('CPU');
+                    }
+                })();
+                stream = await streamPromise;
                 if (!mounted || !videoRef.current) {
                     stream.getTracks().forEach((track) => track.stop());
                     return;
                 }
-                videoRef.current.srcObject = stream;
+                const video = videoRef.current;
+                video.muted = true;
+                video.playsInline = true;
+                video.setAttribute('playsinline', 'true');
+                video.srcObject = stream;
                 await new Promise<void>((resolve, reject) => {
-                    const video = videoRef.current!;
                     video.onloadedmetadata = () => {
                         video.play().then(resolve).catch(reject);
                     };
                     video.onerror = () => reject(new Error('Video failed to load'));
                 });
+                const handLandmarker = await handLandmarkerPromise;
                 if (!mounted)
-                    return;
+                    return handLandmarker.close();
+                handLandmarkerRef.current = handLandmarker;
                 detectionLoopId = requestAnimationFrame(detectHands);
                 animationFrameRef.current = detectionLoopId;
                 setIsLoading(false);
             }
             catch (err: any) {
+                if (stream) {
+                    stream.getTracks().forEach((track) => track.stop());
+                    stream = null;
+                }
+                if (videoRef.current?.srcObject) {
+                    const mediaStream = videoRef.current.srcObject as MediaStream;
+                    mediaStream.getTracks().forEach((track) => track.stop());
+                    videoRef.current.srcObject = null;
+                }
+                if (handLandmarkerRef.current) {
+                    handLandmarkerRef.current.close();
+                    handLandmarkerRef.current = null;
+                }
+                if (handLandmarkerPromise) {
+                    handLandmarkerPromise
+                        .then((landmarker) => landmarker.close())
+                        .catch(() => { });
+                    handLandmarkerPromise = null;
+                }
                 if (mounted) {
                     console.error('Hand tracking initialization error:', err);
                     let errorMessage = err.message || 'Failed to initialize hand tracking';
@@ -160,6 +182,12 @@ export function useHandTracking({ enabled, onHandsDetected, }: UseHandTrackingOp
                     }
                     else if (err.name === 'NotReadableError') {
                         errorMessage = 'Camera is in use by another application.';
+                    }
+                    else if (err.name === 'AbortError') {
+                        errorMessage = 'Camera initialization was interrupted. Please try again.';
+                    }
+                    else if (typeof err.message === 'string' && (err.message.toLowerCase().includes('fetch') || err.message.toLowerCase().includes('network') || err.message.toLowerCase().includes('wasm'))) {
+                        errorMessage = 'Failed to load hand tracking assets. Check your internet connection and try again.';
                     }
                     setError(errorMessage);
                     setIsLoading(false);
