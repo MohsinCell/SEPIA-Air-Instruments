@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { FilesetResolver, HandLandmarker, } from '@mediapipe/tasks-vision';
 import type { HandLandmarkerResult } from '@mediapipe/tasks-vision';
 import type { Hand } from '../types';
-import { HAND_CONFIG, VIDEO_CONFIG } from '../constants';
+import { HAND_CONFIG, VIDEO_CONFIG, MEDIAPIPE_CONFIG } from '../constants';
 interface UseHandTrackingOptions {
     enabled: boolean;
     onHandsDetected?: (hands: Hand[]) => void;
@@ -93,13 +93,13 @@ export function useHandTracking({ enabled, onHandsDetected, }: UseHandTrackingOp
             try {
                 setIsLoading(true);
                 setError(null);
-                const vision = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm');
+                const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_CONFIG.wasmPath);
                 if (!mounted)
                     return;
-                const handLandmarker = await HandLandmarker.createFromOptions(vision, {
+                const createHandLandmarker = (delegate: 'GPU' | 'CPU') => HandLandmarker.createFromOptions(vision, {
                     baseOptions: {
-                        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
-                        delegate: 'GPU',
+                        modelAssetPath: MEDIAPIPE_CONFIG.modelPath,
+                        delegate,
                     },
                     runningMode: 'VIDEO',
                     numHands: HAND_CONFIG.maxNumHands,
@@ -107,11 +107,22 @@ export function useHandTracking({ enabled, onHandsDetected, }: UseHandTrackingOp
                     minHandPresenceConfidence: HAND_CONFIG.minTrackingConfidence,
                     minTrackingConfidence: HAND_CONFIG.minTrackingConfidence,
                 });
+                let handLandmarker: HandLandmarker;
+                try {
+                    handLandmarker = await createHandLandmarker('GPU');
+                }
+                catch (gpuError) {
+                    console.warn('GPU delegate initialization failed, retrying with CPU.', gpuError);
+                    handLandmarker = await createHandLandmarker('CPU');
+                }
                 if (!mounted) {
                     handLandmarker.close();
                     return;
                 }
                 handLandmarkerRef.current = handLandmarker;
+                if (!navigator.mediaDevices?.getUserMedia) {
+                    throw new Error('Camera API is not available in this browser.');
+                }
                 stream = await navigator.mediaDevices.getUserMedia({
                     video: {
                         width: { ideal: VIDEO_CONFIG.width },

@@ -52,7 +52,7 @@ export const DEFAULT_SETTINGS = {
     handTrackingConfidence: 0.7,
 };
 export const MEDIAPIPE_CONFIG = {
-    wasmPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm',
+    wasmPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm',
     modelPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
 };
 export const ANIMATION_TIMING = {
