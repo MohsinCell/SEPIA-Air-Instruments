@@ -1,53 +1,38 @@
-// ============================================
-// Help Modal Component
-// Documentation and usage instructions
-// ============================================
-
 import { CloseIcon, HandIcon, MusicNoteIcon, CameraIcon, VolumeIcon, SparklesIcon } from './Icons';
 import { useEffect, useCallback } from 'react';
-
 interface HelpModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+    isOpen: boolean;
+    onClose: () => void;
 }
-
 export function HelpModal({ isOpen, onClose }: HelpModalProps) {
-  // Handle escape key
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  }, [onClose]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [isOpen, handleKeyDown]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="help-modal__overlay" onClick={onClose}>
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            onClose();
+        }
+    }, [onClose]);
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = 'hidden';
+        }
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = '';
+        };
+    }, [isOpen, handleKeyDown]);
+    if (!isOpen)
+        return null;
+    return (<div className="help-modal__overlay" onClick={onClose}>
       <div className="help-modal" onClick={(e) => e.stopPropagation()}>
         <header className="help-modal__header">
           <h2 className="help-modal__title">How to Play</h2>
-          <button 
-            className="help-modal__close" 
-            onClick={onClose}
-            aria-label="Close help"
-          >
-            <CloseIcon size={20} />
+          <button className="help-modal__close" onClick={onClose} aria-label="Close help">
+            <CloseIcon size={20}/>
           </button>
         </header>
 
         <div className="help-modal__content">
-          {/* Quick Start */}
+          
           <section className="help-modal__section">
             <h3 className="help-modal__section-title">Quick Start</h3>
             <ol className="help-modal__steps">
@@ -58,34 +43,18 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
             </ol>
           </section>
 
-          {/* Controls */}
+          
           <section className="help-modal__section">
             <h3 className="help-modal__section-title">Controls</h3>
             <div className="help-modal__grid">
-              <HelpItem 
-                icon={<HandIcon size={24} />}
-                title="Hand Gestures"
-                description="Raise a finger above its base position to trigger its assigned note. Lower it to stop."
-              />
-              <HelpItem 
-                icon={<MusicNoteIcon size={24} />}
-                title="Instruments"
-                description="Select from 25+ instruments in the left panel. Each has unique chord mappings."
-              />
-              <HelpItem 
-                icon={<VolumeIcon size={24} />}
-                title="Volume"
-                description="Adjust the master volume using the slider in the settings panel."
-              />
-              <HelpItem 
-                icon={<SparklesIcon size={24} />}
-                title="Visual Effects"
-                description="Toggle particle effects and hand skeleton visibility in settings."
-              />
+              <HelpItem icon={<HandIcon size={24}/>} title="Hand Gestures" description="Raise a finger above its base position to trigger its assigned note. Lower it to stop."/>
+              <HelpItem icon={<MusicNoteIcon size={24}/>} title="Instruments" description="Select from 25+ instruments in the left panel. Each has unique chord mappings."/>
+              <HelpItem icon={<VolumeIcon size={24}/>} title="Volume" description="Adjust the master volume using the slider in the settings panel."/>
+              <HelpItem icon={<SparklesIcon size={24}/>} title="Visual Effects" description="Toggle particle effects and hand skeleton visibility in settings."/>
             </div>
           </section>
 
-          {/* Finger Mapping */}
+          
           <section className="help-modal__section">
             <h3 className="help-modal__section-title">Finger Mapping</h3>
             <div className="help-modal__hands">
@@ -115,24 +84,24 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
             </p>
           </section>
 
-          {/* Tips */}
+          
           <section className="help-modal__section">
             <h3 className="help-modal__section-title">Tips for Best Results</h3>
             <ul className="help-modal__tips">
               <li>
-                <CameraIcon size={16} />
+                <CameraIcon size={16}/>
                 <span>Ensure good lighting on your hands</span>
               </li>
               <li>
-                <HandIcon size={16} />
+                <HandIcon size={16}/>
                 <span>Keep hands 1-2 feet from the camera</span>
               </li>
               <li>
-                <MusicNoteIcon size={16} />
+                <MusicNoteIcon size={16}/>
                 <span>Use headphones for zero latency audio</span>
               </li>
               <li>
-                <SparklesIcon size={16} />
+                <SparklesIcon size={16}/>
                 <span>Plain backgrounds work better for tracking</span>
               </li>
             </ul>
@@ -145,25 +114,19 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
           </button>
         </footer>
       </div>
-    </div>
-  );
+    </div>);
 }
-
-// Help Item sub-component
 interface HelpItemProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
+    icon: React.ReactNode;
+    title: string;
+    description: string;
 }
-
 function HelpItem({ icon, title, description }: HelpItemProps) {
-  return (
-    <div className="help-modal__item">
+    return (<div className="help-modal__item">
       <div className="help-modal__item-icon">{icon}</div>
       <div className="help-modal__item-content">
         <h4 className="help-modal__item-title">{title}</h4>
         <p className="help-modal__item-desc">{description}</p>
       </div>
-    </div>
-  );
+    </div>);
 }

@@ -196,40 +196,65 @@ The bottom status bar shows:
 
 ```
 air-instruments/
+├── deploy.sh
+├── eslint.config.js
+├── index.html
+├── public/
+│   ├── sepia-long.png
+│   └── sepia.svg
 ├── src/
-│   ├── components/          # React components
-│   │   ├── landing/         # Landing page
-│   │   ├── panels/          # Sidebar, RightPanel
-│   │   ├── visualizer/      # Stage (camera view)
-│   │   └── ui/              # Reusable UI components & icons
-│   ├── constants/           # Configuration
-│   │   ├── chords.ts        # Chord library (MIDI note definitions)
-│   │   ├── instruments.ts   # 120 GM instrument definitions
-│   │   ├── instrumentMappings.ts  # Unique mappings per instrument
-│   │   └── config.ts        # App configuration
-│   ├── hooks/               # Custom React hooks
-│   │   ├── useAudioEngine   # Sound synthesis
-│   │   ├── useAudioRecorder # Recording functionality
-│   │   ├── useHandTracking  # MediaPipe integration
-│   │   ├── useParticles     # Particle effects
-│   │   └── useSettings      # User preferences
-│   ├── styles/              # CSS stylesheets
-│   │   ├── global.css       # Design system variables
-│   │   ├── App.css          # Main app styles
-│   │   └── Landing.css      # Landing page styles
-│   ├── types/               # TypeScript type definitions
-│   ├── utils/               # Utility functions
-│   │   ├── AudioEngine.ts   # Web Audio API wrapper
-│   │   ├── handDetection.ts # Finger detection algorithms
-│   │   ├── canvas.ts        # Canvas rendering utilities
-│   │   └── particles.ts     # Particle system
-│   ├── App.tsx              # Main application component
-│   └── main.tsx             # Application entry point
-├── public/                  # Static assets
-├── Dockerfile               # Docker build configuration
-├── docker-compose.yml       # Docker Compose configuration
-├── nginx.conf               # Nginx configuration for production
-└── package.json
+│   ├── components/
+│   │   ├── landing/
+│   │   │   └── Landing.tsx
+│   │   ├── panels/
+│   │   │   ├── RightPanel.tsx
+│   │   │   └── Sidebar.tsx
+│   │   ├── ui/
+│   │   │   ├── ErrorOverlay.tsx
+│   │   │   ├── HelpModal.tsx
+│   │   │   ├── Icons.tsx
+│   │   │   └── LoadingOverlay.tsx
+│   │   ├── visualizer/
+│   │   │   └── Stage.tsx
+│   │   └── index.ts
+│   ├── constants/
+│   │   ├── chords.ts
+│   │   ├── config.ts
+│   │   ├── instrumentMappings.ts
+│   │   ├── index.ts
+│   │   └── instruments.ts
+│   ├── hooks/
+│   │   ├── useAudioEngine.ts
+│   │   ├── useAudioRecorder.ts
+│   │   ├── useCanvasRenderer.ts
+│   │   ├── useHandTracking.ts
+│   │   ├── useNoteHistory.ts
+│   │   ├── useParticles.ts
+│   │   ├── useSettings.ts
+│   │   └── index.ts
+│   ├── styles/
+│   │   ├── App.css
+│   │   ├── global.css
+│   │   └── Landing.css
+│   ├── types/
+│   │   └── index.ts
+│   ├── utils/
+│   │   ├── AudioEngine.ts
+│   │   ├── canvas.ts
+│   │   ├── handDetection.ts
+│   │   ├── index.ts
+│   │   └── particles.ts
+│   ├── App.tsx
+│   └── main.tsx
+├── Dockerfile
+├── docker-compose.yml
+├── nginx.conf
+├── package-lock.json
+├── package.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 ```
 
 ## Tech Stack

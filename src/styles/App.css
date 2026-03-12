@@ -1,6 +1,4 @@
-/* ============================================
-   Main App Layout Styles - Modern Design
-   ============================================ */
+
 
 .app {
   height: 100vh;
@@ -12,7 +10,7 @@
   position: relative;
 }
 
-/* Ambient background glow */
+
 .app::before {
   content: '';
   position: absolute;
@@ -33,9 +31,7 @@
   z-index: 1;
 }
 
-/* ============================================
-   Loading Overlay
-   ============================================ */
+
 
 .loading-overlay {
   position: fixed;
@@ -71,9 +67,7 @@
   font-size: 0.8125rem;
 }
 
-/* ============================================
-   Error Overlay
-   ============================================ */
+
 
 .error-overlay {
   position: fixed;
@@ -135,9 +129,7 @@
   transform: translateY(0);
 }
 
-/* ============================================
-   Sidebar (Left Panel)
-   ============================================ */
+
 
 .sidebar {
   background: var(--color-bg-tertiary);
@@ -243,9 +235,7 @@
   align-items: center;
 }
 
-/* ============================================
-   Instrument List
-   ============================================ */
+
 
 .instrument-list {
   display: flex;
@@ -347,9 +337,7 @@
   margin-top: 1px;
 }
 
-/* ============================================
-   Settings Panel
-   ============================================ */
+
 
 .settings-panel {
   padding: var(--space-md);
@@ -358,9 +346,7 @@
   border: 1px solid var(--color-border-light);
 }
 
-/* ============================================
-   Recording Panel
-   ============================================ */
+
 
 .recording-panel {
   padding: var(--space-md);
@@ -507,9 +493,7 @@
   font-family: var(--font-mono);
 }
 
-/* ============================================
-   Accuracy Bar
-   ============================================ */
+
 
 .accuracy-bar {
   position: fixed;
@@ -584,9 +568,7 @@
   color: var(--color-accent-primary);
 }
 
-/* ============================================
-   Main Stage (Center)
-   ============================================ */
+
 
 .stage {
   position: relative;
@@ -706,9 +688,7 @@
   background: var(--color-text-muted);
 }
 
-/* ============================================
-   Right Panel
-   ============================================ */
+
 
 .panel-right {
   background: var(--color-bg-tertiary);
@@ -727,9 +707,7 @@
   padding: var(--space-md);
 }
 
-/* ============================================
-   Finger Mapping
-   ============================================ */
+
 
 .finger-mapping {
   margin-bottom: var(--space-lg);
@@ -796,9 +774,7 @@
   text-shadow: 0 0 20px currentColor;
 }
 
-/* ============================================
-   Note History
-   ============================================ */
+
 
 .note-history__title {
   font-size: 0.6875rem;
@@ -854,9 +830,7 @@
   text-align: center;
 }
 
-/* ============================================
-   Responsive - Large Tablet
-   ============================================ */
+
 
 @media (max-width: 1200px) {
   .app__main {
@@ -864,9 +838,7 @@
   }
 }
 
-/* ============================================
-   Responsive - Tablet
-   ============================================ */
+
 
 @media (max-width: 1024px) {
   .app__main {
@@ -882,9 +854,7 @@
   }
 }
 
-/* ============================================
-   Responsive - Small Tablet / Large Phone
-   ============================================ */
+
 
 @media (max-width: 768px) {
   .app__main {
@@ -944,18 +914,18 @@
     order: 1;
   }
 
-  /* Hide right panel on mobile - finger mapping shown in accuracy bar area */
+  
   .panel-right {
     display: none;
   }
 
-  /* Hide settings panel on mobile */
+  
   .settings-panel,
   .recording-panel {
     display: none;
   }
 
-  /* Accuracy bar adjustments for tablet */
+  
   .accuracy-bar {
     bottom: calc(120px + var(--space-sm));
   }
@@ -966,9 +936,7 @@
   }
 }
 
-/* ============================================
-   Responsive - Phone
-   ============================================ */
+
 
 @media (max-width: 480px) {
   .app__main {
@@ -1015,7 +983,7 @@
     display: none;
   }
 
-  /* Compact accuracy bar for phones */
+  
   .accuracy-bar {
     bottom: calc(80px + var(--space-xs));
     gap: var(--space-xs);
@@ -1037,9 +1005,7 @@
   }
 }
 
-/* ============================================
-   Responsive - Extra Small Phone
-   ============================================ */
+
 
 @media (max-width: 360px) {
   .sidebar {
@@ -1069,9 +1035,7 @@
   }
 }
 
-/* ============================================
-   Mobile Landscape Mode
-   ============================================ */
+
 
 @media (max-width: 900px) and (orientation: landscape) {
   .app__main {
@@ -1124,7 +1088,7 @@
     height: 32px;
   }
 
-  /* Hide panels in landscape mobile */
+  
   .settings-panel,
   .recording-panel {
     display: none;
@@ -1138,7 +1102,7 @@
     display: none;
   }
 
-  /* Accuracy bar in landscape */
+  
   .accuracy-bar {
     bottom: var(--space-sm);
   }
@@ -1149,12 +1113,10 @@
   }
 }
 
-/* ============================================
-   Touch-Friendly Improvements
-   ============================================ */
+
 
 @media (pointer: coarse) {
-  /* Ensure minimum tap target sizes */
+  
   .instrument-item {
     min-height: 44px;
     min-width: 44px;
@@ -1165,7 +1127,7 @@
     min-height: 44px;
   }
 
-  /* Remove hover effects that don't work well on touch */
+  
   .instrument-item:hover {
     transform: none;
   }
@@ -1174,7 +1136,7 @@
     transform: none;
   }
 
-  /* Add active states for touch feedback */
+  
   .instrument-item:active {
     background: var(--color-bg-glass-hover);
     transform: scale(0.95);
@@ -1185,9 +1147,7 @@
   }
 }
 
-/* ============================================
-   Help Modal
-   ============================================ */
+
 
 .help-modal__overlay {
   position: fixed;
@@ -1442,7 +1402,7 @@
   opacity: 1;
 }
 
-/* Help Modal Responsive */
+
 @media (max-width: 640px) {
   .help-modal {
     max-height: 90vh;

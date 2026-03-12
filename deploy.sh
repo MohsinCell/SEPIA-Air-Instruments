@@ -1,27 +1,22 @@
 #!/bin/bash
 
-# ============================================
-# Sepia Air Instruments - Deployment Script
-# ============================================
 
 set -e
 
-echo "🎵 Sepia Air Instruments - Deployment Script"
+echo " Sepia Air Instruments - Deployment Script"
 echo "============================================"
 
-# Configuration
 DOMAIN="sepia.website"
 APP_DIR="/opt/sepia"
 REPO_URL="https://github.com/MohsinCell/SEPIA-Air-Instruments.git"
 
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 print_status() {
-    echo -e "${GREEN}[✓]${NC} $1"
+    echo -e "${GREEN}[]${NC} $1"
 }
 
 print_warning() {
@@ -29,16 +24,14 @@ print_warning() {
 }
 
 print_error() {
-    echo -e "${RED}[✗]${NC} $1"
+    echo -e "${RED}[]${NC} $1"
 }
 
-# Step 1: Update system
 echo ""
 echo "Step 1: Updating system packages..."
 apt update && apt upgrade -y
 print_status "System updated"
 
-# Step 2: Install Docker if not present
 echo ""
 echo "Step 2: Installing Docker..."
 if ! command -v docker &> /dev/null; then
@@ -52,19 +45,16 @@ else
     print_status "Docker already installed"
 fi
 
-# Step 3: Install Docker Compose if not present
 echo ""
 echo "Step 3: Installing Docker Compose..."
 if ! command -v docker-compose &> /dev/null; then
     apt install -y docker-compose-plugin
-    # Create symlink for docker-compose command
     ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose 2>/dev/null || true
     print_status "Docker Compose installed"
 else
     print_status "Docker Compose already installed"
 fi
 
-# Step 4: Install Nginx
 echo ""
 echo "Step 4: Installing Nginx..."
 if ! command -v nginx &> /dev/null; then
@@ -75,7 +65,6 @@ else
     print_status "Nginx already installed"
 fi
 
-# Step 5: Install Certbot
 echo ""
 echo "Step 5: Installing Certbot..."
 if ! command -v certbot &> /dev/null; then
@@ -85,7 +74,6 @@ else
     print_status "Certbot already installed"
 fi
 
-# Step 6: Clone or update repository
 echo ""
 echo "Step 6: Setting up application..."
 if [ -d "$APP_DIR" ]; then
@@ -98,7 +86,6 @@ else
 fi
 print_status "Repository ready"
 
-# Step 7: Create Nginx configuration
 echo ""
 echo "Step 7: Configuring Nginx..."
 cat > /etc/nginx/sites-available/sepia << 'EOF'
@@ -121,16 +108,13 @@ server {
 }
 EOF
 
-# Enable the site
 ln -sf /etc/nginx/sites-available/sepia /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default 2>/dev/null || true
 
-# Test Nginx configuration
 nginx -t
 systemctl reload nginx
 print_status "Nginx configured"
 
-# Step 8: Build and start Docker container
 echo ""
 echo "Step 8: Building and starting application..."
 cd $APP_DIR
@@ -138,12 +122,10 @@ docker-compose down 2>/dev/null || true
 docker-compose up -d --build
 print_status "Application started"
 
-# Step 9: Wait for container to be ready
 echo ""
 echo "Step 9: Waiting for application to be ready..."
 sleep 5
 
-# Check if container is running
 if docker ps | grep -q sepia; then
     print_status "Container is running"
 else
@@ -151,7 +133,6 @@ else
     exit 1
 fi
 
-# Step 10: Obtain SSL certificate
 echo ""
 echo "Step 10: Obtaining SSL certificate..."
 print_warning "Make sure your domain DNS points to this server (157.245.104.83)"
@@ -162,16 +143,14 @@ certbot --nginx -d sepia.website -d www.sepia.website --non-interactive --agree-
 
 print_status "SSL certificate obtained"
 
-# Step 11: Setup auto-renewal
 echo ""
 echo "Step 11: Setting up SSL auto-renewal..."
 (crontab -l 2>/dev/null | grep -v certbot; echo "0 12 * * * /usr/bin/certbot renew --quiet") | crontab -
 print_status "Auto-renewal configured"
 
-# Final status
 echo ""
 echo "============================================"
-echo -e "${GREEN}🎉 Deployment Complete!${NC}"
+echo -e "${GREEN} Deployment Complete!${NC}"
 echo "============================================"
 echo ""
 echo "Your application is now live at:"

@@ -1,21 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    
-    <!-- Primary Meta Tags -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Sepia | Play Music with Hand Gestures</title>
-    <meta name="title" content="Sepia | Play Music with Hand Gestures" />
-    <meta name="description" content="Transform your hand movements into music using gesture tracking. Play 120 virtual instruments with just your webcam. No hardware required." />
-    <meta name="keywords" content="air instruments, hand tracking, gesture music, virtual piano, web audio, MediaPipe, hand gestures, music app, webcam music" />
+    <meta name="description" content="Transform hand movements into music with real-time gesture tracking. Play 120 virtual instruments in your browser with no extra hardware." />
+    <meta name="keywords" content="air instruments, hand tracking, gesture music, virtual instruments, web audio, MediaPipe, webcam music" />
     <meta name="author" content="Sepia" />
-    <meta name="robots" content="index, follow" />
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://sepia.website/" />
-    
-    <!-- Theme & App Configuration -->
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="theme-color" content="#0a0a0a" />
     <meta name="color-scheme" content="dark" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -23,72 +17,59 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Sepia" />
     <meta name="application-name" content="Sepia" />
-    <meta name="format-detection" content="telephone=no" />
-    
-    <!-- Open Graph / Facebook -->
+    <meta name="format-detection" content="telephone=no,email=no,address=no" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' ws: wss: https://cdn.jsdelivr.net https://storage.googleapis.com; media-src 'self' blob:; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" />
+    <link rel="canonical" href="https://sepia.website/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sepia.website/" />
     <meta property="og:title" content="Sepia | Play Music with Hand Gestures" />
-    <meta property="og:description" content="Transform your hand movements into music using gesture tracking. Play 120 virtual instruments with just your webcam." />
+    <meta property="og:description" content="Transform hand movements into music with real-time gesture tracking and 120 playable instruments." />
     <meta property="og:image" content="https://sepia.website/sepia-long.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sepia Air Instruments preview" />
     <meta property="og:site_name" content="Sepia" />
     <meta property="og:locale" content="en_US" />
-    
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://sepia.website/" />
     <meta name="twitter:title" content="Sepia | Play Music with Hand Gestures" />
-    <meta name="twitter:description" content="Transform your hand movements into music using gesture tracking. Play 120 virtual instruments with just your webcam." />
+    <meta name="twitter:description" content="Play music from hand gestures in your browser with low-latency tracking and expressive instruments." />
     <meta name="twitter:image" content="https://sepia.website/sepia-long.png" />
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/sepia.svg" />
     <link rel="apple-touch-icon" href="/sepia.svg" />
-    
-    <!-- Preconnect to External Resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    
-    <!-- DNS Prefetch for Performance -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-      /* Critical CSS for fast initial paint */
       *,
       *::before,
       *::after {
         box-sizing: border-box;
       }
-      
-      html, body, #root {
+
+      html,
+      body,
+      #root {
         margin: 0;
         padding: 0;
         width: 100%;
         height: 100%;
       }
-      
+
       body {
         overflow-x: hidden;
         overflow-y: auto;
-      }
-      
-      body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         background-color: #0a0a0a;
-        color: #ffffff;
+        color: #fff;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
       }
-      
-      /* Loading state */
+
       #root:empty {
         display: flex;
         align-items: center;
@@ -96,41 +77,37 @@
         flex-direction: column;
         gap: 16px;
       }
-      
+
       #root:empty::before {
         content: '';
         width: 48px;
         height: 48px;
         border: 3px solid rgba(255, 255, 255, 0.1);
-        border-top-color: #4ECDC4;
+        border-top-color: #4ecdc4;
         border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+        animation: sepia-spin 0.8s linear infinite;
       }
-      
+
       #root:empty::after {
         content: 'Loading Sepia...';
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.5);
         letter-spacing: 0.5px;
+        color: rgba(255, 255, 255, 0.58);
       }
-      
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-      
-      /* Prevent FOUC */
-      .no-js #root:empty::before,
-      .no-js #root:empty::after {
-        display: none;
+
+      @keyframes sepia-spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
   <body>
     <noscript>
-      <div style="display: flex; align-items: center; justify-content: center; height: 100vh; padding: 20px; text-align: center; background: #0a0a0a; color: #fff;">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center;background:#0a0a0a;color:#fff;">
         <div>
-          <h1 style="margin-bottom: 16px;">JavaScript Required</h1>
-          <p style="color: rgba(255,255,255,0.7);">Sepia requires JavaScript to run. Please enable JavaScript in your browser settings and reload the page.</p>
+          <h1 style="margin:0 0 16px;">JavaScript Required</h1>
+          <p style="margin:0;color:rgba(255,255,255,0.72);">Sepia needs JavaScript to run. Enable JavaScript in your browser settings and reload the page.</p>
         </div>
       </div>
     </noscript>

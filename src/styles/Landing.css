@@ -1,6 +1,4 @@
-/* ============================================
-   Landing Page Styles - Premium Design
-   ============================================ */
+
 
 .landing {
   min-height: 100vh;
@@ -17,9 +15,7 @@
   background: var(--color-bg-primary);
 }
 
-/* ============================================
-   Animated Background
-   ============================================ */
+
 
 .landing__background {
   position: absolute;
@@ -64,9 +60,7 @@
   animation-delay: -4s;
 }
 
-/* ============================================
-   Content Container
-   ============================================ */
+
 
 .landing__content {
   position: relative;
@@ -75,9 +69,7 @@
   animation: fadeIn 1s ease-out;
 }
 
-/* ============================================
-   Badge
-   ============================================ */
+
 
 .landing__badge {
   display: inline-flex;
@@ -98,9 +90,7 @@
   color: var(--color-accent-primary);
 }
 
-/* ============================================
-   Logo Icon
-   ============================================ */
+
 
 .landing__icon {
   width: 80px;
@@ -123,9 +113,7 @@
   height: 48px;
 }
 
-/* ============================================
-   Title
-   ============================================ */
+
 
 .landing__title {
   margin-bottom: var(--space-lg);
@@ -153,9 +141,7 @@
   line-height: 1.1;
 }
 
-/* ============================================
-   Subtitle
-   ============================================ */
+
 
 .landing__subtitle {
   font-size: 1.125rem;
@@ -166,9 +152,7 @@
   animation: fadeIn 0.8s ease-out 0.3s backwards;
 }
 
-/* ============================================
-   Instrument Icons Grid
-   ============================================ */
+
 
 .landing__instruments {
   display: flex;
@@ -208,9 +192,7 @@
     0 0 0 1px color-mix(in srgb, var(--icon-color, #70c1b5) 15%, transparent);
 }
 
-/* ============================================
-   Start Button
-   ============================================ */
+
 
 .landing__start-btn {
   padding: var(--space-md) var(--space-2xl);
@@ -265,9 +247,7 @@
   transform: translateX(4px);
 }
 
-/* ============================================
-   Camera Hint
-   ============================================ */
+
 
 .landing__hint {
   margin-top: var(--space-lg);
@@ -284,7 +264,7 @@
   opacity: 0.6;
 }
 
-/* Mobile-only hint (landscape suggestion) */
+
 .landing__hint--mobile {
   display: none;
   margin-top: var(--space-sm);
@@ -299,9 +279,7 @@
   opacity: 1;
 }
 
-/* ============================================
-   Features Grid
-   ============================================ */
+
 
 .landing__features {
   display: grid;
@@ -364,9 +342,7 @@
   line-height: 1.5;
 }
 
-/* ============================================
-   Responsive - Tablet
-   ============================================ */
+
 
 @media (max-width: 768px) {
   .landing {
@@ -427,15 +403,13 @@
     flex: 1;
   }
   
-  /* Show landscape hint on tablets/phones */
+  
   .landing__hint--mobile {
     display: flex;
   }
 }
 
-/* ============================================
-   Responsive - Phone
-   ============================================ */
+
 
 @media (max-width: 480px) {
   .landing {
@@ -494,9 +468,7 @@
   }
 }
 
-/* ============================================
-   Responsive - Phone Portrait
-   ============================================ */
+
 
 @media (max-width: 480px) and (orientation: portrait) {
   .landing__icon {
@@ -511,9 +483,7 @@
   }
 }
 
-/* ============================================
-   Reduced Motion
-   ============================================ */
+
 
 @media (prefers-reduced-motion: reduce) {
   .landing__gradient-orb,
@@ -528,9 +498,7 @@
   }
 }
 
-/* ============================================
-   Footer
-   ============================================ */
+
 
 .landing__footer {
   margin-top: var(--space-3xl);

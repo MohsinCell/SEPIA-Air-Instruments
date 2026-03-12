@@ -1,45 +1,26 @@
-// ============================================
-// Landing Page Component
-// ============================================
-
 import { INSTRUMENTS } from '../../constants';
-import { 
-  HandIcon, 
-  CameraIcon,
-  SparklesIcon,
-  ArrowRightIcon,
-  SmartphoneIcon,
-  SepiaLogo,
-  MusicNoteIcon,
-  CodeIcon,
-  getInstrumentIcon 
-} from '../ui/Icons';
+import { HandIcon, CameraIcon, SparklesIcon, ArrowRightIcon, SmartphoneIcon, SepiaLogo, MusicNoteIcon, CodeIcon, getInstrumentIcon } from '../ui/Icons';
 import '../../styles/Landing.css';
-
 interface LandingProps {
-  onStart: () => void;
+    onStart: () => void;
 }
-
 export function Landing({ onStart }: LandingProps) {
-  // Get unique icon IDs for display (limit to 8 varied icons)
-  const uniqueIcons = [...new Set(INSTRUMENTS.map(i => i.icon))].slice(0, 8);
-
-  return (
-    <div className="landing">
+    const uniqueIcons = [...new Set(INSTRUMENTS.map(i => i.icon))].slice(0, 8);
+    return (<div className="landing">
       <div className="landing__background">
-        <div className="landing__gradient-orb landing__gradient-orb--1" />
-        <div className="landing__gradient-orb landing__gradient-orb--2" />
-        <div className="landing__gradient-orb landing__gradient-orb--3" />
+        <div className="landing__gradient-orb landing__gradient-orb--1"/>
+        <div className="landing__gradient-orb landing__gradient-orb--2"/>
+        <div className="landing__gradient-orb landing__gradient-orb--3"/>
       </div>
       
       <div className="landing__content">
         <div className="landing__badge">
-          <SparklesIcon size={14} />
+          <SparklesIcon size={14}/>
           <span>Gesture-Powered Music</span>
         </div>
 
         <div className="landing__icon">
-          <SepiaLogo size={64} />
+          <SepiaLogo size={64}/>
         </div>
         
         <h1 className="landing__title">
@@ -55,46 +36,39 @@ export function Landing({ onStart }: LandingProps) {
         <div className="landing__instruments">
           {uniqueIcons.map((iconId, index) => {
             const IconComponent = getInstrumentIcon(iconId);
-            // Gradient colors from orange to teal
             const colors = [
-              '#ff756d', '#ff7f6f', '#f49277', '#cba089',
-              '#a5ae9c', '#9ab1a0', '#7bbeb0', '#70c1b5'
+                '#ff756d', '#ff7f6f', '#f49277', '#cba089',
+                '#a5ae9c', '#9ab1a0', '#7bbeb0', '#70c1b5'
             ];
             const color = colors[index] || colors[colors.length - 1];
-            return (
-              <div 
-                key={iconId} 
-                className="landing__instrument-icon"
-                style={{ 
-                  animationDelay: `${index * 0.1}s`,
-                  '--icon-color': color,
-                } as React.CSSProperties}
-              >
-                <IconComponent size={24} />
-              </div>
-            );
-          })}
+            return (<div key={iconId} className="landing__instrument-icon" style={{
+                    animationDelay: `${index * 0.1}s`,
+                    '--icon-color': color,
+                } as React.CSSProperties}>
+                <IconComponent size={24}/>
+              </div>);
+        })}
         </div>
         
         <button className="landing__start-btn" onClick={onStart}>
           <span>Start Playing</span>
-          <ArrowRightIcon size={20} />
+          <ArrowRightIcon size={20}/>
         </button>
         
         <p className="landing__hint">
-          <CameraIcon size={16} />
+          <CameraIcon size={16}/>
           <span>Requires camera access for hand tracking</span>
         </p>
 
         <p className="landing__hint landing__hint--mobile">
-          <SmartphoneIcon size={16} />
+          <SmartphoneIcon size={16}/>
           <span>Use desktop mode in landscape for the best experience on phones</span>
         </p>
         
-<div className="landing__features">
+    <div className="landing__features">
           <div className="landing__feature">
             <div className="landing__feature-icon">
-              <HandIcon size={28} />
+              <HandIcon size={28}/>
             </div>
             <div className="landing__feature-title">Gesture Control</div>
             <div className="landing__feature-desc">
@@ -104,7 +78,7 @@ export function Landing({ onStart }: LandingProps) {
           
           <div className="landing__feature">
             <div className="landing__feature-icon">
-              <MusicNoteIcon size={28} />
+              <MusicNoteIcon size={28}/>
             </div>
             <div className="landing__feature-title">120 Instruments</div>
             <div className="landing__feature-desc">
@@ -114,7 +88,7 @@ export function Landing({ onStart }: LandingProps) {
           
           <div className="landing__feature">
             <div className="landing__feature-icon">
-              <SparklesIcon size={28} />
+              <SparklesIcon size={28}/>
             </div>
             <div className="landing__feature-title">Visual Feedback</div>
             <div className="landing__feature-desc">
@@ -128,11 +102,10 @@ export function Landing({ onStart }: LandingProps) {
             "Music is the universal language of mankind."
           </p>
           <p className="landing__footer-credit">
-            <CodeIcon size={16} />
+            <CodeIcon size={16}/>
             <span>Developed by Mohsin Belam</span>
           </p>
         </footer>
       </div>
-    </div>
-  );
+    </div>);
 }

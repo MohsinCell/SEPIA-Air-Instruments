@@ -1,7 +1,3 @@
-// ============================================
-// Hooks Barrel Export
-// ============================================
-
 export * from './useAudioEngine';
 export * from './useAudioRecorder';
 export * from './useHandTracking';
