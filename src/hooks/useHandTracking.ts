@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { FilesetResolver, HandLandmarker, } from '@mediapipe/tasks-vision';
-import type { HandLandmarkerResult } from '@mediapipe/tasks-vision';
+import type { HandLandmarker, HandLandmarkerResult } from '@mediapipe/tasks-vision';
 import type { Hand } from '../types';
-import { HAND_CONFIG, VIDEO_CONFIG, MEDIAPIPE_CONFIG } from '../constants';
+import { VIDEO_CONFIG } from '../constants';
+import { getPreloadedHandLandmarker } from '../utils/handLandmarkerPreloader';
 interface UseHandTrackingOptions {
     enabled: boolean;
     onHandsDetected?: (hands: Hand[]) => void;
@@ -19,7 +19,7 @@ export function useHandTracking({ enabled, onHandsDetected, }: UseHandTrackingOp
     const animationFrameRef = useRef<number | null>(null);
     const lastVideoTimeRef = useRef<number>(-1);
     const onHandsDetectedRef = useRef(onHandsDetected);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [hands, setHands] = useState<Hand[]>([]);
     useEffect(() => {
@@ -106,27 +106,7 @@ export function useHandTracking({ enabled, onHandsDetected, }: UseHandTrackingOp
                     },
                     audio: false,
                 });
-                handLandmarkerPromise = (async () => {
-                    const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_CONFIG.wasmPath);
-                    const createHandLandmarker = (delegate: 'GPU' | 'CPU') => HandLandmarker.createFromOptions(vision, {
-                        baseOptions: {
-                            modelAssetPath: MEDIAPIPE_CONFIG.modelPath,
-                            delegate,
-                        },
-                        runningMode: 'VIDEO',
-                        numHands: HAND_CONFIG.maxNumHands,
-                        minHandDetectionConfidence: HAND_CONFIG.minDetectionConfidence,
-                        minHandPresenceConfidence: HAND_CONFIG.minTrackingConfidence,
-                        minTrackingConfidence: HAND_CONFIG.minTrackingConfidence,
-                    });
-                    try {
-                        return await createHandLandmarker('GPU');
-                    }
-                    catch (gpuError) {
-                        console.warn('GPU delegate initialization failed, retrying with CPU.', gpuError);
-                        return createHandLandmarker('CPU');
-                    }
-                })();
+                handLandmarkerPromise = getPreloadedHandLandmarker();
                 stream = await streamPromise;
                 if (!mounted || !videoRef.current) {
                     stream.getTracks().forEach((track) => track.stop());

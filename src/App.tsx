@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Hand, FingerName } from './types';
 import { INSTRUMENTS, DEFAULT_INSTRUMENT_ID, FINGER_NAMES, } from './constants';
 import { useAudioEngine, useAudioRecorder, useHandTracking, useParticles, useNoteHistory, useSettings, } from './hooks';
-import { detectRaisedFingers, getPalmSize, getFingertipPosition, getRealHandSide, createFingerKey, drawMirroredVideo, drawCameraOverlay, drawHandSkeleton, drawFingertips, drawParticles, clearCanvas, } from './utils';
+import { detectRaisedFingers, getPalmSize, getFingertipPosition, getRealHandSide, createFingerKey, drawMirroredVideo, drawCameraOverlay, drawHandSkeleton, drawFingertips, drawParticles, clearCanvas, startPreload, resetPreload, } from './utils';
 import { Landing, Sidebar, RightPanel, Stage, LoadingOverlay, ErrorOverlay, HelpModal, } from './components';
 import './styles/global.css';
 import './styles/App.css';
@@ -60,6 +60,9 @@ export default function App() {
         volume: settings.volume,
     });
     const { isRecording, duration: recordingDuration, lastRecordingUrl, startRecording, stopRecording } = useAudioRecorder();
+    useEffect(() => {
+        startPreload();
+    }, []);
     const handleHandsDetected = useCallback((detectedHands: Hand[]) => {
         if (!canvasRef.current)
             return;
@@ -200,6 +203,7 @@ export default function App() {
         setIsStarted(false);
         setLeftAccuracy(0);
         setRightAccuracy(0);
+        resetPreload();
     }, [stopAll]);
     if (!isStarted) {
         return <Landing onStart={handleStart}/>;

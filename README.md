@@ -242,6 +242,7 @@ air-instruments/
 │   │   ├── AudioEngine.ts
 │   │   ├── canvas.ts
 │   │   ├── handDetection.ts
+│   │   ├── handLandmarkerPreloader.ts
 │   │   ├── index.ts
 │   │   └── particles.ts
 │   ├── App.tsx

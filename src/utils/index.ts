@@ -2,3 +2,4 @@ export * from './AudioEngine';
 export * from './handDetection';
 export * from './particles';
 export * from './canvas';
+export * from './handLandmarkerPreloader';
